@@ -1,5 +1,6 @@
 import logo from './images/fssLogo.jpg';
 import './App.css';
+import DatabaseButton from './databaseButton';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <p>
           Welcome to the beginning of the Safely Different App!
         </p>
+        <DatabaseButton />
       </header>
     </div>
   );
