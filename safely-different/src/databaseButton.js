@@ -14,7 +14,7 @@ function DatabaseButton() {
         <div>
             {/*render the displayDatabase component depending on the state of showDatabase */}
             {showDatabase && <DisplayDatabase />}
-            <button onClick={handleClick}>Click me!</button>
+            <button onClick={handleClick}>Show database</button>
         </div>
     );
 }
