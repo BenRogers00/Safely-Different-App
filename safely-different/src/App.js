@@ -2,7 +2,7 @@ import logo from './images/fssLogo.jpg';
 import './App.css';
 import DatabaseDisplayButton from './databaseDisplayButton';
 import WriteButton from './databaseWritingButton';
-import TextField from './textFieldTest';
+import TextField from './textFieldtoDb';
 
 function App() {
   return (
