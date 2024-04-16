@@ -1,7 +1,7 @@
 import './App.css';
 import { initializeApp } from "firebase/app";
 //import { getAnalytics } from "firebase/analytics";
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, push, ref } from 'firebase/database';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -23,22 +23,15 @@ const app = initializeApp(firebaseConfig);
 const database =getDatabase();
 
 
-function WriteToDatabase() {
-  console.log("writing called")
+function WriteToDatabase({dataInput}) {
+  console.log("writing called with: ", dataInput)
   //reference to a location in the database
-  const databaseRef = ref(database, 'writingTest/tester')
-  
-  //data to add
-  const newData = {
-    data1: 'value1', //'data1' is the key, and 'value1' is the data
-    data2: 'value2',
-    data3: 'value3'
-  };
+  const databaseRef = ref(database, 'writingTest/textFieldTest1')
 
   //put new data onto the database
-  set(databaseRef, newData)
+  push(databaseRef, dataInput)
   //debugging info
-  console.log("Data: ", newData, " has been added")
+  console.log("Data: ", dataInput, " has been added")
 }
 
 export default WriteToDatabase;
