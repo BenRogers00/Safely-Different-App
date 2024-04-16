@@ -1,9 +1,10 @@
 //import React, { useState } from 'react';
 import WriteToDatabase from './databaseWriting';
+import TextField from './textFieldTest';
 
-function WriteButton() {
+function WriteButton({value}) {
     const handleClick = () => {
-        WriteToDatabase();
+        WriteToDatabase({dataInput: { value }})
     };
 
     return (
