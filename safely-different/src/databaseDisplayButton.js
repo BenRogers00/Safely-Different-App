@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DisplayDatabase from './databaseDisplay';
 
-function DatabaseButton() {
+function DatabaseDisplayButton() {
     //state variable to set if database should be displayed
     const [showDatabase, setShowDatabase] = useState(false);
 
@@ -19,4 +19,4 @@ function DatabaseButton() {
     );
 }
 
-export default DatabaseButton;
+export default DatabaseDisplayButton;
