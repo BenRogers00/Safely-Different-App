@@ -1,7 +1,7 @@
 import './App.css';
 import { initializeApp } from "firebase/app";
 //import { getAnalytics } from "firebase/analytics";
-import { getDatabase, push, ref } from 'firebase/database';
+import { getDatabase, push, ref, set } from 'firebase/database';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -28,8 +28,12 @@ function WriteToDatabase({dataInput}) {
   //reference to a location in the database
   const databaseRef = ref(database, 'writingTest/textFieldTest1')
 
+  const toAdd = {
+    textFieldTest2: dataInput
+  }
+
   //put new data onto the database
-  push(databaseRef, dataInput)
+  set(databaseRef, toAdd)
   //debugging info
   console.log("Data: ", dataInput, " has been added")
 }

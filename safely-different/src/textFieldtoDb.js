@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import WriteToDatabase from './databaseWriting';
 import WriteButton from './databaseWritingButton';
-
+import ReadOneDB from './readOneEntry';
 function TextField() {
   //variable to store value of text field
   const [value, setValue] = useState('');
@@ -11,15 +11,18 @@ function TextField() {
     //update value on change
     setValue(event.target.value);
     console.log(value)
-    WriteToDatabase({dataInput: value})
+    WriteToDatabase({dataInput: event.target.value})
   };
+
+  console.log("defaultValue={", ReadOneDB('writingTest/textFieldTest1/textFieldTest2'))
 
   return (
     <div>
       {/* text field input */}
       <input
         type="text"
-        value={value}
+        defaultValue={ReadOneDB('writingTest/textFieldTest1/textFieldTest2')}
+        
         onChange={handleChange}
         placeholder="input text"
       />
