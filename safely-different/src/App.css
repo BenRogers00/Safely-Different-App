@@ -36,3 +36,8 @@
     transform: rotate(360deg);
   }
 }
+input[type="textarea"] {
+  padding-block: 1px;
+  padding-inline: 2px;
+  padding: 50px;
+}

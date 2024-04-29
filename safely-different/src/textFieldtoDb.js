@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import WriteToDatabase from './databaseWriting';
 import WriteButton from './databaseWritingButton';
 import ReadOneDB from './readOneEntry';
+
+
 function TextField() {
   //variable to store value of text field
   const [value, setValue] = useState('');
@@ -20,9 +22,8 @@ function TextField() {
     <div>
       {/* text field input */}
       <input
-        type="text"
+        type="textarea"
         defaultValue={ReadOneDB('writingTest/textFieldTest1/textFieldTest2')}
-        
         onChange={handleChange}
         placeholder="input text"
       />
