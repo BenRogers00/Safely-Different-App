@@ -1,6 +1,6 @@
 //import React, { useState } from 'react';
 import WriteToDatabase from './databaseWriting';
-import TextField from './textFieldtoDb';
+//import TextField from './textFieldtoDb';
 
 function WriteButton({value}) {
     const handleClick = () => {
