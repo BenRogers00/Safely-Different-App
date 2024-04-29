@@ -1,7 +1,7 @@
 import logo from './images/fssLogo.jpg';
 import './App.css';
 import DatabaseDisplayButton from './databaseDisplayButton';
-import WriteButton from './databaseWritingButton';
+//import WriteButton from './databaseWritingButton';
 import TextField from './textFieldtoDb';
 
 function App() {
@@ -12,10 +12,10 @@ function App() {
         <p>
           Welcome to the beginning of the Safely Different App!
         </p>
-        <DatabaseDisplayButton />
+      </header>
+      <DatabaseDisplayButton />
         <p>textFieldTest: </p>
         <TextField />
-      </header>
     </div>
   );
 }

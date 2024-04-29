@@ -29,7 +29,7 @@ function DisplayDatabase() {
 
   useEffect(() => {
     //get a 'snapshot' of the current state of the database
-    const databaseRef = ref(database);
+    const databaseRef = ref(database, 'writingTest/textFieldTest1/textFieldTest2');
     //onValue is a firebase function that checks for any changes at a given location, in this case it is the entire database 
     onValue(databaseRef, (snapshot) => {
       //make a const for ease of use and reading

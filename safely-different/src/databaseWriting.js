@@ -1,7 +1,7 @@
 import './App.css';
 import { initializeApp } from "firebase/app";
 //import { getAnalytics } from "firebase/analytics";
-import { getDatabase, push, ref, set } from 'firebase/database';
+import { getDatabase, ref, set } from 'firebase/database';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -19,6 +19,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+console.log(app);
 //const analytics = getAnalytics(app);
 const database =getDatabase();
 
