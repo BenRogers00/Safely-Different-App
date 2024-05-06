@@ -1,6 +1,14 @@
 const wrapper = document.querySelector(".sliderWrapper");
 const menuItems = document.querySelectorAll(".menuItem");
 
+// Get the navigation element
+const nav = document.getElementById('nav');
+
+
+// Function to update the navigation position based on scroll
+
+
+
 const products = [
   {
     id: 1,
@@ -17,6 +25,7 @@ const products = [
       },
     ],
   },
+  
   {
     id: 2,
     title: "Air Jordan",
@@ -48,6 +57,18 @@ const products = [
     ],
   },
 ];
+
+// Get the button element
+const scrollTopButton = document.getElementById('scrollTopButton');
+
+// Add click event listener to the button
+scrollTopButton.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Smooth scrolling animation
+    });
+});
+
 
 let choosenProduct = products[0];
 
