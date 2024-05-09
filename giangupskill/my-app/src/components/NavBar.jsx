@@ -1,6 +1,14 @@
+import { useState } from "react";
 import { BsSun } from "react-icons/bs";
 import { HiOutlineMenu } from "react-icons/hi";
+import { MdClose } from "react-icons/md";
+
+
 function NavBar(){
+const[openMenu,setOpenMenu] = useState(false);
+const handleMenu = ()=>{
+  setOpenMenu(!openMenu);
+}
 
 
     return(
@@ -12,7 +20,11 @@ function NavBar(){
           </div>
 
           <ul className="ml-auto">
-           <HiOutlineMenu size={"30px"} color="grey" className="cursor-pointer"/>
+            {openMenu? (
+            <MdClose size={"30px"} color="grey" className="cursor-pointer" onClick={handleMenu}/>):
+            <HiOutlineMenu size={"30px"} color="grey" className="cursor-pointer" onClick={handleMenu}/>
+          }
+           
           </ul>
         </nav>
         </>
