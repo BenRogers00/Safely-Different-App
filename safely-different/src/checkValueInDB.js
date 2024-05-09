@@ -26,14 +26,16 @@ const database = getDatabase();
 
 function useCheckValueInDB(path, expectedResult) {
     const [isExpected, setIsExpected] = useState(false);
-    
+
     useEffect(() => {
         const databaseRef = ref(database, path);
         
         const unsubscribe = onValue(databaseRef, (snapshot) => {
             const data = snapshot.val();
-            const dataString = data.toString();
-            setIsExpected(dataString === expectedResult);
+            if(data !== null && data !== "") {
+                const dataString = data.toString();
+                setIsExpected(dataString === expectedResult);
+            }        
         });
 
         return () => unsubscribe();

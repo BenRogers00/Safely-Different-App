@@ -7,11 +7,12 @@ function Login() {
     const [password, setPassword] = useState('');
     const [loginResult, setLoginResult] = useState('');
 
-    const usernameExists = useCheckExistsInDB('users/'+username);
-    const passwordCorrect = useCheckValueInDB('users/'+username+'/password', password);
+    const noDotUsername = username.replace(/\./g, '~');
+    const usernameExists = useCheckExistsInDB('users/'+noDotUsername);
+    const passwordCorrect = useCheckValueInDB('users/'+noDotUsername+'/password', password);
 
     const HandleLogin = () => {
-        if (username === '' || password === '') {
+        if (noDotUsername === '' || password === '') {
             setLoginResult('Please enter both username and password. Fields cannot be blank');
         } else {
             if (usernameExists === true) {
