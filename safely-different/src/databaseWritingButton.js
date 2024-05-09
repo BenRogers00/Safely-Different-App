@@ -4,7 +4,7 @@ import WriteToDatabase from './databaseWriting';
 
 function WriteButton({value}) {
     const handleClick = () => {
-        WriteToDatabase({dataInput: { value }})
+        WriteToDatabase({dataInput: { value }}, 'writingTest/textFieldTest1')
     };
 
     return (

@@ -24,10 +24,10 @@ console.log(app);
 const database =getDatabase();
 
 
-function WriteToDatabase({dataInput}) {
+function WriteToDatabase({dataInput, path}) {
   console.log("writing called with: ", dataInput)
   //reference to a location in the database
-  const databaseRef = ref(database, 'writingTest/textFieldTest1')
+  const databaseRef = ref(database, path)
 
   const toAdd = {
     textFieldTest2: dataInput

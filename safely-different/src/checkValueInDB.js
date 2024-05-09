@@ -1,8 +1,9 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { initializeApp } from "firebase/app";
 //import { getAnalytics } from "firebase/analytics";
 import { getDatabase, ref, onValue } from 'firebase/database';
+import { useState } from 'react';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -23,26 +24,21 @@ const app = initializeApp(firebaseConfig);
 //const analytics = getAnalytics(app);
 const database = getDatabase();
 
-
-function ReadOneDB(path) {
-    const [databaseContent, setDatabaseContent] = useState(null);
+function useCheckValueInDB(path, expectedResult) {
+    const [isExpected, setIsExpected] = useState(false);
+    
     useEffect(() => {
-        //get a 'snapshot' of the current state of the database
         const databaseRef = ref(database, path);
-
-        //check for any changes at a given location, in this case it is a specific field 
-        onValue(databaseRef, (snapshot) => {
-            //make a const for ease of use and reading
+        
+        const unsubscribe = onValue(databaseRef, (snapshot) => {
             const data = snapshot.val();
-            //update the databaseContent variable
-            setDatabaseContent(data);
+            const dataString = data.toString();
+            setIsExpected(dataString === expectedResult);
         });
-    }, []);
 
-    //simple example of displaying database content
-    return (
-        databaseContent
-    );
+        return () => unsubscribe();
+    }, [path, expectedResult]); 
+    return isExpected;
 }
 
-export default ReadOneDB;
+export default useCheckValueInDB;
