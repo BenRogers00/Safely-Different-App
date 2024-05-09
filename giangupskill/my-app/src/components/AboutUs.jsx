@@ -2,12 +2,18 @@
 function AboutUs(){
 
     return(
-        <div className="text-gray-300 w-3/5">
-             <div >
-                <h1>About Us</h1>
-             </div>
-             <div className="">
-                <p>We recognise that each business encounters distinct challenges on its path to success.
+        <div className="text-gray-300 w-full flex  items-start ml-20">
+             
+
+             <div className="w-2/3 h-auto">
+
+             <div className="w-full text-[50px] ">
+        <div className="border-t border-gray-400 mb-4"></div> {/* Horizontal line */}
+        <h1>About Us</h1>
+            </div>
+
+            <div>
+            <p>We recognise that each business encounters distinct challenges on its path to success.
                      That's precisely why we are here – to offer customised solutions 
                      that address your specific needs and propel your business forward. 
                 </p>
@@ -28,7 +34,18 @@ function AboutUs(){
                  our platform connects you with a diverse community for effective problem-solving. This fosters creativity and harnesses collective intelligence to propel your business
                   forward.
                 </p>
+            </div>
+               
+
+                <div><button className="font-serif text-20 mt-3 py-1 px-4 font-extrabold bg-purple-500 rounded-[14px] hover:bg-violet-400">Get in Touch</button></div>
              </div>
+              
+             <div className="w-full md:w-1/3 h-full md:h-auto">
+                <div className="w-[250px] h-auto md:h-full"><img src="images/workplace.jpg" alt="workplace" /></div>
+            </div>
+             
+
+
         </div>
     )
 }
