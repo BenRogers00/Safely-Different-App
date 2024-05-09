@@ -24,25 +24,22 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase();
 
 
-function ReadOneDB(path) {
-    const [databaseContent, setDatabaseContent] = useState(null);
+function useCheckExistsInDB(path) {
+    const [exists, setExists] = useState(false);
+
     useEffect(() => {
-        //get a 'snapshot' of the current state of the database
         const databaseRef = ref(database, path);
 
-        //check for any changes at a given location, in this case it is a specific field 
-        onValue(databaseRef, (snapshot) => {
-            //make a const for ease of use and reading
+        const unsubscribe = onValue(databaseRef, (snapshot) => {
             const data = snapshot.val();
-            //update the databaseContent variable
-            setDatabaseContent(data);
+            setExists(data !== null); // Update state based on whether data exists at the path
         });
-    }, []);
 
-    //simple example of displaying database content
-    return (
-        databaseContent
-    );
+        // Clean up subscription when component unmounts
+        return () => unsubscribe();
+    }, [path]); // Re-run effect if `path` changes
+
+    return exists;
 }
 
-export default ReadOneDB;
+export default useCheckExistsInDB;

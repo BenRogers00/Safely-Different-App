@@ -13,23 +13,17 @@ function TextField() {
     //update value on change
     setValue(event.target.value);
     console.log(value)
-    WriteToDatabase({dataInput: event.target.value})
+    WriteToDatabase({dataInput: event.target.value}, '/textFieldTest2')
   };
-
-
-
-  console.log("defaultValue={", ReadOneDB('writingTest/textFieldTest1/textFieldTest2'))
 
   return (
     <div>
       {/* text field input */}
       <textarea
-      id="expandingTextField"
-        defaultValue={ReadOneDB('writingTest/textFieldTest1/textFieldTest2')}
+        defaultValue={ReadOneDB('textFieldTest2')}
         onChange={handleChange}
         placeholder="input text"
       />
-      <script src="textFieldExpandingScript.js"/>
       {/* display value of text field */}
       <p>text field value: {value}</p>
       <WriteButton value={value}/>

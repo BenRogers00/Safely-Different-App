@@ -27,19 +27,17 @@ const database =getDatabase();
 function DisplayDatabase() {
   const [databaseContent, setDatabaseContent] = useState(null);
 
+  console.log("DisplayDatabase called:")
+  
   useEffect(() => {
     //get a 'snapshot' of the current state of the database
-    const databaseRef = ref(database, 'writingTest/textFieldTest1/textFieldTest2');
+    const databaseRef = ref(database);
     //onValue is a firebase function that checks for any changes at a given location, in this case it is the entire database 
     onValue(databaseRef, (snapshot) => {
       //make a const for ease of use and reading
       const data = snapshot.val();
       //update the databaseContent variable
       setDatabaseContent(data);
-      //debugging info
-      console.log(databaseRef)
-      console.log("data stored:", data)
-      console.log("app const:", app)
     });
   }, []);
 
