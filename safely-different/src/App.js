@@ -1,25 +1,16 @@
-import logo from './images/fssLogo.jpg';
-import './App.css';
-import DatabaseDisplayButton from './databaseDisplayButton';
-//import WriteButton from './databaseWritingButton';
-import TextField from './textFieldtoDb';
-import Login from './login';
+// This is the App.js file that will be used to render different components.
 
+import React from 'react';
+import SignUp from './components/auth/SignUp';
+import SignIn from './components/auth/SignIn';
+import AuthDetails from './components/AuthDetails';
 
 function App() {
   return (
     <div className="App">
-    {/*  <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Welcome to the beginning of the Safely Different App!
-        </p>
-        <p>textFieldTest: </p>
-        <TextField />
-  </header>*/}
-      <DatabaseDisplayButton />
-        
-        <Login />
+        <SignUp />
+        <SignIn />
+        <AuthDetails />
     </div>
   );
 }
