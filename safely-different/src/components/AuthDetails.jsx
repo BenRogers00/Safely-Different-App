@@ -3,6 +3,8 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { auth } from "../firebase/firebase";
+import SignIn from "./auth/SignIn";
+import SignUp from "./auth/SignUp";
 
 const AuthDetails = () => {
   const [authUser, setAuthUser] = useState(null);
@@ -32,12 +34,18 @@ const AuthDetails = () => {
   return (
     <div>
       {authUser ? (
+        //if user is signed in, offer sign out button, and show sign in status 
         <>
           <p>{`Signed In as ${authUser.email}`}</p>
           <button onClick={userSignOut}>Sign Out</button>
         </>
       ) : (
+        //if user is not signed in, offer sign in / sign up options
+        <>
+        <SignUp/>
+        <SignIn/>
         <p>Signed Out</p>
+        </>
       )}
     </div>
   );

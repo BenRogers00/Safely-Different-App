@@ -25,6 +25,7 @@ const SignUp = () => {
         WriteToDatabase({ dataInput: 'free', path: userPath+'/priveleges'});
       })
       .catch((error)=>{
+        //if fails with real time database, show this error message
         alert('Error saving to database \n', error.message);
       })
       alert('User created successfully!');
