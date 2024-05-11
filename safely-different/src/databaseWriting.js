@@ -20,23 +20,25 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 console.log(app);
-//const analytics = getAnalytics(app);
 const database =getDatabase();
 
 
-function WriteToDatabase({dataInput, path}) {
-  console.log("writing called with: ", dataInput)
-  //reference to a location in the database
-  const databaseRef = ref(database, path)
+const WriteToDatabase = async ({ dataInput, path }) => {
+  try {
+    console.log("Writing called with:", dataInput);
 
-  const toAdd = {
-    textFieldTest2: dataInput
+    //reference to a specified location in the database
+    const databaseRef = ref(database, path);
+
+    //set the data at the specified location
+    await set(databaseRef, dataInput);
+
+    //debugging success message
+    console.log("Data:", dataInput, "has been added to", path);
+  } catch (error) {
+    //debugging for error checking
+    console.error("Error adding data:", error);
   }
-
-  //put new data onto the database
-  set(databaseRef, toAdd)
-  //debugging info
-  console.log("Data: ", dataInput, " has been added")
-}
+};
 
 export default WriteToDatabase;

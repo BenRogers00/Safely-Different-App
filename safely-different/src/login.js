@@ -1,3 +1,5 @@
+//redundant, can be deleted with check from the team
+
 import React, { useState } from 'react';
 import useCheckExistsInDB from './checkIfExistsInDB';
 import useCheckValueInDB from './checkValueInDB';

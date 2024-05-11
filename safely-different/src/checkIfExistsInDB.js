@@ -1,7 +1,9 @@
+//this file checks if a value exists in a database, it contains a function that takes in a string that represents a path to somewhere in the database
+//example case: see if a username exists in the database
+
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { initializeApp } from "firebase/app";
-//import { getAnalytics } from "firebase/analytics";
 import { getDatabase, ref, onValue } from 'firebase/database';
 
 // Your web app's Firebase configuration
@@ -20,25 +22,29 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-//const analytics = getAnalytics(app);
 const database = getDatabase();
 
-
+//function to check if anything exists at the destination
 function useCheckExistsInDB(path) {
     const [exists, setExists] = useState(false);
-
+    console.log("useExist reach")
     useEffect(() => {
         const databaseRef = ref(database, path);
-
+        //the following line sets up a 'listener' to check for any changes at the given path
         const unsubscribe = onValue(databaseRef, (snapshot) => {
+            console.log("reaching")
+            //store the data found at the path
             const data = snapshot.val();
-            setExists(data !== null); // Update state based on whether data exists at the path
+            console.log("data:"+data)
+            //if the data exists, this will be set to true, this is what will be returned
+            setExists(data !== null);
         });
 
-        // Clean up subscription when component unmounts
+        //remove listener that was set up ealier
         return () => unsubscribe();
-    }, [path]); // Re-run effect if `path` changes
+    }, [path]); //rerun if path changes
 
+    //return the result of the function, false if data does not exist at the location, true if data does exist
     return exists;
 }
 
