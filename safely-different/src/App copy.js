@@ -1,3 +1,5 @@
+//backup for when I was messing with the app.js file. Deletable if not needed
+
 import logo from './images/fssLogo.jpg';
 import './App.css';
 import DatabaseDisplayButton from './databaseDisplayButton';
