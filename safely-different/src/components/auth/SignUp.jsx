@@ -20,9 +20,9 @@ const SignUp = () => {
         const userID = userCredential.user.uid;
         //create a path to save things under a user's id
         const userPath = 'users/'+userID
-        //save their info: email and 'free' privelege as default (could be changed to paid or admin later)
+        //save their info: email and 'free' privilege as default (could be changed to paid or admin later)
         WriteToDatabase({ dataInput: email, path: userPath+'/email' });
-        WriteToDatabase({ dataInput: 'free', path: userPath+'/priveleges'});
+        WriteToDatabase({ dataInput: 'free', path: userPath+'/privileges'});
       })
       .catch((error)=>{
         //if fails with real time database, show this error message
