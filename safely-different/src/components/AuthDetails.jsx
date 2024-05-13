@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import { auth } from "../firebase/firebase";
 import SignIn from "./auth/SignIn";
 import SignUp from "./auth/SignUp";
+import UserProfile from "./profile/UserProfile";
+import { ReturnEmail } from "./UsersDetails";
 
 const AuthDetails = () => {
   const [authUser, setAuthUser] = useState(null);
@@ -38,6 +40,8 @@ const AuthDetails = () => {
         <>
           <p>{`Signed In as ${authUser.email}`}</p>
           <button onClick={userSignOut}>Sign Out</button>
+          <UserProfile />
+          {console.log(ReturnEmail())}
         </>
       ) : (
         //if user is not signed in, offer sign in / sign up options
