@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from '../../firebase/firebase';
+import { sendPasswordResetEmail } from "firebase/auth";
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -17,6 +18,20 @@ const SignIn = () => {
       alert('Logged in successfully!');
     } catch (error) {
       alert('Error signing in:', error.message);
+    }
+  };
+
+  // Function to send a password reset email
+  const handleResetPassword = async () => {
+    if (!email) {
+      alert('Please enter your email address to reset your password.');
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert('Password reset email sent!');
+    } catch (error) {
+      alert('Failed to send password reset email:', error.message);
     }
   };
 
@@ -38,6 +53,9 @@ const SignIn = () => {
           placeholder="Password"
         />
         <button type="submit">Sign In</button>
+        <button onClick={handleResetPassword} style={{ marginTop: '10px' }}>
+          Forgot Password?
+      </button>
       </form>
     </div>
   );
