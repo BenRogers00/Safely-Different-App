@@ -8,32 +8,41 @@ import WriteToDatabase from '../../databaseWriting.js'
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordRepeat, setPasswordRepeat] = useState('');
   const auth = getAuth(app);
 
   // Function to handle sign up
   const handleSignUp = async (e) => {
     e.preventDefault();
-    try {
-      await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        //get user's id
-        const userID = userCredential.user.uid;
-        //create a path to save things under a user's id
-        const userPath = 'users/'+userID
-        //save their info: email and 'free' privilege as default (could be changed to paid or admin later)
-        WriteToDatabase({ dataInput: email, path: userPath+'/email' });
-        WriteToDatabase({ dataInput: 'free', path: userPath+'/privileges'});
-      })
-      .catch((error)=>{
-        //if fails with real time database, show this error message
-        alert('Error saving to database \n', error.message);
-      })
-      alert('User created successfully!');
-      
-    } catch (error) {
-      alert('Error signing up \n', error.message);
-    }
-
+    if(password.toString() === passwordRepeat.toString())
+      {
+        console.log(password + "===" + passwordRepeat);
+        console.log("Email:\t\t\t" + email);
+        console.log("Password:\t\t" + password);
+        console.log("RepPassword:\t" + passwordRepeat);
+      try {
+        await createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          //get user's id
+          const userID = userCredential.user.uid;
+          //create a path to save things under a user's id
+          const userPath = 'users/'+userID
+          //save their info: email and 'free' privilege as default (could be changed to paid or admin later)
+          WriteToDatabase({ dataInput: email, path: userPath+'/email' });
+          WriteToDatabase({ dataInput: 'free', path: userPath+'/privileges'});
+          alert('User created successfully!');
+        })
+        .catch((error)=>{
+          //if fails with real time database, show this error message
+          alert('Error saving to database \n', error.message, error);
+        })
+      } catch (error) {
+        alert('Error signing up \n', error.message, error);
+      }
+  }
+  else{
+    alert("Passwords don't match");
+  }
   };
 
   // Sign up form
@@ -52,6 +61,12 @@ const SignUp = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
+        />
+        <input
+          type="password"
+          value={passwordRepeat}
+          onChange={(e) => setPasswordRepeat(e.target.value)}
+          placeholder="Repeat Password"
         />
         <button type="submit">Sign Up</button>
       </form>
