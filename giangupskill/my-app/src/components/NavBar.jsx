@@ -3,7 +3,8 @@ import { BsSun } from "react-icons/bs";
 import { HiOutlineMenu } from "react-icons/hi";
 import { MdClose } from "react-icons/md";
 
-function NavBar() {
+function NavBar(props) {
+  const {isMobile} = props;
   const [openMenu, setOpenMenu] = useState(false);
   const handleMenu = () => {
     setOpenMenu(!openMenu);
@@ -12,7 +13,7 @@ function NavBar() {
   return (
     <>
       
-        <nav className="flex items-center ">
+        <nav className="  flex items-center ">
           <div className="flex items-center">
             <div className="mr-2">
               <a href=" ">
@@ -27,20 +28,30 @@ function NavBar() {
           </div>
       
           <ul className="ml-auto gap-4">
-            {openMenu ? (
+            {openMenu && isMobile ? (
               <MdClose
                 size={"30px"}
                 color="grey"
                 className="cursor-pointer"
                 onClick={handleMenu}
               />
-            ) : (
+            ) : !openMenu && isMobile ?(
               <HiOutlineMenu
                 size={"30px"}
                 color="grey"
                 className="cursor-pointer"
                 onClick={handleMenu}
               />
+            ):(
+              <>
+              <div className="flex ">
+              <li className="mx-2">Home</li>
+              <li className="mx-2">Price</li>
+              <li className="mx-2">About</li>
+              <li className="mx-2">Sign-In</li>
+              </div>
+              
+              </>
             )}
 
             {openMenu && (
