@@ -4,8 +4,8 @@ function AboutUs() {
       <div className="text-gray-300 items-start ">
         <div className="w-full h-auto">
           <div className="w-full text-[50px] ml-20">
-            <div className="border-t border-gray-400 mb-4"></div>{" "}
-            {/* Horizontal line */}
+            <div className="border-t border-gray-400 mb-4"></div>
+ 
             <h1>About Us</h1>
           </div>
 
@@ -57,7 +57,7 @@ function AboutUs() {
           </div>
         </div>
 
-        <div className="w-full md: flex justify-center items-center">
+        <div className="w-full mt-4 md: flex justify-center items-center">
           <img
             src="images/workplace.jpg"
             alt="workplace"
