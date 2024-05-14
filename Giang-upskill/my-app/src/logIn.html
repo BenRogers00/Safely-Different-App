@@ -9,11 +9,23 @@
             modal.style.display = "none";
           }
         }
+        function navigateToPostPage(event) {
+            event.preventDefault(); // Prevent form submission
+            
+            // Get the form inputs
+            var uname = document.getElementById('uname').value;
+            var psw = document.getElementById('psw').value;
+            
+            // Perform your login logic here
+            
+            // Redirect to post_page.html after login
+            window.location.href = "post_page.html"; 
+        }
         </script>
 </head>
 
 <!-- Button to open the modal login form -->
-<button onclick="document.getElementById('id01').style.display='block'">Login</button>
+<button onclick="document.getElementById('id01').style.display='block';">Login</button>
 
 <!-- The Modal -->
 <div id="id01" class="modal">
@@ -21,17 +33,17 @@
 class="close" title="Close Modal">&times;</span>
 
   <!-- Modal Content -->
-  <form class="modal-content animate" action="/action_page.php">
+  <form class="modal-content animate" onsubmit="navigateToPostPage(event)">
     <div class="imgcontainer">
       <img src="img_avatar2.png" alt="Avatar" class="avatar">
     </div>
 
     <div class="container">
       <label for="uname"><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" name="uname" required>
+      <input type="text" placeholder="Enter Username" name="uname" id="uname" required>
 
       <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="psw" required>
+      <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
 
       <button type="submit">Login</button>
       <label>
