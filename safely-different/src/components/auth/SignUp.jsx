@@ -16,10 +16,13 @@ const SignUp = () => {
     e.preventDefault();
     if(password.toString() === passwordRepeat.toString())
       {
+        //debugging
         console.log(password + "===" + passwordRepeat);
         console.log("Email:\t\t\t" + email);
         console.log("Password:\t\t" + password);
         console.log("RepPassword:\t" + passwordRepeat);
+        if(password.toString().length >= 6)
+          {
       try {
         await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
@@ -40,6 +43,11 @@ const SignUp = () => {
         alert('Error signing up \n', error.message, error);
       }
   }
+  else
+  {
+    alert("Password is too short, must be at least 6 characters long");
+  }
+}
   else{
     alert("Passwords don't match");
   }
