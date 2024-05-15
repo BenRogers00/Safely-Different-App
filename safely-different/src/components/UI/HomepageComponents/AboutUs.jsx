@@ -1,15 +1,15 @@
 function AboutUs() {
     return (
       <>
-        <div className="text-gray-300 items-start ">
+        <div className="text-gray-300  ">
           <div className="w-full h-auto">
-            <div className="w-full text-[50px] ml-20">
-              <div className="border-t border-gray-400 mb-4"></div>{" "}
+            <div className="w-full text-[50px] ">
+              <div className="border-t border-gray-400 mb-4"></div>
               {/* Horizontal line */}
-              <h1>About Us</h1>
+              <h1 className="text-start ml-5">About Us</h1>
             </div>
   
-            <div className="ml-10">
+            <div className="ml-5 text-start">
               <p>
                 We recognise that each business encounters distinct challenges on
                 its path to success. That's precisely why we are here – to offer
@@ -50,8 +50,8 @@ function AboutUs() {
               </p>
             </div>
   
-            <div>
-              <button className="font-serif text-20 mt-3 py-1 px-4 font-extrabold bg-purple-500 rounded-[14px] hover:bg-violet-400 ml-10 ">
+            <div className="text-start ">
+              <button className=" ml-5 font-serif text-20 mt-3 mb-3 py-1 px-4 font-extrabold bg-purple-500 rounded-[14px] hover:bg-violet-400 ">
                 Get in Touch
               </button>
             </div>
@@ -59,9 +59,10 @@ function AboutUs() {
   
           <div className="w-full md: flex justify-center items-center">
             <img
-              src="images/workplace.jpg"
+              src="images/workplace.png"
               alt="workplace"
-              style={{ width: "50%" }}
+              className="md:w-1/4 w-full"
+              
             />
           </div>
         </div>
