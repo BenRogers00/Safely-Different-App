@@ -2,10 +2,13 @@ import { useState } from "react";
 import { BsSun } from "react-icons/bs";
 import { HiOutlineMenu } from "react-icons/hi";
 import { MdClose } from "react-icons/md";
+import { FaMoon } from "react-icons/fa";
+import useDarkMode from "./useDarkMode";
 
 function NavBar(props) {
  // const {Mobile} = props;
   const [openMenu, setOpenMenu] = useState(false);
+  const [isDarkMode, toggleDarkMode] = useDarkMode();
   const handleMenu = () => {
     setOpenMenu(!openMenu);
   };
@@ -24,7 +27,11 @@ function NavBar(props) {
                 />
               </a>
             </div>
-            <BsSun size={"30px"} color="#e9c46a" className="cursor-pointer" />
+            {isDarkMode?
+            (<BsSun size={"30px"} color="#e9c46a" className="cursor-pointer"  onClick={()=>toggleDarkMode()}/>):
+            (<FaMoon size={"30px"} color="#e9c46a" className="cursor-pointer"  onClick={()=>toggleDarkMode()}/>)}
+             
+            
           </div>
       
           <ul className="ml-auto ">            {/* Open menu from set state, if Mobile is from props, if it is mobile and openmueny, close icon is displayed */}
@@ -44,7 +51,7 @@ function NavBar(props) {
               />
             ):(
               <>
-              <div className="flex text-[20px] ">
+              <div className="flex text-[20px] text-black dark:text-slate-100">
               <li className="mx-4 hover:text-purple-500 transition-all font-mono cursor-pointer">Home</li>
               <li className="mx-4 hover:text-purple-500 transition-all font-mono cursor-pointer">Price</li>
               <li className="mx-4 hover:text-purple-500 transition-all font-mono cursor-pointer">Our-Team</li>

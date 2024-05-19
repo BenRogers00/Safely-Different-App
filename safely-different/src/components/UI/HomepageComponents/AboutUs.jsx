@@ -1,11 +1,11 @@
 function AboutUs() {
     return (
       <>
-        <div className="text-gray-300  ">
-          <div className="w-full h-auto">
+        <div className="dark:text-gray-300 text-dark-blue font-semibold md:grid md:grid-cols-8 md:gap-20">
+       
+          <div className="w-full h-auto md:col-start-2 col-span-3">
             <div className="w-full text-[50px] ">
-              <div className="border-t border-gray-400 mb-4"></div>
-              {/* Horizontal line */}
+             
               <h1 className="text-start ml-5">About Us</h1>
             </div>
   
@@ -57,11 +57,11 @@ function AboutUs() {
             </div>
           </div>
   
-          <div className="w-full md: flex justify-center items-center">
+          <div className="w-full md:col-span-3 flex justify-center items-center ">
             <img
               src="images/workplace.png"
               alt="workplace"
-              className="md:w-1/4 w-full"
+              className=" w-full md:w-96"
               
             />
           </div>

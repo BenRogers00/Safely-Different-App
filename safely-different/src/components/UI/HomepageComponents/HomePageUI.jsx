@@ -26,7 +26,7 @@ function HomePageUI() {
    }
   },[windowSize])
   return (
-    <div className="overflow-y-auto overflow-x-hidden h-screen px-4 py-8 bg-gradient-to-b from-purple-700 to bg-purple-900">
+    <div className="overflow-y-auto overflow-x-hidden h-screen px-4 py-8 bg-gradient-to-b dark:from-purple-700 to purple-900 from-slate-200 to bg-slate-400">
       <NavBar Mobile ={isMobile}/> {/* putting props inside mobile */}
       <Slogan/>
       <AboutUs/>

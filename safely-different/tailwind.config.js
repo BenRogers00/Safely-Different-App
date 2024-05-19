@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'selector',
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
@@ -12,6 +13,7 @@ module.exports = {
         "purple-700" : "#5D0096",
         "purple-900" : "#210035",
         "pink-500" : "#AD26FF",
+        "dark-blue" : "#00008B"
       },
 
       fontSize:{
