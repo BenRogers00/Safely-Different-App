@@ -2,10 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-
-
-    .btn-hover{
-        @apply hover:text-purple-500 transition-all cursor-pointer
-    }
-}
