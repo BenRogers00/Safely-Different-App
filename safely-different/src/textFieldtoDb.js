@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import WriteToDatabase from './databaseWriting';
 import WriteButton from './databaseWritingButton';
-import ReadOneDB from './renderOneEntry';
+import ReadOneDB from './readOneEntry';
 import { Editor } from '@tinymce/tinymce-react';
 import { useRef } from 'react';
 
@@ -23,6 +23,7 @@ function TextField() {
   const log = () => {
     if (editorRef.current) {
       console.log(editorRef.current.getContent());
+      document.getElementById('output').innerHTML = editorRef.current.getContent();
     }
   };
 
@@ -34,6 +35,9 @@ function TextField() {
         onChange={handleChange}
         placeholder="input text"
       />
+      <div id = "output">
+
+      </div>
       {/* display value of text field */}
       <p>text field value: {value}</p>
       <WriteButton value={value}/>
