@@ -40,7 +40,7 @@ function TextField() {
       </div>
       {/* display value of text field */}
       <p>text field value: {value}</p>
-      <WriteButton value={value}/>
+      {/*<WriteButton value={value}/>*/}
       <Editor
         apiKey='by46301wfp914l08znnta78iu6169zud0lq4gc8y5whuwwp0'
         onInit={(_evt, editor) => editorRef.current = editor}
