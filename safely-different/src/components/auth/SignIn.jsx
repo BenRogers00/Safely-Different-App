@@ -4,10 +4,12 @@ import React, { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from '../../firebase/firebase';
 import { sendPasswordResetEmail } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
   const auth = getAuth(app);
 
   // Function to handle sign in
@@ -16,6 +18,7 @@ const SignIn = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert('Logged in successfully!');
+      navigate('/');
     } catch (error) {
       alert('Error signing in:', error.message);
     }

@@ -3,12 +3,17 @@ import { BsSun } from "react-icons/bs";
 import { HiOutlineMenu } from "react-icons/hi";
 import { MdClose } from "react-icons/md";
 import { FaMoon } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+// import { useAuth } from "../../AuthDetails";
 import useDarkMode from "./useDarkMode";
+import AuthDetails from "../../AuthDetails";
+
 
 function NavBar(props) {
  // const {Mobile} = props;
   const [openMenu, setOpenMenu] = useState(false);
   const [isDarkMode, toggleDarkMode] = useDarkMode();
+  // const { currentUser } = useAuth();
   const handleMenu = () => {
     setOpenMenu(!openMenu);
   };
@@ -55,7 +60,9 @@ function NavBar(props) {
               <li className="mx-4 hover:text-purple-500 transition-all font-mono cursor-pointer">Home</li>
               <li className="mx-4 hover:text-purple-500 transition-all font-mono cursor-pointer">Price</li>
               <li className="mx-4 hover:text-purple-500 transition-all font-mono cursor-pointer">Our-Team</li>
-              <li className="mx-20 hover:text-purple-500 transition-all font-mono cursor-pointer">Sign-In</li>
+              <Link to="../auth/SignIn">Sign-In</Link>
+
+              {/* <li className="mx-20 hover:text-purple-500 transition-all font-mono cursor-pointer">Sign-In</li> */}
               </div>
               
               </>
@@ -66,11 +73,12 @@ function NavBar(props) {
                 <li className="hover:text-purple-500 transition-all cursor-pointer">Home</li>
                 <li className="hover:text-purple-500 transition-all cursor-pointer">Price</li>
                 <li className="hover:text-purple-500 transition-all cursor-pointer">Our Team</li>
-                <li className="hover:text-purple-500 transition-all cursor-pointer">Sign-In</li>
+                <Link to="../auth/SignIn">Sign-In</Link>
               </div>
             )}
           </ul>
         </nav>
+        <AuthDetails/>
       
     </>
   );
