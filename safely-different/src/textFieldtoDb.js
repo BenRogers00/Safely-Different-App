@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import WriteToDatabase from './databaseWriting';
-import WriteButton from './databaseWritingButton';
 import ReadOneDB from './readOneEntry';
 import { Editor } from '@tinymce/tinymce-react';
 import { useRef } from 'react';
@@ -18,7 +17,7 @@ function TextField() {
     WriteToDatabase({ dataInput: event.target.value, path: "/textField" });
 
   };
-  console.log("Reading from textField:" + ReadOneDB('/textField'))
+  console.log("Reading from textField: " + ReadOneDB('/textField'))
   const editorRef = useRef(null);
   const log = () => {
     if (editorRef.current) {
@@ -31,7 +30,7 @@ function TextField() {
     <div>
       {/* text field input */}
       <textarea
-        defaultValue={ReadOneDB('/textField')}
+        value={ReadOneDB('/textField')}
         onChange={handleChange}
         placeholder="input text"
       />
@@ -62,9 +61,6 @@ function TextField() {
       />
       <button onClick={log}>Log editor content</button>
     </div>
-
-
-
   );
 }
 
