@@ -19,9 +19,7 @@ function ReadOneDB(path) {
     }, [path]);
 
     //simple example of displaying database content
-    return (
-        databaseContent
-    );
+    return databaseContent;
 }
 
 export default ReadOneDB;

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import WriteToDatabase from './databaseWriting';
 import WriteButton from './databaseWritingButton';
-import ReadOneDB from './readOneEntry';
+import ReadOneDB from './renderOneEntry';
+import { database } from './firebase/firebase';
 
 
 function TextField() {
@@ -13,14 +14,15 @@ function TextField() {
     //update value on change
     setValue(event.target.value);
     console.log(value)
-    WriteToDatabase({dataInput: event.target.value}, '/textFieldTest2')
+    WriteToDatabase({dataInput: event.target.value}, 'textField')
   };
+  console.log("Reading from textField:" + ReadOneDB('textField'))
 
   return (
     <div>
       {/* text field input */}
       <textarea
-        defaultValue={ReadOneDB('textFieldTest2')}
+        defaultValue={ReadOneDB('textField')}
         onChange={handleChange}
         placeholder="input text"
       />

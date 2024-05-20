@@ -4,12 +4,14 @@ import React, { useEffect } from 'react';
 import AuthDetails from './components/AuthDetails';
 import UserProfile from './components/profile/UserProfile';
 import ReadOneDB from './renderOneEntry';
+import TextField from './textFieldtoDb';
 
 function App() {
   return (
     <div className="App">
       {/*note that I have reworked SignIn and SignUp slightly, so it is called only if the user is signed in */}
         <AuthDetails />
+        <TextField/>
     </div>
   );
 }
