@@ -140,7 +140,9 @@ function NavBar(props) {
               <li className="mx-2">
                 <Link to="/about">About</Link></li>
               <li className="mx-2">
-                <Link to="/sign-in">Sign-In</Link></li>
+                <Link to="/SignIn">Sign-In</Link></li>
+              <li className="mx-3">
+                <Link to="/SignUp">Sign-Up</Link></li>
               </div>
               
               </>
@@ -159,6 +161,9 @@ function NavBar(props) {
               </li>
               <li>
                 <Link to="/sign-in" onClick={handleMenu}>Sign-In</Link>
+              </li>
+              <li>
+                <Link to="/sign-up" onClick={handleMenu}>Sign-Up</Link>
               </li>
             </div>
           )}

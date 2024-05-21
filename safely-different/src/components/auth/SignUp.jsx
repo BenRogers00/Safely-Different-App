@@ -2,18 +2,26 @@
 
 import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import app from '../../firebase/firebase';  // Ensure path is correct
+import app from '../../firebase/firebase';
 import WriteToDatabase from '../../databaseWriting.js'
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
+
   const auth = getAuth(app);
 
   // Function to handle sign up
   const handleSignUp = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
+
     if(password.toString() === passwordRepeat.toString())
       {
         //debugging
@@ -34,6 +42,7 @@ const SignUp = () => {
           WriteToDatabase({ dataInput: email, path: userPath+'/email' });
           WriteToDatabase({ dataInput: 'free', path: userPath+'/privileges'});
           alert('User created successfully!');
+          navigate('/');
         })
         .catch((error)=>{
           //if fails with real time database, show this error message
@@ -53,33 +62,46 @@ const SignUp = () => {
   }
   };
 
+return (
   // Sign up form
-  return (
-    <div>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSignUp}>
+  <div className="container mx-auto p-4">
+    <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
+    {error && <p className="text-red-500">{error}</p>}
+    {success && <p className="text-green-500">{success}</p>}
+    <form onSubmit={handleSignUp}>
+      <div className="mb-4">
+        <label className="block mb-2">Email</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
+          className="w-full p-2 border border-gray-300 rounded"
         />
+      </div>
+      <div className="mb-4">
+        <label className="block mb-2">Password</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          className="w-full p-2 border border-gray-300 rounded"
         />
+      </div>
+      <div className="mb-4">
+        <label className="block mb-2">Confirm Password</label>
         <input
           type="password"
           value={passwordRepeat}
           onChange={(e) => setPasswordRepeat(e.target.value)}
-          placeholder="Repeat Password"
+          className="w-full p-2 border border-gray-300 rounded"
         />
-        <button type="submit">Sign Up</button>
-      </form>
-    </div>
-  );
+      </div>
+      <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded">
+        Sign Up
+      </button>
+    </form>
+  </div>
+);
 };
 
 export default SignUp;
