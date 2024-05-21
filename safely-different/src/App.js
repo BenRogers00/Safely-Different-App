@@ -8,6 +8,8 @@ import SignUp from './components/auth/SignUp';
 // import SignUp from './components/UI/HomepageComponents/SignUp';
 // import SignIn from './components/UI/HomepageComponents/SingIn';
 
+import AuthDetails from './components/AuthDetails';
+
 function App() {
   return (
     <div className="App">
