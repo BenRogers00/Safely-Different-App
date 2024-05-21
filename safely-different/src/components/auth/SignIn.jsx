@@ -1,8 +1,8 @@
 // This component is used to sign in a user using their email and password.
 
 import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from '../../firebase/firebase';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 
