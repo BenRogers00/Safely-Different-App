@@ -16,13 +16,33 @@ const SignIn = () => {
   // Function to handle sign in
   const handleSignIn = async (e) => {
     e.preventDefault();
+
+    // Clear previous errors
+    setError('');
+
+    // Check if email and password are provided
+    if (!email || !password) {
+      alert('Please enter your email and password to sign in.');
+      return;
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert('Logged in successfully!');
       navigate('/');
     } catch (error) {
-      setError('Please fill in all fields.');
-      // alert('Error signing in:', error.message);
+      // Log the error code and message for debugging
+      console.log('Error code:', error.code);
+      console.log('Error message:', error.message);
+
+      // Handle specific Firebase errors
+      switch (error.code) {
+        case 'auth/invalid-credential':
+          setError('Invalid email or password. Please try again.');
+          break;
+        default:
+          setError('Error signing in. Please try again.');
+      }
     }
   };
 
