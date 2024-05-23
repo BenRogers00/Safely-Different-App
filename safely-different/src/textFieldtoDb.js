@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import WriteToDatabase from './databaseWriting';
 import ReadOneDB from './readOneEntry';
-import { Editor } from '@tinymce/tinymce-react';
-import { useRef } from 'react';
 
 
 function TextField() {
@@ -18,13 +16,6 @@ function TextField() {
 
   };
   console.log("Reading from textField: " + ReadOneDB('/textField'))
-  const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-      document.getElementById('output').innerHTML = editorRef.current.getContent();
-    }
-  };
 
   return (
     <div>
@@ -34,32 +25,10 @@ function TextField() {
         onChange={handleChange}
         placeholder="input text"
       />
-      <div id = "output">
-
-      </div>
       {/* display value of text field */}
       <p>text field value: {value}</p>
       {/*<WriteButton value={value}/>*/}
-      <Editor
-        apiKey='by46301wfp914l08znnta78iu6169zud0lq4gc8y5whuwwp0'
-        onInit={(_evt, editor) => editorRef.current = editor}
-        initialValue={ReadOneDB('/textField')}
-        init={{
-          height: 500,
-          menubar: false,
-          plugins: [
-            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-          ],
-          toolbar: 'undo redo | blocks | ' +
-            'bold italic forecolor | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | help',
-          content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-        }}
-      />
-      <button onClick={log}>Log editor content</button>
+      
     </div>
   );
 }

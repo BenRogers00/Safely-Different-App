@@ -1,8 +1,9 @@
 // This is the App.js file that will be used to render different components.
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import AuthDetails from './components/AuthDetails';
 import TextField from './textFieldtoDb';
+import BlogWriter from './blogWriter';
 
 function App() {
   return (
@@ -10,6 +11,9 @@ function App() {
       {/*note that I have reworked SignIn and SignUp slightly, so it is called only if the user is signed in */}
         <AuthDetails />
         <TextField/>
+        <h1>Blog Writer:</h1>
+        
+        <BlogWriter/>
     </div>
   );
 }
