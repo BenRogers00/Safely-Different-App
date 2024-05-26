@@ -1,21 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { auth } from './firebase/firebase';
+import { auth, database } from '../../firebase/firebase';
 import { onAuthStateChanged } from "firebase/auth";
-import WriteToDatabase from './databaseWriting';
+import WriteToDatabase from '../../databaseWriting';
+import { ref, push, set } from 'firebase/database';
 
 function BlogWriter() {
     const [authUser, setAuthUser] = useState(null);
     const editorRef = useRef(null);
     const [path, setPath] = useState("users/null");
+    const [uid, setUid] = useState(null);
 
     //set the path to save the blog post of the logged in user
     useEffect(() => {
         const listen = onAuthStateChanged(auth, (user) => {
             if (user) {
-                //get user, and user their id to save the blogPost
+                //get user, and use their id to save the blogPost
                 setAuthUser(user);
-                setPath('users/'+user.uid+'/blogPost')
+                setPath('users/'+user.uid+'/blogPost');
+                setUid(user.uid);
             } else {
                 setAuthUser(null);
             }
@@ -28,9 +31,16 @@ function BlogWriter() {
     //when user clicks post button, show the user a preview of their post, and write their blog post to database as HTML
     const post = () => {
         if (editorRef.current) {
-            document.getElementById('blogOutput').innerHTML = '<h2>Your blog post</h2><br>'+editorRef.current.getContent();
+            //document.getElementById('blogOutput').innerHTML = '<h2>Your blog post</h2><br>'+editorRef.current.getContent();
             const dataInput = editorRef.current.getContent() 
             WriteToDatabase({dataInput, path});
+            const postsRef = ref(database, 'posts');
+            const uniquePostRef = push(postsRef);
+            set(uniquePostRef, {
+                body:dataInput,
+                user:uid,
+                postRef: uniquePostRef.toString()
+            })
         }
     };
 
@@ -60,7 +70,7 @@ function BlogWriter() {
                         }}
                     />
                     <button onClick={post}>Post to your blog!</button>
-                    <div id="blogOutput"></div>
+                    {/*<div id="blogOutput"></div>*/}
                 </>
             ) : (
                 <p>Please log in to create a blog post</p>

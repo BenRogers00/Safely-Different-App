@@ -13,8 +13,8 @@ function ReadOneDB(path) {
         onValue(databaseRef, (snapshot) => {
             //make a const for ease of use and reading
             const data = snapshot.val();
-            console.log(path)
-            console.log(data)
+          //  console.log(path)
+          //  console.log(data)
             //update the databaseContent variable
             setDatabaseContent(data);
         });
@@ -24,4 +24,13 @@ function ReadOneDB(path) {
     return databaseContent;
 }
 
+function readOneDBCallback(path, callback) {
+    const databaseRef = ref(database, path);
+    onValue(databaseRef, (snapshot) => {
+        const data = snapshot.val();
+        callback(data);
+    });
+}
+
 export default ReadOneDB;
+export {readOneDBCallback};

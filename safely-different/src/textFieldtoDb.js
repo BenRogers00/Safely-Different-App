@@ -11,11 +11,11 @@ function TextField() {
   const handleChange = (event) => {
     //update value on change
     setValue(event.target.value);
-    console.log(value)
+   // console.log(value)
     WriteToDatabase({ dataInput: event.target.value, path: "/textField" });
 
   };
-  console.log("Reading from textField: " + ReadOneDB('/textField'))
+ // console.log("Reading from textField: " + ReadOneDB('/textField'))
 
   return (
     <div>
