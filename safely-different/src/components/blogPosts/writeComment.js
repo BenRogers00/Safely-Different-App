@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import WriteToDatabase from '../../databaseWriting';
 import { database } from '../../firebase/firebase';
 import { ref, push } from 'firebase/database';
 function CommentTextBox({ path }) {
