@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import WriteToDatabase from './databaseWriting';
-import WriteButton from './databaseWritingButton';
 import ReadOneDB from './readOneEntry';
 
 
@@ -12,21 +11,24 @@ function TextField() {
   const handleChange = (event) => {
     //update value on change
     setValue(event.target.value);
-    console.log(value)
-    WriteToDatabase({dataInput: event.target.value}, '/textFieldTest2')
+   // console.log(value)
+    WriteToDatabase({ dataInput: event.target.value, path: "/textField" });
+
   };
+ // console.log("Reading from textField: " + ReadOneDB('/textField'))
 
   return (
     <div>
       {/* text field input */}
       <textarea
-        defaultValue={ReadOneDB('textFieldTest2')}
+        value={ReadOneDB('/textField')}
         onChange={handleChange}
         placeholder="input text"
       />
       {/* display value of text field */}
       <p>text field value: {value}</p>
-      <WriteButton value={value}/>
+      {/*<WriteButton value={value}/>*/}
+      
     </div>
   );
 }

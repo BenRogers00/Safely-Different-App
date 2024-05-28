@@ -7,7 +7,7 @@ import { database } from './firebase/firebase';
 const WriteToDatabase = async ({ dataInput, path }) => {
   try {
     console.log("Writing called with:", dataInput);
-
+    console.log("Data:", dataInput, "has been added to", path);
     //reference to a specified location in the database
     const databaseRef = ref(database, path);
 
