@@ -1,7 +1,4 @@
 // This is the App.js file that will be used to render different components.
-
-import React from 'react';
-import HomePageUI from './components/UI/HomepageComponents/HomePageUI';
 import React from 'react';
 import AuthDetails from './components/AuthDetails';
 import TextField from './textFieldtoDb';
