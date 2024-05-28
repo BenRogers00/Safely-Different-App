@@ -1,14 +1,13 @@
 // This is the AuthDetails component that will display the user's authentication details and allow them to sign out.
 
+import React, { useEffect, useState, createContext } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import React, { useEffect, useState } from "react";
 import { auth } from "../firebase/firebase";
-import SignIn from "./auth/SignIn";
-import SignUp from "./auth/SignUp";
-import UserProfile from "./profile/UserProfile";
-import { ReturnEmail } from "./UsersDetails";
 
-const AuthDetails = () => {
+export const AuthContext = createContext({ authUser: null, signOut: () => {} });
+
+// Set up the AuthDetails component to listen for changes in the user's authentication state.
+const AuthDetails = ({ children }) => {
   const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
@@ -25,33 +24,22 @@ const AuthDetails = () => {
     };
   }, []);
 
+  // Function to sign out the user
   const userSignOut = () => {
     signOut(auth)
       .then(() => {
-        console.log("sign out successful");
+        console.log("Sign out successful.");
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log("Sign out error: ", error);
+      });
   };
 
+  // Provide the authentication context to the children components
   return (
-    <div>
-      {authUser ? (
-        //if user is signed in, offer sign out button, and show sign in status 
-        <>
-          <p>{`Signed In as ${authUser.email}`}</p>
-          <button onClick={userSignOut}>Sign Out</button>
-          <UserProfile />
-          {console.log(ReturnEmail())}
-        </>
-      ) : (
-        //if user is not signed in, offer sign in / sign up options
-        <>
-        <SignUp/>
-        <SignIn/>
-        <p>Signed Out</p>
-        </>
-      )}
-    </div>
+    <AuthContext.Provider value={{ authUser, userSignOut }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

@@ -1,23 +1,48 @@
 // This component is used to sign in a user using their email and password.
 
 import React, { useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from '../../firebase/firebase';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { sendPasswordResetEmail } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
   const auth = getAuth(app);
 
   // Function to handle sign in
   const handleSignIn = async (e) => {
     e.preventDefault();
+
+    // Clear previous errors
+    setError('');
+
+    // Check if email and password are provided
+    if (!email || !password) {
+      alert('Please enter your email and password to sign in.');
+      return;
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert('Logged in successfully!');
+      navigate('/');
     } catch (error) {
-      alert('Error signing in:', error.message);
+      // Log the error code and message for debugging
+      console.log('Error code:', error.code);
+      console.log('Error message:', error.message);
+
+      // Handle specific Firebase errors
+      switch (error.code) {
+        case 'auth/invalid-credential':
+          setError('Invalid email or password. Please try again.');
+          break;
+        default:
+          setError('Error signing in. Please try again.');
+      }
     }
   };
 
@@ -35,30 +60,66 @@ const SignIn = () => {
     }
   };
 
-  // Sign in form
-  return (
-    <div>
-      <h1>Sign In</h1>
-      <form onSubmit={handleSignIn}>
+//   // Sign in form
+//   return (
+//     <div>
+//       <h1>Sign In</h1>
+//       <form onSubmit={handleSignIn}>
+//         <input
+//           type="email"
+//           value={email}
+//           onChange={(e) => setEmail(e.target.value)}
+//           placeholder="Email"
+//         />
+//         <input
+//           type="password"
+//           value={password}
+//           onChange={(e) => setPassword(e.target.value)}
+//           placeholder="Password"
+//         />
+//         <button type="submit">Sign In</button>
+//         <button onClick={handleResetPassword} style={{ marginTop: '10px' }}>
+//           Forgot Password?
+//       </button>
+//       </form>
+//     </div>
+//   );
+// };
+
+return (
+  <div className="container mx-auto p-4">
+    <h1 className="text-2xl font-bold mb-4">Sign In</h1>
+    {error && <p className="text-red-500">{error}</p>}
+    <form onSubmit={handleSignIn}>
+      <div className="mb-4">
+        <label className="block mb-2">Email</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
+          className="w-full p-2 border border-gray-300 rounded"
         />
+      </div>
+      <div className="mb-4">
+        <label className="block mb-2">Password</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          className="w-full p-2 border border-gray-300 rounded"
         />
-        <button type="submit">Sign In</button>
-        <button onClick={handleResetPassword} style={{ marginTop: '10px' }}>
-          Forgot Password?
+      </div>
+      <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded mr-4">
+        Sign In
       </button>
-      </form>
-    </div>
-  );
-};
+      <button onClick={handleResetPassword} className="px-4 py-2 bg-blue-500 text-white rounded">
+        Forgot Password?
+      </button>
+
+    </form>
+  </div>
+);
+}
+
 
 export default SignIn;
