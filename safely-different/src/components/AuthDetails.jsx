@@ -25,10 +25,12 @@ const AuthDetails = ({ children }) => {
   }, []);
 
   // Function to sign out the user
-  const userSignOut = () => {
+  const userSignOut = (callback) => {
     signOut(auth)
       .then(() => {
         console.log("Sign out successful.");
+        setAuthUser(null);
+        if (callback) callback();
       })
       .catch((error) => {
         console.log("Sign out error: ", error);
