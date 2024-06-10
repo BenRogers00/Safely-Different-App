@@ -18,11 +18,8 @@ function NavBar(props) {
 
   // Function to handle user sign out
   const handleSignOut = () => {
-    userSignOut().then(() => {
+    userSignOut(() => {
       console.log("Logged out successfully");
-      // Additional logout handling if needed
-    }).catch((error) => {
-      console.error("Logout error", error);
     });
   };
 
