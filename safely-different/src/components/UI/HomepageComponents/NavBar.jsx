@@ -74,15 +74,15 @@ function NavBar(props) {
                 <>
                   <li className="mx-2">{authUser.email}</li>
                   <li className="mx-2">
-                    <Link to="/" onClick={handleSignOut}>Log Out</Link>
+                    <Link to="/" onClick={handleSignOut}>Sign Out</Link>
                   </li>
                 </>
               ) : (
                 <>
                 <li className="mx-2">
-                  <Link to="/SignIn">Sign-In</Link></li>
+                  <Link to="/SignIn">Sign In</Link></li>
                 <li className="mx-3">
-                  <Link to="/SignUp">Sign-Up</Link></li>
+                  <Link to="/SignUp">Sign Up</Link></li>
                 </>
               )}
             </div>
@@ -105,16 +105,16 @@ function NavBar(props) {
                   <>
                     <li className="mx-2">{authUser.email}</li>
                     <li className="mx-2">
-                      <Link to="/" onClick={handleSignOut}>Log Out</Link>
+                      <Link to="/" onClick={handleSignOut}>Sign Out</Link>
                     </li>
                   </>
                 ) : (
                   <>
                   <li className="mx-2">
-                    <Link to="/sign-in" onClick={handleMenu}>Sign-In</Link>
+                    <Link to="/sign-in" onClick={handleMenu}>Sign In</Link>
                     </li>
                   <li className="mx-3">
-                    <Link to="/sign-up" onClick={handleMenu}>Sign-Up</Link>
+                    <Link to="/sign-up" onClick={handleMenu}>Sign Up</Link>
                     </li>
 
                   </>
