@@ -60,31 +60,6 @@ const SignIn = () => {
     }
   };
 
-//   // Sign in form
-//   return (
-//     <div>
-//       <h1>Sign In</h1>
-//       <form onSubmit={handleSignIn}>
-//         <input
-//           type="email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//           placeholder="Email"
-//         />
-//         <input
-//           type="password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//           placeholder="Password"
-//         />
-//         <button type="submit">Sign In</button>
-//         <button onClick={handleResetPassword} style={{ marginTop: '10px' }}>
-//           Forgot Password?
-//       </button>
-//       </form>
-//     </div>
-//   );
-// };
 
 return (
   <div className="container mx-auto p-4">
@@ -92,22 +67,23 @@ return (
     {error && <p className="text-red-500">{error}</p>}
     <form onSubmit={handleSignIn}>
       <div className="mb-4">
-        <label className="block mb-2">Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block mb-2">Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded"
-        />
+      <label htmlFor="email" className="block mb-2">Email</label>
+      <input
+        id="email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full p-2 border border-gray-300 rounded"
+      />
+
+      <label htmlFor="password" className="block mb-2">Password</label>
+      <input
+        id="password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="w-full p-2 border border-gray-300 rounded"
+      />
       </div>
       <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded mr-4">
         Sign In
