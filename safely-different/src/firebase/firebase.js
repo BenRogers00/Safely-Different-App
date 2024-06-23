@@ -4,6 +4,8 @@ import '../App.css';
 import { initializeApp } from "firebase/app";
 import {getAuth} from "firebase/auth";
 import { getDatabase } from 'firebase/database';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAdE_nE9Nk2RHU07QVdE582mqpip59Mgx4",
@@ -21,7 +23,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase();
+const firestore = getFirestore(app);
+const storage = getStorage(app);
 
 // Export the app and auth objects
 export default app;
-export { auth, database };
+export { auth, database, firestore, storage };
