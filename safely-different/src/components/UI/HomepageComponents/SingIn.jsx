@@ -18,7 +18,7 @@ function SignIn() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Sign In</h1>
+      <h1 className="text-2xl font-bold mb-4">Signs Ins</h1>
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -44,6 +44,9 @@ function SignIn() {
         </button>
       </form>
     </div>
+   
+
+    
   );
 }
 
