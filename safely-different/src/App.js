@@ -7,7 +7,7 @@ import HomePageUI from './components/UI/HomepageComponents/HomePageUI'
 import AuthDetails from './components/AuthDetails';
 import TextField from './textFieldtoDb';
 import BlogWriter from './components/blogPosts/blogWriter';
-import BlogDisplay from './components/blogPosts/blogPostDisplay.jsx';
+import BlogDisplay from './components/blogPosts/blogPostDisplay';
 
 function App() {
   return (
@@ -21,9 +21,6 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/blogWriter" element={<BlogWriter />} />
             <Route path="/blogPosts" element={<BlogDisplay />} />
-            <Route path="/documents" element={<Documents />} />
-            <Route path="/documents/:id" element={<DocumentDetails />} />
-            <Route path="/add-document" element={<AddDocument />} />
 
 
             </Routes>
