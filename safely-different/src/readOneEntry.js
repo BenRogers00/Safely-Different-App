@@ -13,8 +13,6 @@ function ReadOneDB(path) {
         onValue(databaseRef, (snapshot) => {
             //make a const for ease of use and reading
             const data = snapshot.val();
-          //  console.log(path)
-          //  console.log(data)
             //update the databaseContent variable
             setDatabaseContent(data);
         });
