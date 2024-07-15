@@ -7,7 +7,7 @@ import HomePageUI from './components/UI/HomepageComponents/HomePageUI'
 import AuthDetails from './components/AuthDetails';
 import TextField from './textFieldtoDb';
 import BlogWriter from './components/blogPosts/blogWriter';
-import BlogDisplay from './components/blogPosts/blogPostDisplay';
+import BlogDisplay from './components/blogPosts/blogPostDisplay.jsx';
 
 function App() {
   return (
