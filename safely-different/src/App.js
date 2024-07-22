@@ -10,6 +10,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 // import TextField from './textFieldtoDb';
 import BlogWriter from './components/blogPosts/blogWriter';
 import BlogDisplay from './components/blogPosts/blogPostDisplay.jsx';
+import Payment from './components/payment/Payment';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               <Route path="/blogWriter" element={<ProtectedRoute><BlogWriter /></ProtectedRoute>} />
               <Route path="/blogPosts" element={<ProtectedRoute><BlogDisplay /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>}/>
+              <Route path="/memberPricing" element={<ProtectedRoute><Payment /></ProtectedRoute>}/>
             </Routes>
           </AuthDetails>
         </Router>
