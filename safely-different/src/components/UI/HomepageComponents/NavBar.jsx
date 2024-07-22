@@ -69,7 +69,9 @@ function NavBar(props) {
                 <Link to="/blogPosts">Blog Posts</Link></li>
               {authUser ? (
                 <>
-                  <li className="mx-2">{authUser.email}</li>
+                  <li className="mx-2">
+                    <Link to="/profile">{authUser.email}</Link>
+                  </li>
                   <li className="mx-2">
                     <Link to="/" onClick={handleSignOut}>Sign Out</Link>
                   </li>
@@ -100,7 +102,9 @@ function NavBar(props) {
               </li>
               {authUser ? (
                   <>
-                    <li className="mx-2">{authUser.email}</li>
+                    <li className="mx-2">
+                      <Link to="/profile">{authUser.email}</Link>
+                    </li>
                     <li className="mx-2">
                       <Link to="/" onClick={handleSignOut}>Sign Out</Link>
                     </li>
