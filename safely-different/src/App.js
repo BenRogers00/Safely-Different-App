@@ -5,7 +5,9 @@ import SignUp from './components/auth/SignUp';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePageUI from './components/UI/HomepageComponents/HomePageUI'
 import AuthDetails from './components/AuthDetails';
-import TextField from './textFieldtoDb';
+import UserProfile from './components/profile/UserProfile';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+// import TextField from './textFieldtoDb';
 import BlogWriter from './components/blogPosts/blogWriter';
 import BlogDisplay from './components/blogPosts/blogPostDisplay.jsx';
 
@@ -21,6 +23,14 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/blogWriter" element={<BlogWriter />} />
             <Route path="/blogPosts" element={<BlogDisplay />} />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <UserProfile />
+                </ProtectedRoute>
+              }
+            />
 
 
             </Routes>
