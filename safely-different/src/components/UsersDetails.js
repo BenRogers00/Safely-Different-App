@@ -18,14 +18,19 @@ const getUid = () => {
 );
 } 
 
-//function to return the logged in user's email
-const ReturnEmail = async () => {
-  //get the current user
+// a helper function to get the current user
+const getCurrentUser = () => {
   const user = auth.currentUser;
-  //check user is logged in
   if (!user) {
     throw new Error("No user logged in");
   }
+  return user;
+};
+
+//function to return the logged in user's email
+const ReturnEmail = async () => {
+  //get the current user
+  const user = getCurrentUser();
   //search database for the user's email using their id
   const dataRef = ref(database, 'users/'+user.uid+'/email');
   const snapshot = await get(dataRef);
@@ -36,11 +41,7 @@ const ReturnEmail = async () => {
 
 const ReturnPrivilege = async () => {
   //get the current user
-  const user = auth.currentUser;
-  //check user is logged in
-  if (!user) {
-    throw new Error("No user logged in"); 
-  }
+  const user = getCurrentUser();
   //search database for the user's privilege using their id
   const dataRef = ref(database, 'users/'+user.uid+'/privileges');
   const snapshot = await get(dataRef);
@@ -48,8 +49,18 @@ const ReturnPrivilege = async () => {
   return snapshot.val();
 };
 
+const ReturnName = async () => {
+  //get the current user
+  const user = getCurrentUser();
+  //search database for the user's email using their id
+  const dataRef = ref(database, 'users/'+user.uid+'/displayName');
+  const snapshot = await get(dataRef);
+  //return the value received from the db
+  return snapshot.val();
+}
+
 export default getUid
-export {ReturnEmail, ReturnPrivilege};
+export { ReturnEmail, ReturnPrivilege, ReturnName };
 
 /* 
 to call the return functions use:
