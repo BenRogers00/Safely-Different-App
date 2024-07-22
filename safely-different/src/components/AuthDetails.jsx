@@ -1,10 +1,14 @@
 // This is the AuthDetails component that will display the user's authentication details and allow them to sign out.
 
-import React, { useEffect, useState, createContext } from "react";
+import React, { useEffect, useState, createContext, useContext } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 
 export const AuthContext = createContext({ authUser: null, signOut: () => {} });
+
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
 
 // Set up the AuthDetails component to listen for changes in the user's authentication state.
 const AuthDetails = ({ children }) => {
