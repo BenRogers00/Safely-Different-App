@@ -14,31 +14,27 @@ import BlogDisplay from './components/blogPosts/blogPostDisplay.jsx';
 function App() {
   return (
     <div  style={{backgroundColor:'#282c34'}}>
-    <div className="App">
-       <Router>
-        <AuthDetails>
-          <Routes>
-            <Route path="/" element={<HomePageUI />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/blogWriter" element={<BlogWriter />} />
-            <Route path="/blogPosts" element={<BlogDisplay />} />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <UserProfile />
-                </ProtectedRoute>
-              }
-            />
-
-
+      <div className="App">
+        <Router>
+          <AuthDetails>
+            <Routes>
+              <Route path="/" element={<HomePageUI />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/blogWriter" element={<BlogWriter />} />
+              <Route path="/blogPosts" element={<BlogDisplay />} />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <UserProfile />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
-        </AuthDetails>
-      </Router>
-      
-        
-    </div>
+          </AuthDetails>
+        </Router>
+      </div>
     </div>
   );
 }
