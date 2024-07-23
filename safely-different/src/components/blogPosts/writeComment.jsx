@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { database } from '../../firebase/firebase';
-import { ref, push } from 'firebase/database';
+import { ref, get, push } from 'firebase/database';
+import WriteToDatabase from '../../databaseWriting';
 
 function CommentTextBox({ path }) {
     const [comment, setComment] = useState('');
@@ -11,11 +12,20 @@ function CommentTextBox({ path }) {
 
     const handleSubmit = () => {
         const dataInput = comment.toString();
-        const commentPath = path + "/comments";
-        console.log(commentPath);
-        console.log(`WriteToDatabase({dataInput: ${dataInput}, commentPath: ${commentPath}})`); 
-        const databaseRef = ref(database, commentPath);
-        push(databaseRef, dataInput);
+
+        const lengthCheckBranch = ref(database, path+"/comments");
+        get(lengthCheckBranch).then((snapshot) => {
+            const length = snapshot.size;
+            const commentPath = path + "/comments/"+length;
+            console.log(commentPath);
+            console.log(`WriteToDatabase({dataInput: ${dataInput}, commentPath: ${commentPath}})`); 
+            WriteToDatabase({dataInput, path: commentPath});
+            console.log('Length of the branch:', length);
+          }).catch((error) => {
+            console.error('Error reading data:', error);
+          });
+
+        
 
     };
 
