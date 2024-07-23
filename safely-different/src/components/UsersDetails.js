@@ -35,6 +35,7 @@ const ReturnEmail = async () => {
   const dataRef = ref(database, 'users/'+user.uid+'/email');
   const snapshot = await get(dataRef);
   //return the value received from the db
+  console.log("return email in details"+snapshot.val())
   return snapshot.val();
 };
 
