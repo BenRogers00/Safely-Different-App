@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ReturnEmail, ReturnPrivilege } from '../UsersDetails';
+import { ReturnEmail, ReturnPrivilege, ReturnName, ReturnRegDate, ReturnFollows, ReturnFollowers } from '../UsersDetails';
 import { getAuth, updatePassword } from 'firebase/auth';
 import { useAuth } from '../AuthDetails';
 
@@ -8,9 +8,22 @@ const UserProfile = () => {
   const [email, setEmail] = useState(null);
   const [privilege, setPrivilege] = useState(null);
   const [newPassword, setNewPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [regDate, setRegDate] = useState('');
+  const [follows, setFollows] = useState('');
+  const [followers, setFollowers] = useState('');
   const [message, setMessage] = useState('');
   const { authUser } = useAuth();
   const auth = getAuth();
+  
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-GB', { 
+      day: 'numeric', 
+      month: 'long', 
+      year: 'numeric' 
+    }).format(date);
+  };
 
   //get email ----------------------------------------------------
   useEffect(() => {
@@ -38,7 +51,32 @@ const UserProfile = () => {
             .catch((error) => {
             console.error("Error getting email: ", error);
           });
+
+        ReturnName()
+          .then((displayName) => {
+            console.log("Display Name from Profile: ", displayName);
+            setDisplayName(displayName);
+          });
+
+        ReturnRegDate()
+          .then((regDate) => {
+            console.log("Registration Date from Profile: ", regDate);
+            setRegDate(formatDate(regDate));
+          });
+
+        ReturnFollows()
+          .then((follows) => {
+            console.log("Follows from Profile: ", follows);
+            setFollows(follows);
+          });
+
+          ReturnFollowers()
+          .then((followers) => {
+            console.log("Followers from Profile: ", followers);
+            setFollowers(followers);
+          });
         }
+          
       }, [authUser]);
     //end of get priv --------------------------------------------
 
@@ -59,6 +97,10 @@ const UserProfile = () => {
         <div>
           <p>Email: {email ? email : authUser.email}</p>
           <p>Privilege: {privilege}</p>
+          <p>Display Name: {displayName}</p>
+          <p>Registration Date: {regDate}</p>
+          <p>Follows: {follows}</p>
+          <p>Followers: {followers}</p>
         </div>
       ) : (
         <p>Loading email...</p>

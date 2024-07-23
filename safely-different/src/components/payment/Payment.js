@@ -1,7 +1,7 @@
 // This code simluates a payment processing system that updates a user's privileges in the database.
 
 import React, { useState } from 'react';
-import { getAuth } from 'firebase/auth';
+// import { getAuth } from 'firebase/auth';
 import { ref, set } from 'firebase/database';
 import { database } from '../../firebase/firebase'; // Assuming you have this set up
 import { useAuth } from '../AuthDetails';
@@ -12,7 +12,7 @@ const Payment = () => {
   const [cvv, setCvv] = useState('');
   const [message, setMessage] = useState('');
   const { authUser } = useAuth();
-  const auth = getAuth();
+//   const auth = getAuth();
 
   const handlePayment = async (e) => {
     e.preventDefault();
