@@ -10,6 +10,7 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordRepeat, setPasswordRepeat] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
@@ -30,6 +31,8 @@ const SignUp = () => {
           const userPath = 'users/' + userID;
           WriteToDatabase({ dataInput: email, path: userPath + '/email' });
           WriteToDatabase({ dataInput: 'free', path: userPath + '/privileges' });
+          WriteToDatabase({ dataInput: displayName, path: userPath + '/displayName' });
+          WriteToDatabase({ dataInput: new Date().toISOString(), path: userPath + '/registrationDate' });
           
           await sendEmailVerification(userCredential.user);
           alert('User created successfully! Please verify your email before logging in.');
@@ -76,6 +79,15 @@ return (
           type="password"
           value={passwordRepeat}
           onChange={(e) => setPasswordRepeat(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded"
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block mb-2">Display name</label>
+        <input
+          type="name"
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded"
         />
       </div>
