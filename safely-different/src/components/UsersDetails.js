@@ -59,8 +59,43 @@ const ReturnName = async () => {
   return snapshot.val();
 }
 
+const ReturnRegDate = async () => {
+  //get the current user
+  const user = getCurrentUser();
+  //search database for the user's email using their id
+  const dataRef = ref(database, 'users/'+user.uid+'/registrationDate');
+  const snapshot = await get(dataRef);
+  //return the value received from the db
+  return snapshot.val();
+}
+
+// TODO: Implement ReturnFollows and ReturnFollowers functions so they actually work.
+// These functions are placeholders for now.
+// Users should be able to follow and unfollow other users in blogs
+// Also, add a function to remove followers
+
+const ReturnFollows = async () => {
+  //get the current user
+  const user = getCurrentUser();
+  //search database for the user's email using their id
+  const dataRef = ref(database, 'users/'+user.uid+'/follows');
+  const snapshot = await get(dataRef);
+  //return the value received from the db
+  return snapshot.val();
+}
+
+const ReturnFollowers = async () => {
+  //get the current user
+  const user = getCurrentUser();
+  //search database for the user's email using their id
+  const dataRef = ref(database, 'users/'+user.uid+'/followers');
+  const snapshot = await get(dataRef);
+  //return the value received from the db
+  return snapshot.val();
+}
+
 export default getUid
-export { ReturnEmail, ReturnPrivilege, ReturnName };
+export { ReturnEmail, ReturnPrivilege, ReturnName, ReturnRegDate, ReturnFollows, ReturnFollowers };
 
 /* 
 to call the return functions use:

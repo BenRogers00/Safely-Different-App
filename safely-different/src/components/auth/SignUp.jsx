@@ -32,6 +32,7 @@ const SignUp = () => {
           WriteToDatabase({ dataInput: email, path: userPath + '/email' });
           WriteToDatabase({ dataInput: 'free', path: userPath + '/privileges' });
           WriteToDatabase({ dataInput: displayName, path: userPath + '/displayName' });
+          WriteToDatabase({ dataInput: new Date().toISOString(), path: userPath + '/registrationDate' });
           
           await sendEmailVerification(userCredential.user);
           alert('User created successfully! Please verify your email before logging in.');

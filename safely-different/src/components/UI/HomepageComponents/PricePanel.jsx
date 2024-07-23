@@ -21,9 +21,7 @@ function PricePanel(){
               <h4 className="flex-none text-sm font-semibold leading-6 text-indigo-600">What’s included</h4>
               <div className="h-px flex-auto bg-gray-100" />
             </div>
-            <ul
-              role="list"
-              className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6"
+            <ul className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-gray-600 sm:grid-cols-2 sm:gap-6"
             >
               {includedFeatures.map((feature) => (
                 <li key={feature} className="flex gap-x-3">
