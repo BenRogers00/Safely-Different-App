@@ -3,7 +3,7 @@
 import '../App.css';
 import { initializeApp } from "firebase/app";
 import {getAuth} from "firebase/auth";
-import { getDatabase } from 'firebase/database';
+import { getDatabase, ref } from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAdE_nE9Nk2RHU07QVdE582mqpip59Mgx4",
@@ -24,4 +24,4 @@ const database = getDatabase();
 
 // Export the app and auth objects
 export default app;
-export { auth, database };
+export { auth, database, ref };
