@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Canvas, PatternBrush, Rect, Shadow, PencilBrush, CircleBrush, SprayBrush } from 'fabric';
+import { ref, set } from 'firebase/database';
+import { database } from '../../firebase/firebase';
 
 const DrawingBoard = () => {
     const canvasRef = useRef(null);
@@ -12,6 +14,7 @@ const DrawingBoard = () => {
     const drawingShadowOffsetRef = useRef(null);
     const clearRef = useRef(null);
     const drawingModeSelectorRef = useRef(null);
+    const saveRef = useRef(null);
 
     useEffect(() => {
         const canvas = new Canvas(canvasRef.current, {
@@ -43,8 +46,17 @@ const DrawingBoard = () => {
             }
         };
 
+        const handleSave = () => {
+            const dataURL = canvas.toDataURL('image/png');
+            const drawingRef = ref(database, 'drawings/' + Date.now());
+            set(drawingRef, {
+                image: dataURL
+            });
+        };
+
         clearRef.current.onclick = handleClear;
         drawingModeRef.current.onclick = handleDrawingMode;
+        saveRef.current.onclick = handleSave;
 
         const handleDrawingModeSelectorChange = () => {
             const brushType = drawingModeSelectorRef.current.value;
@@ -239,6 +251,7 @@ const DrawingBoard = () => {
                     </select>
                 </div>
                 <button ref={clearRef}>Clear</button>
+                <button ref={saveRef}>Save</button>
             </div>
         </div>
     );

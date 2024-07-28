@@ -4,12 +4,14 @@ import { auth, database } from '../../firebase/firebase';
 import { onAuthStateChanged } from "firebase/auth";
 import WriteToDatabase from '../../databaseWriting';
 import { ref, push, set } from 'firebase/database';
+import DrawingBoard from '../drawing/DrawingBoard';
 
 function BlogWriter() {
     const [authUser, setAuthUser] = useState(null);
     const editorRef = useRef(null);
     const [path, setPath] = useState("users/null");
     const [uid, setUid] = useState(null);
+    const [showCanvas, setShowCanvas] = useState(false);
 
     //set the path to save the blog post of the logged in user
     useEffect(() => {
@@ -69,6 +71,10 @@ function BlogWriter() {
                             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                         }}
                     />
+                     <button onClick={() => setShowCanvas(!showCanvas)}>
+                        {showCanvas ? "Close the editor" : "Open the editor"}
+                    </button>
+                    {showCanvas && <DrawingBoard />}
                     <button onClick={post}>Post to your blog!</button>
                     {/*<div id="blogOutput"></div>*/}
                 </>
