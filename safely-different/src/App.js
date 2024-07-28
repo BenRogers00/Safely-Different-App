@@ -1,4 +1,3 @@
-// This is the App.js file that will be used to render different components.
 import React from 'react';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
@@ -10,10 +9,11 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import BlogWriter from './components/blogPosts/blogWriter';
 import BlogDisplay from './components/blogPosts/blogPostDisplay.jsx';
 import Payment from './components/payment/Payment';
+import ContactPage from './components/UI/HomepageComponents/ContactPage.jsx'; // Import ContactPage component
 
 function App() {
   return (
-    <div  style={{backgroundColor:'#282c34'}}>
+    <div style={{ backgroundColor: '#282c34' }}>
       <div className="App">
         <Router>
           <AuthDetails>
@@ -23,8 +23,9 @@ function App() {
               <Route path="/signup" element={<SignUp />} />
               <Route path="/blogWriter" element={<ProtectedRoute><BlogWriter /></ProtectedRoute>} />
               <Route path="/blogPosts" element={<ProtectedRoute><BlogDisplay /></ProtectedRoute>} />
-              <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>}/>
-              <Route path="/memberPricing" element={<ProtectedRoute><Payment /></ProtectedRoute>}/>
+              <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
+              <Route path="/memberPricing" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+              <Route path="/contact" element={<ContactPage />} /> {/* Add contact page route */}
             </Routes>
           </AuthDetails>
         </Router>
