@@ -31,6 +31,7 @@ function BlogWriter() {
         };
     }, []);
 
+    //save drawing to the database
     const saveDrawing = async () => {
         if (drawingBoardRef.current) {
             const drawingKey = await drawingBoardRef.current.saveDrawing();
@@ -47,6 +48,7 @@ function BlogWriter() {
             const postsRef = ref(database, 'posts');
             const uniquePostRef = push(postsRef);
 
+            //fields that are saved to the database and their data (field: data)
             await set(uniquePostRef, {
                 body: dataInput,
                 user: uid,
@@ -63,7 +65,7 @@ function BlogWriter() {
             {/*if user is logged in show the style-able text box, otherwise tell user they must log in*/}
             {authUser ? (
                 <>
-                    {/*tinymce text editor logic */}
+                    {/*tinymce text editor API logic */}
                     <Editor
                         apiKey='by46301wfp914l08znnta78iu6169zud0lq4gc8y5whuwwp0'
                         onInit={(_evt, editor) => editorRef.current = editor}
@@ -83,6 +85,7 @@ function BlogWriter() {
                             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                         }}
                     />
+                    {/*button to open drawing area*/}
                     <button onClick={() => setShowCanvas(!showCanvas)}>
                         {showCanvas ? "Close the editor" : "Open the editor"}
                     </button>
