@@ -5,6 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import WriteToDatabase from '../../databaseWriting';
 import { ref, push, set } from 'firebase/database';
 import DrawingBoard from '../drawing/DrawingBoard';
+import NavBar from '../UI/HomepageComponents/NavBar';
 
 function BlogWriter() {
     const [authUser, setAuthUser] = useState(null);
@@ -62,6 +63,7 @@ function BlogWriter() {
 
     return (
         <div>
+            <NavBar Mobile ={false}/> {/* putting props inside mobile */}
             {/*if user is logged in show the style-able text box, otherwise tell user they must log in*/}
             {authUser ? (
                 <>
