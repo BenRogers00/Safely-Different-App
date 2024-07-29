@@ -68,13 +68,19 @@ const UserProfile = () => {
 
         ReturnFollows()
           .then((follows) => {
-            console.log("Follows from Profile: ", follows);
+            if(follows == null)
+            {
+              follows = 0;
+            }
             setFollows(follows);
           });
 
           ReturnFollowers()
           .then((followers) => {
-            console.log("Followers from Profile: ", followers);
+            if(followers == null)
+            {
+              followers = 0;
+            }
             setFollowers(followers);
           });
         }
