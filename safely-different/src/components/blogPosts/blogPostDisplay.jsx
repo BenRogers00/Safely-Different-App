@@ -6,6 +6,7 @@ import CommentTextBox from './writeComment';
 import { readOneDBCallback } from '../../readOneEntry';
 import CommentDisplay from './readAllComments';
 import DrawingComponent from '../drawing/DrawingComponent';
+import NavBar from '../UI/HomepageComponents/NavBar';
 
 
 function BlogDisplay() {
@@ -64,7 +65,7 @@ function BlogDisplay() {
     //display for blog posts
     return (
         <div id="blogDisp">
-            {/*~~~~~~~~ADD NAV BAR HERE~~~~~~~~~~~~~ */}
+            <NavBar Mobile ={false}/> {/* putting props inside mobile */}
             <h1>Blog Display</h1>
             {/*get the posts and map using keys */}
             {posts.map(post => (
