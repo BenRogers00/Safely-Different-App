@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ReturnEmail, ReturnPrivilege, ReturnName, ReturnRegDate, ReturnFollows, ReturnFollowers } from '../UsersDetails';
 import { getAuth, updatePassword } from 'firebase/auth';
 import { useAuth } from '../AuthDetails';
+import NavBar from '../UI/HomepageComponents/NavBar';
+import './profile.css';
 
 const UserProfile = () => {
     //variable that will store email after it is correctly fetched
@@ -91,32 +93,35 @@ const UserProfile = () => {
   };
 
   return (
-    <div id="profile">
-      <h1>Your Profile</h1>
-      {authUser ? (
+    <div>
+      <NavBar Mobile ={false}/> {/* putting props inside mobile */}
+      <div id="profile">
+        <h1>Your Profile</h1>
+        {authUser ? (
+          <div>
+            <p>Email: {email ? email : authUser.email}</p>
+            <p>Privilege: {privilege}</p>
+            <p>Display Name: {displayName}</p>
+            <p>Registration Date: {regDate}</p>
+            <p>Follows: {follows}</p>
+            <p>Followers: {followers}</p>
+          </div>
+        ) : (
+          <p>Loading email...</p>
+        )}
         <div>
-          <p>Email: {email ? email : authUser.email}</p>
-          <p>Privilege: {privilege}</p>
-          <p>Display Name: {displayName}</p>
-          <p>Registration Date: {regDate}</p>
-          <p>Follows: {follows}</p>
-          <p>Followers: {followers}</p>
+          <h2>Update Profile</h2>
+          <div>
+            <label>New Password:</label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <button onClick={handleUpdatePassword}>Update Password</button>
+          </div>
+          {message && <p>{message}</p>}
         </div>
-      ) : (
-        <p>Loading email...</p>
-      )}
-      <div>
-        <h2>Update Profile</h2>
-        <div>
-          <label>New Password:</label>
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-          <button onClick={handleUpdatePassword}>Update Password</button>
-        </div>
-        {message && <p>{message}</p>}
       </div>
     </div>
   );
