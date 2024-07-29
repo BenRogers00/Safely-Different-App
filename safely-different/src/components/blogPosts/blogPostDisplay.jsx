@@ -5,6 +5,8 @@ import { readAllPostsCallback } from './readAllPosts';
 import CommentTextBox from './writeComment';
 import { readOneDBCallback } from '../../readOneEntry';
 import CommentDisplay from './readAllComments';
+import DrawingComponent from '../drawing/DrawingComponent';
+
 
 function BlogDisplay() {
     const [posts, setPosts] = useState([]);
@@ -67,6 +69,9 @@ function BlogDisplay() {
                         </div>
                         <br/>
                         <div dangerouslySetInnerHTML={{ __html: post.body }} style={{ color: 'black', backgroundColor: 'whiteSmoke', maxWidth: '80%', display: 'block', marginLeft: '9%', marginRight: '9%', paddingLeft: '1%', paddingRight: '1%', borderRadius: '10px' }}/>
+                        {post.drawingRef && (
+                            <DrawingComponent drawingRef={post.drawingRef} />
+                        )}
                         <button 
                             onClick={() => toggleCommentBox(post.key)} 
                             style={{backgroundColor:'dodgerblue', marginLeft:'10%', float:'left', borderRadius:'10px', padding:'2px', paddingLeft:'5px', paddingRight:'5px'}}
@@ -78,7 +83,6 @@ function BlogDisplay() {
                     <div id="comments">
                         {openCommentBoxes[post.key] && (
                             <CommentDisplay key={`comment-${post.key}`} postId={post.key} />
-                            
                         )}
                     </div>
                 </div>
