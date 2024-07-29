@@ -9,6 +9,7 @@ import DrawingBoard from '../drawing/DrawingBoard';
 function BlogWriter() {
     const [authUser, setAuthUser] = useState(null);
     const editorRef = useRef(null);
+    const drawingBoardRef = useRef(null);
     const [path, setPath] = useState("users/null");
     const [uid, setUid] = useState(null);
     const [showCanvas, setShowCanvas] = useState(false);
@@ -19,7 +20,7 @@ function BlogWriter() {
             if (user) {
                 //get user, and use their id to save the blogPost
                 setAuthUser(user);
-                setPath('users/'+user.uid+'/blogPost');
+                setPath('users/' + user.uid + '/blogPost');
                 setUid(user.uid);
             } else {
                 setAuthUser(null);
@@ -30,19 +31,30 @@ function BlogWriter() {
         };
     }, []);
 
+    const saveDrawing = async () => {
+        if (drawingBoardRef.current) {
+            const drawingKey = await drawingBoardRef.current.saveDrawing();
+            return drawingKey;
+        }
+        return null;
+    };
+
     //when user clicks post button, show the user a preview of their post, and write their blog post to database as HTML
-    const post = () => {
+    const post = async () => {
+        const drawingKey = await saveDrawing();
         if (editorRef.current) {
-            //document.getElementById('blogOutput').innerHTML = '<h2>Your blog post</h2><br>'+editorRef.current.getContent();
-            const dataInput = editorRef.current.getContent() 
-            WriteToDatabase({dataInput, path});
+            const dataInput = editorRef.current.getContent();
             const postsRef = ref(database, 'posts');
             const uniquePostRef = push(postsRef);
-            set(uniquePostRef, {
-                body:dataInput,
-                user:uid,
-                postRef: uniquePostRef.toString()
-            })
+
+            await set(uniquePostRef, {
+                body: dataInput,
+                user: uid,
+                postRef: uniquePostRef.toString(),
+                drawingRef: drawingKey || null
+            });
+
+            WriteToDatabase({ dataInput, path });
         }
     };
 
@@ -71,12 +83,11 @@ function BlogWriter() {
                             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                         }}
                     />
-                     <button onClick={() => setShowCanvas(!showCanvas)}>
+                    <button onClick={() => setShowCanvas(!showCanvas)}>
                         {showCanvas ? "Close the editor" : "Open the editor"}
                     </button>
-                    {showCanvas && <DrawingBoard />}
+                    {showCanvas && <DrawingBoard ref={drawingBoardRef} />}
                     <button onClick={post}>Post to your blog!</button>
-                    {/*<div id="blogOutput"></div>*/}
                 </>
             ) : (
                 <p>Please log in to create a blog post</p>

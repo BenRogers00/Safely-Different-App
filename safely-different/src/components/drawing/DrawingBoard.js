@@ -1,9 +1,12 @@
-import React, { useRef, useEffect } from 'react';
-import { Canvas, PatternBrush, Rect, Shadow, PencilBrush, CircleBrush, SprayBrush } from 'fabric';
-import { ref, set } from 'firebase/database';
-import { database } from '../../firebase/firebase';
+// The code below is the DrawingBoard.js file that contains the DrawingBoard React component.
+// This component allows users to draw on a canvas and save the drawing to the Firebase Realtime Database.
+// The saveDrawing method is exposed using the drawingRef prop to allow saving the drawing from outside the component.
 
-const DrawingBoard = () => {
+import React, { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react';
+import { Canvas, PatternBrush, Rect, Shadow, PencilBrush, CircleBrush, SprayBrush } from 'fabric';
+import { getDatabase, ref, set } from 'firebase/database';
+
+const DrawingBoard = forwardRef((props, drawingRef) => {
     const canvasRef = useRef(null);
     const drawingModeRef = useRef(null);
     const drawingOptionsRef = useRef(null);
@@ -16,202 +19,211 @@ const DrawingBoard = () => {
     const drawingModeSelectorRef = useRef(null);
     const saveRef = useRef(null);
 
+
+    // Save the drawing to the Firebase Realtime Database
+    const handleSave = useCallback(async () => {
+        const canvas = canvasRef.current;
+        const dataURL = canvas.toDataURL('image/png');
+        const drawingRef = ref(getDatabase(), 'drawings/' + Date.now());
+        await set(drawingRef, {
+            image: dataURL
+        });
+        return drawingRef.toString();
+    }, [canvasRef]);
+
+
+    useImperativeHandle(drawingRef, () => ({
+        saveDrawing: handleSave
+    }));
+
+    // Initialize the canvas and drawing tools
     useEffect(() => {
-        const canvas = new Canvas(canvasRef.current, {
-            isDrawingMode: true
-        });
+        let canvas;
 
-        // Initialize the default brush
-        canvas.freeDrawingBrush = new PencilBrush(canvas);
-        canvas.freeDrawingBrush.color = '#000000';
-        canvas.freeDrawingBrush.width = 1;
-        canvas.freeDrawingBrush.shadow = new Shadow({
-            blur: 0,
-            offsetX: 0,
-            offsetY: 0,
-            affectStroke: true,
-            color: '#000000',
-        });
-
-        const handleClear = () => canvas.clear();
-
-        const handleDrawingMode = () => {
-            canvas.isDrawingMode = !canvas.isDrawingMode;
-            if (canvas.isDrawingMode) {
-                drawingModeRef.current.innerHTML = 'Cancel drawing mode';
-                drawingOptionsRef.current.style.display = '';
-            } else {
-                drawingModeRef.current.innerHTML = 'Enter drawing mode';
-                drawingOptionsRef.current.style.display = 'none';
-            }
-        };
-
-        const handleSave = () => {
-            const dataURL = canvas.toDataURL('image/png');
-            const drawingRef = ref(database, 'drawings/' + Date.now());
-            set(drawingRef, {
-                image: dataURL
+        const initializeCanvas = () => {
+            canvas = new Canvas(canvasRef.current, {
+                isDrawingMode: true
             });
-        };
 
-        clearRef.current.onclick = handleClear;
-        drawingModeRef.current.onclick = handleDrawingMode;
-        saveRef.current.onclick = handleSave;
+            canvas.freeDrawingBrush = new PencilBrush(canvas);
+            canvas.freeDrawingBrush.color = '#000000';
+            canvas.freeDrawingBrush.width = 1;
+            canvas.freeDrawingBrush.shadow = new Shadow({
+                blur: 0,
+                offsetX: 0,
+                offsetY: 0,
+                affectStroke: true,
+                color: '#000000',
+            });
 
-        const handleDrawingModeSelectorChange = () => {
-            const brushType = drawingModeSelectorRef.current.value;
-            let brush;
-
-            switch (brushType) {
-                case 'hline':
-                    brush = new PatternBrush(canvas);
-                    brush.getPatternSrc = function () {
-                        const patternCanvas = document.createElement('canvas');
-                        patternCanvas.width = patternCanvas.height = 10;
-                        const ctx = patternCanvas.getContext('2d');
-                        ctx.strokeStyle = this.color;
-                        ctx.lineWidth = 5;
-                        ctx.beginPath();
-                        ctx.moveTo(0, 5);
-                        ctx.lineTo(10, 5);
-                        ctx.closePath();
-                        ctx.stroke();
-                        return patternCanvas;
-                    };
-                    break;
-                case 'vline':
-                    brush = new PatternBrush(canvas);
-                    brush.getPatternSrc = function () {
-                        const patternCanvas = document.createElement('canvas');
-                        patternCanvas.width = patternCanvas.height = 10;
-                        const ctx = patternCanvas.getContext('2d');
-                        ctx.strokeStyle = this.color;
-                        ctx.lineWidth = 5;
-                        ctx.beginPath();
-                        ctx.moveTo(5, 0);
-                        ctx.lineTo(5, 10);
-                        ctx.closePath();
-                        ctx.stroke();
-                        return patternCanvas;
-                    };
-                    break;
-                case 'square':
-                    brush = new PatternBrush(canvas);
-                    brush.getPatternSrc = function () {
-                        const squareWidth = 10, squareDistance = 2;
-                        const patternCanvas = document.createElement('canvas');
-                        patternCanvas.width = patternCanvas.height = squareWidth + squareDistance;
-                        const ctx = patternCanvas.getContext('2d');
-                        ctx.fillStyle = this.color;
-                        ctx.fillRect(0, 0, squareWidth, squareWidth);
-                        return patternCanvas;
-                    };
-                    break;
-                case 'diamond':
-                    brush = new PatternBrush(canvas);
-                    brush.getPatternSrc = function () {
-                        const squareWidth = 10, squareDistance = 5;
-                        const patternCanvas = document.createElement('canvas');
-                        const rect = new Rect({
-                            width: squareWidth,
-                            height: squareWidth,
-                            angle: 45,
-                            fill: this.color
-                        });
-                        const canvasWidth = rect.getBoundingRect().width;
-                        patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
-                        rect.set({ left: canvasWidth / 2, top: canvasWidth / 2 });
-                        const ctx = patternCanvas.getContext('2d');
-                        rect.render(ctx);
-                        return patternCanvas;
-                    };
-                    break;
-                case 'texture':
-                    brush = new PatternBrush(canvas);
-                    const img = new Image();
-                    img.src = '../assets/honey_im_subtle.png';
-                    brush.source = img;
-                    break;
-                case 'Pencil':
-                    brush = new PencilBrush(canvas);
-                    break;
-                case 'Circle':
-                    brush = new CircleBrush(canvas);
-                    break;
-                case 'Spray':
-                    brush = new SprayBrush(canvas);
-                    break;
-                default:
-                    brush = new PencilBrush(canvas);
-                    break;
-            }
-
-            if (brush) {
-                canvas.freeDrawingBrush = brush;
-                brush.color = drawingColorRef.current.value;
-                brush.width = parseInt(drawingLineWidthRef.current.value, 10) || 1;
-                brush.shadow = new Shadow({
-                    blur: parseInt(drawingShadowWidthRef.current.value, 10) || 0,
-                    offsetX: 0,
-                    offsetY: 0,
-                    affectStroke: true,
-                    color: drawingShadowColorRef.current.value,
-                });
-
-                if (brush.getPatternSrc) {
-                    brush.source = brush.getPatternSrc.call(brush);
+            clearRef.current.onclick = () => canvas.clear();
+            drawingModeRef.current.onclick = () => {
+                canvas.isDrawingMode = !canvas.isDrawingMode;
+                if (canvas.isDrawingMode) {
+                    drawingModeRef.current.innerHTML = 'Cancel drawing mode';
+                    drawingOptionsRef.current.style.display = '';
+                } else {
+                    drawingModeRef.current.innerHTML = 'Enter drawing mode';
+                    drawingOptionsRef.current.style.display = 'none';
                 }
-            }
-        };
+            };
+            saveRef.current.onclick = handleSave;
 
-        drawingModeSelectorRef.current.onchange = handleDrawingModeSelectorChange;
+            drawingModeSelectorRef.current.onchange = () => {
+                const brushType = drawingModeSelectorRef.current.value;
+                let brush;
 
-        drawingColorRef.current.onchange = function () {
-            const brush = canvas.freeDrawingBrush;
-            if (brush) {
-                brush.color = this.value;
-                if (brush.getPatternSrc) {
-                    brush.source = brush.getPatternSrc.call(brush);
+                switch (brushType) {
+                    case 'hline':
+                        brush = new PatternBrush(canvas);
+                        brush.getPatternSrc = function () {
+                            const patternCanvas = document.createElement('canvas');
+                            patternCanvas.width = patternCanvas.height = 10;
+                            const ctx = patternCanvas.getContext('2d');
+                            ctx.strokeStyle = this.color;
+                            ctx.lineWidth = 5;
+                            ctx.beginPath();
+                            ctx.moveTo(0, 5);
+                            ctx.lineTo(10, 5);
+                            ctx.closePath();
+                            ctx.stroke();
+                            return patternCanvas;
+                        };
+                        break;
+                    case 'vline':
+                        brush = new PatternBrush(canvas);
+                        brush.getPatternSrc = function () {
+                            const patternCanvas = document.createElement('canvas');
+                            patternCanvas.width = patternCanvas.height = 10;
+                            const ctx = patternCanvas.getContext('2d');
+                            ctx.strokeStyle = this.color;
+                            ctx.lineWidth = 5;
+                            ctx.beginPath();
+                            ctx.moveTo(5, 0);
+                            ctx.lineTo(5, 10);
+                            ctx.closePath();
+                            ctx.stroke();
+                            return patternCanvas;
+                        };
+                        break;
+                    case 'square':
+                        brush = new PatternBrush(canvas);
+                        brush.getPatternSrc = function () {
+                            const squareWidth = 10, squareDistance = 2;
+                            const patternCanvas = document.createElement('canvas');
+                            patternCanvas.width = patternCanvas.height = squareWidth + squareDistance;
+                            const ctx = patternCanvas.getContext('2d');
+                            ctx.fillStyle = this.color;
+                            ctx.fillRect(0, 0, squareWidth, squareWidth);
+                            return patternCanvas;
+                        };
+                        break;
+                    case 'diamond':
+                        brush = new PatternBrush(canvas);
+                        brush.getPatternSrc = function () {
+                            const squareWidth = 10, squareDistance = 5;
+                            const patternCanvas = document.createElement('canvas');
+                            const rect = new Rect({
+                                width: squareWidth,
+                                height: squareWidth,
+                                angle: 45,
+                                fill: this.color
+                            });
+                            const canvasWidth = rect.getBoundingRect().width;
+                            patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
+                            rect.set({ left: canvasWidth / 2, top: canvasWidth / 2 });
+                            const ctx = patternCanvas.getContext('2d');
+                            rect.render(ctx);
+                            return patternCanvas;
+                        };
+                        break;
+                    case 'texture':
+                        brush = new PatternBrush(canvas);
+                        const img = new Image();
+                        img.src = '../assets/honey_im_subtle.png';
+                        brush.source = img;
+                        break;
+                    case 'Pencil':
+                        brush = new PencilBrush(canvas);
+                        break;
+                    case 'Circle':
+                        brush = new CircleBrush(canvas);
+                        break;
+                    case 'Spray':
+                        brush = new SprayBrush(canvas);
+                        break;
+                    default:
+                        brush = new PencilBrush(canvas);
+                        break;
                 }
-            }
+
+                if (brush) {
+                    canvas.freeDrawingBrush = brush;
+                    brush.color = drawingColorRef.current.value;
+                    brush.width = parseInt(drawingLineWidthRef.current.value, 10) || 1;
+                    brush.shadow = new Shadow({
+                        blur: parseInt(drawingShadowWidthRef.current.value, 10) || 0,
+                        offsetX: 0,
+                        offsetY: 0,
+                        affectStroke: true,
+                        color: drawingShadowColorRef.current.value,
+                    });
+
+                    if (brush.getPatternSrc) {
+                        brush.source = brush.getPatternSrc.call(brush);
+                    }
+                }
+            };
+
+            drawingColorRef.current.onchange = function () {
+                const brush = canvas.freeDrawingBrush;
+                if (brush) {
+                    brush.color = this.value;
+                    if (brush.getPatternSrc) {
+                        brush.source = brush.getPatternSrc.call(brush);
+                    }
+                }
+            };
+
+            drawingShadowColorRef.current.onchange = function () {
+                const brush = canvas.freeDrawingBrush;
+                if (brush && brush.shadow) {
+                    brush.shadow.color = this.value;
+                }
+            };
+
+            drawingLineWidthRef.current.onchange = function () {
+                const brush = canvas.freeDrawingBrush;
+                if (brush) {
+                    brush.width = parseInt(this.value, 10) || 1;
+                    this.previousSibling.innerHTML = this.value;
+                }
+            };
+
+            drawingShadowWidthRef.current.onchange = function () {
+                const brush = canvas.freeDrawingBrush;
+                if (brush && brush.shadow) {
+                    brush.shadow.blur = parseInt(this.value, 10) || 0;
+                    this.previousSibling.innerHTML = this.value;
+                }
+            };
+
+            drawingShadowOffsetRef.current.onchange = function () {
+                const brush = canvas.freeDrawingBrush;
+                if (brush && brush.shadow) {
+                    brush.shadow.offsetX = parseInt(this.value, 10) || 0;
+                    brush.shadow.offsetY = parseInt(this.value, 10) || 0;
+                    this.previousSibling.innerHTML = this.value;
+                }
+            };
         };
 
-        drawingShadowColorRef.current.onchange = function () {
-            const brush = canvas.freeDrawingBrush;
-            if (brush && brush.shadow) {
-                brush.shadow.color = this.value;
-            }
-        };
-
-        drawingLineWidthRef.current.onchange = function () {
-            const brush = canvas.freeDrawingBrush;
-            if (brush) {
-                brush.width = parseInt(this.value, 10) || 1;
-                this.previousSibling.innerHTML = this.value;
-            }
-        };
-
-        drawingShadowWidthRef.current.onchange = function () {
-            const brush = canvas.freeDrawingBrush;
-            if (brush && brush.shadow) {
-                brush.shadow.blur = parseInt(this.value, 10) || 0;
-                this.previousSibling.innerHTML = this.value;
-            }
-        };
-
-        drawingShadowOffsetRef.current.onchange = function () {
-            const brush = canvas.freeDrawingBrush;
-            if (brush && brush.shadow) {
-                brush.shadow.offsetX = parseInt(this.value, 10) || 0;
-                brush.shadow.offsetY = parseInt(this.value, 10) || 0;
-                this.previousSibling.innerHTML = this.value;
-            }
-        };
+        initializeCanvas();
 
         return () => {
             canvas.dispose();
         };
-    }, []);
+    }, [handleSave]);
 
     return (
         <div>
@@ -255,6 +267,6 @@ const DrawingBoard = () => {
             </div>
         </div>
     );
-};
+});
 
 export default DrawingBoard;
