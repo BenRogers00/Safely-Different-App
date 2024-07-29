@@ -116,9 +116,9 @@ const UserProfile = () => {
           <p>Loading email...</p>
         )}
         <div>
-          <h2>Update Profile</h2>
+          <h2 style={{color:'black'}}>Update Profile</h2>
           <div>
-            <label>New Password:</label>
+            <label style={{color:'black'}}>New Password:</label>
             <input
               type="password"
               value={newPassword}
