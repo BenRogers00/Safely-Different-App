@@ -76,17 +76,17 @@ function BlogDisplay() {
                 <div key={post.key}>
                     <div id='blogPost'>
                         {/* Display user's name to attribute to their post */}
-                        <div id="userInfo">
+                        <div id="userInfo" style={{padding:'10px'}}>
                             <p>User: {userNames[post.user]}</p>
                         </div>
                         {/* Display the post's body text using the HTML it is saved as */}
-                        <div dangerouslySetInnerHTML={{ __html: post.body }} />
+                        <div dangerouslySetInnerHTML={{ __html: post.body }} style={{padding:'10px'}}/>
                         {post.drawingRef && (
                             // Use the drawing functionality
                             <DrawingComponent drawingRef={post.drawingRef} />
                         )}
                         {/* Button to display the comment text box or hide it */}
-                        <button onClick={() => toggleCommentBox(post.key)}>Show Comments</button>
+                        <button onClick={() => toggleCommentBox(post.key)}>Show Comments</button><br/>
                         {openCommentBoxes[post.key] && (
                             // Use the stripped path from function to get a clean path that can be referenced to in the database  
                             <CommentTextBox path={getStrippedPath(post.postRef)} />

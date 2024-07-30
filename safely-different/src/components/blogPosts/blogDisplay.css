@@ -49,7 +49,6 @@
     background-color: #f9f9f9;
     max-width: 100%;
     margin: 10px 0;
-    padding: 15px;
     border-radius: 8px;
     line-height: 1.6;
     font-size: 1rem;
@@ -61,26 +60,38 @@
     background-color: #007bff;
     color: #ffffff;
     border: none;
-    border-radius: 5px;
+    border-radius: 5px 5px 0px 0px;
     padding: 8px 12px;
     cursor: pointer;
     font-size: 0.9rem;
     transition: background-color 0.3s ease;
-    position: absolute;
-    bottom: 15px;
-    left: 15px;
+    position: relative;
+    float: left;
   }
   
+  #postComment  {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 0px 0px 5px 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    position: relative;
+    float: left;
+  }
+
   button:hover {
     background-color: #0056b3;
   }
   
   /* Styling for comment sections */
-  #comments {
+  #commentTextArea {
     margin-top: 10px;
     padding: 10px;
     background-color: #f1f1f1;
-    border-radius: 8px;
+    border-radius: 0px 8px 8px 0px;
   }
   
   /* Media queries for responsiveness */
