@@ -4,6 +4,7 @@ import { ref, get } from 'firebase/database';
 import WriteToDatabase from '../../databaseWriting';
 import { ReturnEmail } from '../UsersDetails';
 
+
 function CommentTextBox({ path }) {
     //set variables for email and comment data
     const [userEmail, setUserEmail] = useState('');

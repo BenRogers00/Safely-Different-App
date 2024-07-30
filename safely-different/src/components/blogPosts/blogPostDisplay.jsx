@@ -7,11 +7,12 @@ import { readOneDBCallback } from '../../readOneEntry';
 import CommentDisplay from './readAllComments';
 import DrawingComponent from '../drawing/DrawingComponent';
 import NavBar from '../UI/HomepageComponents/NavBar';
+import { ReturnName } from '../UsersDetails';
 import './blogDisplay.css'; 
 
 function BlogDisplay() {
     const [posts, setPosts] = useState([]);
-    const [userEmails, setUserEmails] = useState({});
+    const [userNames, setuserNames] = useState({});
     const [openCommentBoxes, setOpenCommentBoxes] = useState({});
 
     useEffect(() => {
@@ -27,22 +28,22 @@ function BlogDisplay() {
         };
     }, []);
 
-    // Get user's email from their post
+    // Get user's name from their post
     useEffect(() => {
-        const fetchUserEmails = () => {
-            const emails = {};
+        const fetchuserNames = () => {
+            const names = {};
             posts.forEach(post => {
-                // Use callback function to get a user's email to use later
-                readOneDBCallback(`users/${post.user}/email`, (email) => {
-                    emails[post.user] = email;
-                    setUserEmails(prevEmails => ({ ...prevEmails, [post.user]: email }));
+                // Use callback function to get a user's name to use later
+                readOneDBCallback(`users/${post.user}/displayName`, (name) => {
+                    names[post.user] = name;
+                    setuserNames(prevnames => ({ ...prevnames, [post.user]: name }));
                 });
             });
         };
 
-        // If there are posts, get the emails from the posts
+        // If there are posts, get the names from the posts
         if (posts.length > 0) {
-            fetchUserEmails();
+            fetchuserNames();
         }
     }, [posts]);
 
@@ -68,15 +69,15 @@ function BlogDisplay() {
             <NavBar Mobile={false} /> {/* putting props inside mobile */}
 
         <div id="blogDisp">
-                        <h1>Blog Display</h1>
+            <h1>Blog Display</h1>
             {/* Get the posts and map using keys */}
             {posts.map(post => (
                 // Add some styling for the posts and display them
                 <div key={post.key}>
                     <div id='blogPost'>
-                        {/* Display user's email to attribute to their post */}
+                        {/* Display user's name to attribute to their post */}
                         <div id="userInfo">
-                            <p>User: {userEmails[post.user]}</p>
+                            <p>User: {userNames[post.user]}</p>
                         </div>
                         {/* Display the post's body text using the HTML it is saved as */}
                         <div dangerouslySetInnerHTML={{ __html: post.body }} />
