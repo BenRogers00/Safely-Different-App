@@ -11,6 +11,7 @@ import BlogWriter from './components/blogPosts/blogWriter';
 import BlogDisplay from './components/blogPosts/blogPostDisplay.jsx';
 import Payment from './components/payment/Payment';
 import DrawingBoard from './components/drawing/DrawingBoard';
+import MyEditor from './components/blogPosts/MyEditor';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
               <Route path="/blogPosts" element={<ProtectedRoute><BlogDisplay /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>}/>
               <Route path="/memberPricing" element={<ProtectedRoute><Payment /></ProtectedRoute>}/>
+              <Route path="/MyEditor" element={<ProtectedRoute><MyEditor /></ProtectedRoute>}/>
 
             </Routes>
           </AuthDetails>
