@@ -7,6 +7,9 @@ const Purchase = () => {
     return (
         <div>
             <h1>PayPal Mock</h1>
+
+            {/*add descriptive section here */}
+
             {checkout ? (
                 <PayPal />
             ) : (
