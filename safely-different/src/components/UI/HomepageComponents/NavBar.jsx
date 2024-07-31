@@ -66,6 +66,8 @@ function NavBar(props) {
               <li className="mx-2">
                 <Link to="/blogWriter">Make Post</Link></li>
               <li className="mx-2">
+              <Link to="/MyEditor">Test Text Editor</Link></li>
+              <li className="mx-2">
                 <Link to="/blogPosts">View Posts</Link></li>
               {authUser ? (
                 <>
