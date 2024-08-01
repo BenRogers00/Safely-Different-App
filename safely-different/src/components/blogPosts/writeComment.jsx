@@ -4,6 +4,7 @@ import { ref, get } from 'firebase/database';
 import WriteToDatabase from '../../databaseWriting';
 import { ReturnEmail } from '../UsersDetails';
 
+
 function CommentTextBox({ path }) {
     //set variables for email and comment data
     const [userEmail, setUserEmail] = useState('');
@@ -43,7 +44,8 @@ function CommentTextBox({ path }) {
 
     return (
         //style and display the comment text area
-        <div style={{color:'black'}}>
+        <div>
+        <div style={{color:'black'}} id='commentTextArea'>
             <br/>
             <input
                 type="textarea"
@@ -53,8 +55,9 @@ function CommentTextBox({ path }) {
                 style={{float:"left", marginLeft:'10%', padding:'5px'}}
             />
             <br/><br/>
+            </div>
             {/*button to submit the comment */}
-            <button onClick={handleSubmit} style={{backgroundColor: 'white'}}
+            <button id="postComment"onClick={handleSubmit}
             >Post Comment</button>
         </div>
     );
