@@ -7,7 +7,6 @@ import { readOneDBCallback } from '../../readOneEntry';
 import CommentDisplay from './readAllComments';
 import DrawingComponent from '../drawing/DrawingComponent';
 import NavBar from '../UI/HomepageComponents/NavBar';
-import { ReturnName } from '../UsersDetails';
 import './blogDisplay.css'; 
 
 function BlogDisplay() {
