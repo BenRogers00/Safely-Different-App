@@ -12,6 +12,7 @@ import BlogDisplay from './components/blogPosts/blogPostDisplay.jsx';
 import Payment from './components/payment/Payment';
 import DrawingBoard from './components/drawing/DrawingBoard';
 import MyEditor from './components/blogPosts/MyEditor';
+import PayPal from './components/payment/purchase.js';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/" element={<HomePageUI />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
+              <Route path="/price" element={<PayPal/>} />
               <Route path="/drawing" element={<ProtectedRoute><DrawingBoard /></ProtectedRoute>} />
               <Route path="/blogWriter" element={<ProtectedRoute><BlogWriter /></ProtectedRoute>} />
               <Route path="/blogPosts" element={<ProtectedRoute><BlogDisplay /></ProtectedRoute>} />
