@@ -6,6 +6,8 @@ import WriteToDatabase from '../../databaseWriting';
 import { ref, push, set } from 'firebase/database';
 import DrawingBoard from '../drawing/DrawingBoard';
 import NavBar from '../UI/HomepageComponents/NavBar';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import the styles
 
 function BlogWriter() {
     const [authUser, setAuthUser] = useState(null);
@@ -14,6 +16,7 @@ function BlogWriter() {
     const [path, setPath] = useState("users/null");
     const [uid, setUid] = useState(null);
     const [showCanvas, setShowCanvas] = useState(false);
+    const [value, setValue] = useState('');
 
     //set the path to save the blog post of the logged in user
     useEffect(() => {
@@ -44,8 +47,8 @@ function BlogWriter() {
     //when user clicks post button, show the user a preview of their post, and write their blog post to database as HTML
     const post = async () => {
         const drawingKey = await saveDrawing();
-        if (editorRef.current) {
-            const dataInput = editorRef.current.getContent();
+        if (value) {
+            const dataInput = value;
             const postsRef = ref(database, 'posts');
             const uniquePostRef = push(postsRef);
 
@@ -58,7 +61,32 @@ function BlogWriter() {
             });
 
             WriteToDatabase({ dataInput, path });
+            console.log('datainput:' + dataInput + ' path: ' + path)
         }
+    };
+
+    // Modules and formats should be defined inside the component or outside it
+    const modules = {
+        toolbar: [
+        [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+        [{ 'size': [] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+        ['link', 'image', 'video'],
+        ['clean'] // removes formatting button
+        ],
+    };
+
+    const formats = [
+        'header', 'font', 'size',
+        'bold', 'italic', 'underline', 'strike', 'blockquote',
+        'list', 'bullet', 'indent',
+        'link', 'image', 'video'
+    ];
+
+    const handleEditorChange = (content) => {
+        setValue(content);
+        console.log('Editor content:', content); // This will print the content to the console for debugging
     };
 
     return (
@@ -67,7 +95,35 @@ function BlogWriter() {
             {/*if user is logged in show the style-able text box, otherwise tell user they must log in*/}
             {authUser ? (
                 <>
-                    {/*tinymce text editor API logic */}
+                    <br/>
+                    <ReactQuill 
+                        theme="snow" 
+                        value={value} 
+                        onChange={handleEditorChange} 
+                        modules={modules} 
+                        formats={formats}
+                    />
+
+                    {/*button to open drawing area*/}
+                    <button onClick={() => setShowCanvas(!showCanvas)}>
+                        {showCanvas ? "Close the editor" : "Open the editor"}
+                    </button>
+
+                    {showCanvas && <DrawingBoard ref={drawingBoardRef} />}
+                    
+                    <button onClick={post}>Post to your blog!</button>
+                </>
+            ) : (
+                <p>Please log in to create a blog post</p>
+            )}
+        </div>
+    );
+}
+
+export default BlogWriter;
+
+{/* REDUNDANT EDITOR AS BACKUP
+                    {/*tinymce text editor API logic /}
                     <Editor
                         apiKey='by46301wfp914l08znnta78iu6169zud0lq4gc8y5whuwwp0'
                         onInit={(_evt, editor) => editorRef.current = editor}
@@ -87,18 +143,5 @@ function BlogWriter() {
                             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                         }}
                     />
-                    {/*button to open drawing area*/}
-                    <button onClick={() => setShowCanvas(!showCanvas)}>
-                        {showCanvas ? "Close the editor" : "Open the editor"}
-                    </button>
-                    {showCanvas && <DrawingBoard ref={drawingBoardRef} />}
-                    <button onClick={post}>Post to your blog!</button>
-                </>
-            ) : (
-                <p>Please log in to create a blog post</p>
-            )}
-        </div>
-    );
-}
-
-export default BlogWriter;
+*/}
+                
