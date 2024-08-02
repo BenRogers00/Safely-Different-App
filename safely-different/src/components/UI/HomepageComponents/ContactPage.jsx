@@ -1,7 +1,56 @@
-import React from 'react';
-import './ContactPage.css'; // Import the CSS file
+import React, { useState } from 'react';
+import './ContactPage.css'; 
+import { database } from '../../../firebase/firebase'; 
+import { ref, push, set } from 'firebase/database';
 
 const ContactPage = () => {
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+        message: '',
+        organisationName: '', 
+        contactMethod: '', 
+        terms: false 
+    });
+
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: type === 'checkbox' ? checked : value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!formData.firstName || !formData.email || !formData.message || !formData.terms) {
+            alert('Please fill in all required fields and agree to the terms.');
+            return;
+        }
+
+        try {
+            const contactsRef = ref(database, 'Contacts'); // Reference to the Contacts node
+            const newMessageRef = push(contactsRef); // Create a new reference with a unique key
+            await set(newMessageRef, formData);
+            alert('Message sent successfully!');
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                phoneNumber: '',
+                message: '',
+                organisationName: '',
+                contactMethod: '',
+                terms: false
+            });
+        } catch (error) {
+            console.error('Error sending message:', error.message);
+            alert(`Error sending message: ${error.message}`);
+        }
+    };
+
     return (
         <div className="contact-container">
             <h1 className="main-heading">Contact Us</h1>
@@ -17,38 +66,38 @@ const ContactPage = () => {
                 <p>Our project aims to revolutionize Health & Safety practices by fostering collaboration and innovation, creating safer and healthier workplaces.</p>
             </div>
 
-            <form className="enquiry-form">
+            <form className="enquiry-form" onSubmit={handleSubmit}>
                 <h2 className="section-heading">Enquiry Form</h2>
                 <label>Your enquiry</label>
-                <select>
-                    <option>What are you enquiring about?</option>
+                <select name="enquiryType" value={formData.enquiryType || ''} onChange={handleChange}>
+                    <option value="">What are you enquiring about?</option>
                     {/* Add more options as needed */}
                 </select>
 
                 <h2 className="section-heading">Your Details</h2>
                 <label>First name:</label>
-                <input type="text" name="firstName" />
+                <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
                 <label>Last name:</label>
-                <input type="text" name="lastName" />
+                <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
                 <label>Organisation name (optional):</label>
-                <input type="text" name="organisationName" />
+                <input type="text" name="organisationName" value={formData.organisationName} onChange={handleChange} />
                 <label>Preferred method of contact:</label>
                 <div className="contact-method-inline">
                     <label>
-                        <input type="radio" name="contactMethod" value="email" /> Email
+                        <input type="radio" name="contactMethod" value="email" checked={formData.contactMethod === 'email'} onChange={handleChange} /> Email
                     </label>
                     <label>
-                        <input type="radio" name="contactMethod" value="phone" /> Phone
+                        <input type="radio" name="contactMethod" value="phone" checked={formData.contactMethod === 'phone'} onChange={handleChange} /> Phone
                     </label>
                 </div>
                 <label>Email address:</label>
-                <input type="email" name="email" />
+                <input type="email" name="email" value={formData.email} onChange={handleChange} />
                 <label>Phone number:</label>
-                <input type="tel" name="phoneNumber" />
+                <input type="tel" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
                 <label>Message:</label>
-                <textarea name="message"></textarea>
+                <textarea name="message" value={formData.message} onChange={handleChange}></textarea>
                 <div className="terms">
-                    <input type="checkbox" name="terms" id="terms" />
+                    <input type="checkbox" name="terms" id="terms" checked={formData.terms} onChange={handleChange} />
                     <label htmlFor="terms">I agree to the terms of First Solutions Legal & Privacy Policy</label>
                 </div>
                 <button type="submit" className="submit-button">Submit</button>
