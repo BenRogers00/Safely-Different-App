@@ -15,9 +15,13 @@ function BlogWriter() {
     const [authUser, setAuthUser] = useState(null);
     const drawingBoardRef = useRef(null);
     const [path, setPath] = useState("users/null");
+    //user id so post can be attributed to them
     const [uid, setUid] = useState(null);
     const [showCanvas, setShowCanvas] = useState(false);
+    //value of text box (post body)
     const [value, setValue] = useState('');
+    //state of modal
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     //set the path to save the blog post of the logged in user
     useEffect(() => {
@@ -45,8 +49,7 @@ function BlogWriter() {
         return null;
     };
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
+    //functions to open and close modal
     const openModal = () => {
       setIsModalOpen(true);
     };
@@ -71,9 +74,9 @@ function BlogWriter() {
                 drawingRef: drawingKey || null
             });
 
+            //save post to database
             WriteToDatabase({ dataInput, path });
-            console.log('datainput:' + dataInput + ' path: ' + path)
-
+            //open success modal
             openModal()
         }
     };
@@ -126,7 +129,7 @@ function BlogWriter() {
                     {showCanvas && <DrawingBoard ref={drawingBoardRef} />}
                     
                     <button onClick={post}>Post to your blog!</button>
-                    
+                    {/*if modal should be open (user has clicked post), show modal, with link to home or to close */}
                     <Modal isOpen={isModalOpen} onClose={closeModal}>
                         <h1>Post Success!</h1>
                         <p>Feel free to leave this page at any time</p>
@@ -135,6 +138,7 @@ function BlogWriter() {
                     </Modal>
                 </>
             ) : (
+                //if user is not logged in, tell them they must log in to post
                 <p>Please log in to create a blog post</p>
             )}
         </div>

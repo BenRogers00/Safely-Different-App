@@ -1,17 +1,15 @@
 import React from 'react';
 
 const Modal = ({ isOpen, onClose, children }) => {
-  // If the modal is not open, do not render anything
+  // if the modal is not open, do not render anything
   if (!isOpen) {
     return null;
   }
 
+  //if modal is open, display the modal with a close button
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <button className="close-button" onClick={onClose}>
-          &times;
-        </button>
         {children}
       </div>
     </div>
