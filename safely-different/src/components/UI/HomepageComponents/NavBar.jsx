@@ -60,7 +60,7 @@ function NavBar(props) {
               <li className="mx-2">
                 <Link to="/">Home</Link></li>
               <li className="mx-2">
-                <Link to="/price">Price</Link></li>
+                <Link to="/price">Subscribe</Link></li>
               <li className="mx-2">
                 <Link to="/about">About</Link></li>
               <li className="mx-2">
