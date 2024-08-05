@@ -92,18 +92,19 @@ function BlogWriter() {
     return (
         <div>
             <NavBar Mobile ={false}/> {/* putting props inside mobile */}
-            {/*if user is logged in show the style-able text box, otherwise tell user they must log in*/}
+            {/*if user is logged in show the posting text box, otherwise tell user they must log in*/}
             {authUser ? (
                 <>
                     <br/>
-                    <ReactQuill 
-                        theme="snow" 
-                        value={value} 
-                        onChange={handleEditorChange} 
-                        modules={modules} 
-                        formats={formats}
-                    />
-
+                    <div id='quill-box'>
+                        <ReactQuill 
+                            theme="snow" 
+                            value={value} 
+                            onChange={handleEditorChange} 
+                            modules={modules} 
+                            formats={formats}
+                        />
+                    </div>
                     {/*button to open drawing area*/}
                     <button onClick={() => setShowCanvas(!showCanvas)}>
                         {showCanvas ? "Close the editor" : "Open the editor"}
