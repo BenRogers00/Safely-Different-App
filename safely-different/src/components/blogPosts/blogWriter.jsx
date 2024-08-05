@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+//import { Editor } from '@tinymce/tinymce-react';
 import { auth, database } from '../../firebase/firebase';
 import { onAuthStateChanged } from "firebase/auth";
 import WriteToDatabase from '../../databaseWriting';
@@ -8,10 +8,11 @@ import DrawingBoard from '../drawing/DrawingBoard';
 import NavBar from '../UI/HomepageComponents/NavBar';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import the styles
+import Modal from './postedModal';
+import { Link } from 'react-router-dom';
 
 function BlogWriter() {
     const [authUser, setAuthUser] = useState(null);
-    const editorRef = useRef(null);
     const drawingBoardRef = useRef(null);
     const [path, setPath] = useState("users/null");
     const [uid, setUid] = useState(null);
@@ -44,6 +45,16 @@ function BlogWriter() {
         return null;
     };
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+      setIsModalOpen(true);
+    };
+  
+    const closeModal = () => {
+      setIsModalOpen(false);
+    };
+
     //when user clicks post button, show the user a preview of their post, and write their blog post to database as HTML
     const post = async () => {
         const drawingKey = await saveDrawing();
@@ -62,6 +73,8 @@ function BlogWriter() {
 
             WriteToDatabase({ dataInput, path });
             console.log('datainput:' + dataInput + ' path: ' + path)
+
+            openModal()
         }
     };
 
@@ -113,6 +126,13 @@ function BlogWriter() {
                     {showCanvas && <DrawingBoard ref={drawingBoardRef} />}
                     
                     <button onClick={post}>Post to your blog!</button>
+                    
+                    <Modal isOpen={isModalOpen} onClose={closeModal}>
+                        <h1>Post Success!</h1>
+                        <p>Feel free to leave this page at any time</p>
+                        <Link to={'/'}><button>Home</button></Link>
+                        <button onClick={closeModal}>Close</button>
+                    </Modal>
                 </>
             ) : (
                 <p>Please log in to create a blog post</p>
