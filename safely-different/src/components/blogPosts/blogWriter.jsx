@@ -92,6 +92,7 @@ function BlogWriter() {
                         {showCanvas ? "Close the editor" : "Open the editor"}
                     </button>
                     {showCanvas && <DrawingBoard ref={drawingBoardRef} />}
+                    <br />
                     <button onClick={post}>Post to your blog!</button>
                 </>
             ) : (
