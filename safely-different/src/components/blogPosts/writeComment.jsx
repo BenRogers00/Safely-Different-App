@@ -3,6 +3,8 @@ import { database } from '../../firebase/firebase';
 import { ref, get } from 'firebase/database';
 import WriteToDatabase from '../../databaseWriting';
 import { ReturnEmail } from '../UsersDetails';
+
+
 function CommentTextBox({ path }) {
     const [comment, setComment] = useState('');
 
