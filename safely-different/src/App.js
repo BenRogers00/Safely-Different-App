@@ -2,14 +2,15 @@ import React from 'react';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePageUI from './components/UI/HomepageComponents/HomePageUI'
+import HomePageUI from './components/UI/HomepageComponents/HomePageUI';
 import AuthDetails from './components/AuthDetails';
 import UserProfile from './components/profile/UserProfile';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import BlogWriter from './components/blogPosts/blogWriter';
 import BlogDisplay from './components/blogPosts/blogPostDisplay.jsx';
 import Payment from './components/payment/Payment';
-import ContactPage from './components/UI/HomepageComponents/ContactPage.jsx'; // Import ContactPage component
+import ContactPage from './components/UI/HomepageComponents/ContactPage.jsx';
+import MessagePage from './components/UI/HomepageComponents/MessagePage.jsx'; // Import MessagePage component
 
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
               <Route path="/blogPosts" element={<ProtectedRoute><BlogDisplay /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
               <Route path="/memberPricing" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
-              <Route path="/contact" element={<ContactPage />} /> {/* Add contact page route */}
+              <Route path="/contact" element={<ContactPage />} /> 
+              <Route path="/message/:id" element={<MessagePage />} /> 
             </Routes>
           </AuthDetails>
         </Router>

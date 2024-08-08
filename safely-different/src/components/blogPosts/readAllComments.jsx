@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../firebase/firebase';
-import ReadOneDB from '../../readOneEntry';
 
 function CommentDisplay({ postId }) {
     const [commentHTML, setCommentHTML] = useState("<h2>Comments: </h2>");

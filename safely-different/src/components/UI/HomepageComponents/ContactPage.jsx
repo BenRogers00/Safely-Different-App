@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './ContactPage.css'; 
 import { database } from '../../../firebase/firebase'; 
 import { ref, push, set } from 'firebase/database';
+import { useNavigate } from 'react-router-dom'; // Updated import for navigation
 
 const ContactPage = () => {
     const [formData, setFormData] = useState({
@@ -14,6 +15,8 @@ const ContactPage = () => {
         contactMethod: '', 
         terms: false 
     });
+
+    const navigate = useNavigate(); // Updated hook
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -45,9 +48,10 @@ const ContactPage = () => {
                 contactMethod: '',
                 terms: false
             });
+            navigate(`/message/${newMessageRef.key}`); // Redirect to the message page with the message ID
         } catch (error) {
             console.error('Error sending message:', error.message);
-            alert(`Error sending message: ${error.message}`);
+            alert(`Error sending message: ${error.message}`); // Fixed template literal
         }
     };
 
