@@ -59,7 +59,7 @@
 
 .contact-method-inline label {
     display: flex;
-    align-items:normal;
+    align-items: center;
     font-weight: normal;
     font-size: 1em;
 }
