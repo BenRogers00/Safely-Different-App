@@ -1,17 +1,19 @@
+// This component is a canvas used on a posts page. It acts just like the regular canvas in DrawingBoard, but it pre-loads an image from the database.
+// The component takes the drawingRef to identify the drawing in the db and renders the image inside the canvas. 
+
 import React, { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react';
 import { Canvas, PencilBrush, PatternBrush, FabricImage } from 'fabric';
 import { getDatabase, ref as dbRef, set } from 'firebase/database';
 
-const DrawingBoard = forwardRef((props, drawingRef) => {
+const EditingDrawingBoard = forwardRef((props, drawingRef) => {
+    const { imageSrc } = props;
     const canvasRef = useRef(null);
     const fabricCanvasRef = useRef(null);
     const drawingColorRef = useRef(null);
     const drawingLineWidthRef = useRef(null);
     const clearRef = useRef(null);
     const saveRef = useRef(null);
-    const fileInputRef = useRef(null);
 
-    // Save the drawing to the Firebase Realtime Database
     const handleSave = useCallback(async () => {
         const canvas = fabricCanvasRef.current;
         const dataURL = canvas.toDataURL('image/png');
@@ -24,10 +26,9 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
         saveDrawing: handleSave
     }));
 
-    // Initialize the canvas and drawing tools
     useEffect(() => {
         const canvas = new Canvas(canvasRef.current, { isDrawingMode: true });
-        fabricCanvasRef.current = canvas; // Assign Fabric.js canvas instance to ref
+        fabricCanvasRef.current = canvas;
 
         canvas.freeDrawingBrush = new PencilBrush(canvas);
         canvas.freeDrawingBrush.color = '#000000';
@@ -44,29 +45,19 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
             canvas.freeDrawingBrush.width = parseInt(this.value, 10) || 1;
         };
 
+        if (imageSrc) {
+            FabricImage.fromURL(imageSrc).then((img) => {
+                canvas.add(img);
+                canvas.renderAll();
+            }).catch((error) => {
+                console.error('Error loading image:', error);
+            });
+        }
+
         return () => {
             canvas.dispose();
         };
-    }, [handleSave]);
-
-    // Handle file input change and load the image to the canvas
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                FabricImage.fromURL(e.target.result).then((img) => {
-                    img.scaleToHeight(750);  // Set the image height
-                    img.scaleToWidth(750);   // Set the image width
-                    fabricCanvasRef.current.add(img); // Use the correct canvas instance
-                    fabricCanvasRef.current.renderAll();
-                }).catch((error) => {
-                    console.error('Error loading image:', error);
-                });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+    }, [handleSave, imageSrc]);
 
     return (
         <div>
@@ -130,14 +121,9 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                 <button ref={clearRef}>Clear</button>
                 <span> </span>
                 <button ref={saveRef}>Save</button>
-                <br />
-                <label>
-                    Upload Image:
-                    <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} />
-                </label>
             </div>
         </div>
     );
 });
 
-export default DrawingBoard;
+export default EditingDrawingBoard;
