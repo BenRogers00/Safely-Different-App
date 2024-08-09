@@ -1,0 +1,199 @@
+/* BlogDisplay.css */
+
+/* General container styling for the blog display */
+#blogDisp {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the main title */
+h1 {
+  text-align: center;
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Styling for individual blog posts */
+#blogPost {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Styling for user info and user email */
+#userInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: bold;
+}
+
+#userInfo p {
+  margin: 0;
+}
+
+/* Styling for the blog post body */
+#blogPost > div {
+  color: #333;
+  background-color: #f9f9f9;
+  max-width: 100%;
+  margin: 10px 0;
+  border-radius: 8px;
+  line-height: 1.6;
+  font-size: 1rem;
+  word-wrap: break-word;
+}
+
+/* Styling for the comments button */
+button {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px 5px 0px 0px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+  position: relative;
+  float: left;
+}
+
+#postComment  {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 0px 0px 5px 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+  position: relative;
+  float: left;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Styling for comment sections */
+#commentTextArea {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 0px 8px 8px 0px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  #blogDisp {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  #blogPost {
+    padding: 15px;
+  }
+
+  button {
+    font-size: 0.8rem;
+  }
+}
+
+
+/*Quill styling*/
+#quill-box
+{
+  max-width: 80%;
+  margin-left: 10%;
+  padding-bottom: 2%;
+}
+
+.ql-toolbar {
+  background-color: #e1e1e1;
+  border: 1px solid #ddd;
+}
+
+.ql-toolbar .ql-picker {
+  color: #333;
+}
+
+.ql-toolbar .ql-picker-label:hover {
+  color: #858585;
+}
+
+.ql-toolbar .ql-picker-options {
+  background-color: #ddd;
+}
+
+.ql-toolbar button {
+  color: #333;
+}
+
+.ql-toolbar button:hover {
+  background-color: #ddd;
+}
+
+.ql-container {
+  border: 1px solid #ddd;
+}
+
+.ql-editor {
+  min-height: 200px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  padding: 10px;
+  line-height: 1.5;
+  background-color: #ffffff;
+}
+
+.ql-editor p {
+  margin: 0;
+}
+
+/*Modal styling:*/
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure the modal is above other content */
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  color: black;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
