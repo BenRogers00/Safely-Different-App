@@ -8,6 +8,7 @@ import CommentDisplay from './readAllComments';
 import DrawingComponent from '../drawing/DrawingComponent';
 import EditingDrawingBoard from '../drawing/EditingDrawingBoard'; // Adjust the import path as needed
 import NavBar from '../UI/HomepageComponents/NavBar';
+import './blogDisplay.css'; 
 
 function BlogDisplay() {
     const [posts, setPosts] = useState([]);
@@ -29,6 +30,7 @@ function BlogDisplay() {
         };
     }, []);
 
+    // Get user's name from their post
     useEffect(() => {
         const fetchUserNames = () => {
             const names = {};
@@ -40,11 +42,13 @@ function BlogDisplay() {
             });
         };
 
+        // If there are posts, get the names from the posts
         if (posts.length > 0) {
             fetchUserNames();
         }
     }, [posts]);
 
+    // Get the path to use when getting info from the database
     function getStrippedPath(inputString) {
         const parts = inputString.split('/');
         parts.splice(0, 3); // Remove first 3 parts
@@ -52,6 +56,7 @@ function BlogDisplay() {
         return path;
     }
 
+    // Function to show/hide the comment text box
     function toggleCommentBox(key) {
         setOpenCommentBoxes(prevState => ({
             ...prevState,
