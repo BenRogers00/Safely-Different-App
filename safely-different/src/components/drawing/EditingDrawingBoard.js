@@ -6,7 +6,7 @@ import { Canvas, PencilBrush, PatternBrush, FabricImage } from 'fabric';
 import { getDatabase, ref as dbRef, set } from 'firebase/database';
 
 const EditingDrawingBoard = forwardRef((props, drawingRef) => {
-    const { imageSrc } = props;
+    const { imageSrc, saveDrawing } = props;
     const canvasRef = useRef(null);
     const fabricCanvasRef = useRef(null);
     const drawingColorRef = useRef(null);
@@ -19,8 +19,9 @@ const EditingDrawingBoard = forwardRef((props, drawingRef) => {
         const dataURL = canvas.toDataURL('image/png');
         const drawingRef = dbRef(getDatabase(), 'drawings/' + Date.now());
         await set(drawingRef, { image: dataURL });
+        saveDrawing(dataURL);  // Pass the image URL back to CommentTextBox
         return drawingRef.toString();
-    }, []);
+    }, [saveDrawing]);
 
     useImperativeHandle(drawingRef, () => ({
         saveDrawing: handleSave
