@@ -5,7 +5,7 @@ import WriteToDatabase from '../../databaseWriting';
 import { ReturnEmail } from '../UsersDetails';
 
 
-function CommentTextBox({ path }) {
+function CommentTextBox({ path, imageUrl }) {
     const [userEmail, setUserEmail] = useState('');
     const [comment, setComment] = useState('');
 
@@ -31,6 +31,10 @@ function CommentTextBox({ path }) {
             const commentPath = path + "/comments/" + length;
             WriteToDatabase({ dataInput, path: commentPath + "/text" });
             WriteToDatabase({ dataInput: userEmail, path: commentPath + "/user" });
+            // Save the image if there is one
+            if (imageUrl) {
+                WriteToDatabase({ dataInput: imageUrl, path: commentPath + "/image" });
+            }
         }).catch((error) => {
             console.error('Error reading data:', error);
         });

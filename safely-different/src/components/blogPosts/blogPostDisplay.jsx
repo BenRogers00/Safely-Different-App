@@ -16,6 +16,7 @@ function BlogDisplay() {
     const [openCommentBoxes, setOpenCommentBoxes] = useState({});
     const [editingImage, setEditingImage] = useState(null); // State for the image being edited
     const [editingPostKey, setEditingPostKey] = useState(null); // State for the post being edited
+    const [imageUrl, setImageUrl] = useState(null); // State for the image URL for comments
 
     useEffect(() => {
         const listen = onAuthStateChanged(auth, (user) => {
@@ -30,7 +31,6 @@ function BlogDisplay() {
         };
     }, []);
 
-    // Get user's name from their post
     useEffect(() => {
         const fetchUserNames = () => {
             const names = {};
@@ -42,13 +42,11 @@ function BlogDisplay() {
             });
         };
 
-        // If there are posts, get the names from the posts
         if (posts.length > 0) {
             fetchUserNames();
         }
     }, [posts]);
 
-    // Get the path to use when getting info from the database
     function getStrippedPath(inputString) {
         const parts = inputString.split('/');
         parts.splice(0, 3); // Remove first 3 parts
@@ -56,7 +54,6 @@ function BlogDisplay() {
         return path;
     }
 
-    // Function to show/hide the comment text box
     function toggleCommentBox(key) {
         setOpenCommentBoxes(prevState => ({
             ...prevState,
@@ -88,14 +85,17 @@ function BlogDisplay() {
                             {editingPostKey === post.key && (
                                 <div className="editing-drawing-board">
                                     <h2>Edit Drawing</h2>
-                                    <EditingDrawingBoard imageSrc={editingImage} ref={null} />
+                                    <EditingDrawingBoard 
+                                        imageSrc={editingImage} 
+                                        ref={null} 
+                                        saveDrawing={setImageUrl}  // Set the image URL to be passed to CommentTextBox
+                                    />
                                     <button onClick={() => setEditingPostKey(null)}>Close Editor</button>
                                 </div>
                             )}
-                            <br />
                             <button onClick={() => toggleCommentBox(post.key)}>Show Comments</button><br />
                             {openCommentBoxes[post.key] && (
-                                <CommentTextBox path={getStrippedPath(post.postRef)} />
+                                <CommentTextBox path={getStrippedPath(post.postRef)} imageUrl={imageUrl} />  // Pass imageUrl to CommentTextBox
                             )}
                         </div>
                         <div id="comments">
@@ -109,5 +109,6 @@ function BlogDisplay() {
         </div>
     );
 }
+
 
 export default BlogDisplay;
