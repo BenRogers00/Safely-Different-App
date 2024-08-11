@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { database } from '../../../firebase/firebase'; 
 import { ref, onValue, push, set } from 'firebase/database';
-import { useParams } from 'react-router-dom'; // Removed useNavigate import
+import { useParams } from 'react-router-dom'; // Import useParams
 import './MessagePage.css';
 
 const MessagePage = () => {
@@ -11,12 +11,14 @@ const MessagePage = () => {
     const [newComment, setNewComment] = useState('');
 
     useEffect(() => {
+        // Reference to the contact message
         const messageRef = ref(database, `Contacts/${id}`);
         onValue(messageRef, snapshot => {
             setMessageData(snapshot.val());
         });
 
-        const commentsRef = ref(database, `Comments/${id}`);
+        // Reference to the comments for this contact
+        const commentsRef = ref(database, `Contacts/${id}/comments`);
         onValue(commentsRef, snapshot => {
             const commentsList = [];
             snapshot.forEach(childSnapshot => {
@@ -38,7 +40,8 @@ const MessagePage = () => {
         }
 
         try {
-            const commentsRef = ref(database, `Comments/${id}`);
+            // Reference to the comments subcollection of the contact
+            const commentsRef = ref(database, `Contacts/${id}/comments`);
             const newCommentRef = push(commentsRef);
             await set(newCommentRef, { text: newComment });
             setNewComment('');
