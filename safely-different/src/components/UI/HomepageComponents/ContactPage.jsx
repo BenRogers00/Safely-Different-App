@@ -15,7 +15,8 @@ const ContactPage = () => {
         contactMethod: '', 
         terms: false 
     });
-
+    const [showMessageLink, setShowMessageLink] = useState(false);
+    const [messageId, setMessageId] = useState('');
     const navigate = useNavigate(); // Updated hook
 
     const handleChange = (e) => {
@@ -38,6 +39,12 @@ const ContactPage = () => {
             const newMessageRef = push(contactsRef); // Create a new reference with a unique key
             await set(newMessageRef, formData);
             alert('Message sent successfully!');
+            
+            // Set state to show the message link option
+            setMessageId(newMessageRef.key);
+            setShowMessageLink(true);
+
+            // Optionally reset form data
             setFormData({
                 firstName: '',
                 lastName: '',
@@ -48,11 +55,14 @@ const ContactPage = () => {
                 contactMethod: '',
                 terms: false
             });
-            navigate(`/message/${newMessageRef.key}`); // Redirect to the message page with the message ID
         } catch (error) {
             console.error('Error sending message:', error.message);
             alert(`Error sending message: ${error.message}`); // Fixed template literal
         }
+    };
+
+    const handleViewMessage = () => {
+        navigate(`/message/${messageId}`); // Redirect to the message page with the message ID
     };
 
     return (
@@ -106,6 +116,13 @@ const ContactPage = () => {
                 </div>
                 <button type="submit" className="submit-button">Submit</button>
             </form>
+
+            {showMessageLink && (
+                <div className="message-link">
+                    <p>Your message has been sent successfully!</p>
+                    <button onClick={handleViewMessage}>Go into comment section</button>
+                </div>
+            )}
         </div>
     );
 }
