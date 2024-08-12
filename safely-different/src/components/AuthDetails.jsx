@@ -44,7 +44,7 @@ const AuthDetails = ({ children }) => {
   };
 
   // Display a loading message while the authentication state is being checked
-  // This is useful for when the user is redirected to the sign-in page, otherwise it 
+  // This is useful for when the user is redirected to the sign-in page, otherwise it
   // would display the sign-in page before the authentication state is checked.
   if (loading) {
     return <div>Loading...</div>;
