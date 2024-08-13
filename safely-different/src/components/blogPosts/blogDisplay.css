@@ -69,7 +69,7 @@ button {
   float: left;
 }
 
-#postComment  {
+#postComment {
   background-color: #007bff;
   color: #ffffff;
   border: none;
@@ -113,10 +113,8 @@ button:hover {
   }
 }
 
-
 /*Quill styling*/
-#quill-box
-{
+#quill-box {
   max-width: 80%;
   margin-left: 10%;
   padding-bottom: 2%;
