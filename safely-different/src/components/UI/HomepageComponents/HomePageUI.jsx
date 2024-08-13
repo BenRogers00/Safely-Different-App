@@ -1,4 +1,8 @@
-
+/**
+ * Renders the UI for the homepage.
+ *
+ * @returns {JSX.Element} The rendered homepage UI.
+ */
 import AboutUs from "./AboutUs";
 import NavBar from "./NavBar";
 import Slogan from "./Slogan";
