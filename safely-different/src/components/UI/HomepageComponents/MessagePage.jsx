@@ -17,7 +17,6 @@ const MessagePage = () => {
             setMessageData(snapshot.val());
         });
 
-        // Reference to the comments for this contact
         const commentsRef = ref(database, `Contacts/${id}/comments`);
         onValue(commentsRef, snapshot => {
             const commentsList = [];
@@ -40,7 +39,6 @@ const MessagePage = () => {
         }
 
         try {
-            // Reference to the comments subcollection of the contact
             const commentsRef = ref(database, `Contacts/${id}/comments`);
             const newCommentRef = push(commentsRef);
             await set(newCommentRef, { text: newComment });
