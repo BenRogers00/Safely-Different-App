@@ -1,3 +1,8 @@
+/**
+ * Renders the Slogan component.
+ * 
+ * @returns {JSX.Element} The rendered Slogan component.
+ */
 function Slogan(){
 
     return(
