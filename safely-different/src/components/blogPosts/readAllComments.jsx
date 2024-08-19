@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { ref, onValue } from 'firebase/database';
-import { database } from '../../firebase/firebase';
+import React, { useState, useEffect } from "react";
+import { ref, onValue } from "firebase/database";
+import { database } from "../../firebase/firebase";
 
 function CommentDisplay({ postId }) {
-    const [commentHTML, setCommentHTML] = useState("<h2>Comments: </h2>");
+  //dipslay title
+  const [commentHTML, setCommentHTML] = useState("<h2>Comments: </h2>");
 
-    useEffect(() => {
-        const fetchComments = async () => {
-            try {
-                const commentRef = ref(database, 'posts/' + postId + '/comments');
+  //get the comments
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        //use the postID to determine the comment's saving location
+        const commentRef = ref(database, "posts/" + postId + "/comments");
 
-                onValue(commentRef, async (snapshot) => {
-                    if (snapshot.exists()) {
-                        const comments = snapshot.val();
-                        let updatedHTML = "<h2>Comments: </h2>";
-                        const commentKeys = Object.keys(comments);
+        // Fetch the comments data
+        onValue(commentRef, async (snapshot) => {
+          if (snapshot.exists()) {
+            const comments = snapshot.val();
+            let updatedHTML = "<h2>Comments: </h2>";
+            const commentKeys = Object.keys(comments);
 
                         for (let key of commentKeys) {
                             const commentData = comments[key];
@@ -50,23 +54,27 @@ function CommentDisplay({ postId }) {
                                         ` : ''}
                                     </div>
                                 `;
-                            }
-                        }
-                        setCommentHTML(updatedHTML);
-                    } else {
-                        setCommentHTML("<h2>Comments: </h2><div>No comments available.</div>");
-                    }
-                });
-            } catch (error) {
-                console.error("Error fetching comments:", error);
-                setCommentHTML("Error finding comments, please try again");
+              }
             }
-        };
+            setCommentHTML(updatedHTML);
+          } else {
+            //if no comments, show appropriate error message
+            setCommentHTML(
+              "<h2>Comments: </h2><div>No comments available.</div>"
+            );
+          }
+        });
+      } catch (error) {
+        //catch errors and display appropriate message
+        console.error("Error fetching comments:", error);
+        setCommentHTML("Error finding comments, please try again");
+      }
+    };
 
-        fetchComments();
-    }, [postId]);
+    fetchComments();
+  }, [postId]);
 
-    return <div dangerouslySetInnerHTML={{ __html: commentHTML }} />;
+  return <div dangerouslySetInnerHTML={{ __html: commentHTML }} />;
 }
 
 export default CommentDisplay;

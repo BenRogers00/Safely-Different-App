@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { auth } from '../../firebase/firebase';
+import React, { useState, useEffect } from "react";
+import { auth } from "../../firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { readAllPostsCallback } from './readAllPosts'; 
 import CommentTextBox from './writeComment';
@@ -18,18 +18,18 @@ function BlogDisplay() {
     const [editingPostKey, setEditingPostKey] = useState(null); // State for the post being edited
     const [imageUrl, setImageUrl] = useState(null); // State for the image URL for comments
 
-    useEffect(() => {
-        const listen = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                readAllPostsCallback(setPosts); // get all posts
-            } else {
-                setPosts([]);
-            }
-        });
-        return () => {
-            listen();
-        };
-    }, []);
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        readAllPostsCallback(setPosts); // get all posts
+      } else {
+        setPosts([]);
+      }
+    });
+    return () => {
+      listen();
+    };
+  }, []);
 
     useEffect(() => {
         const fetchUserNames = () => {
@@ -47,19 +47,21 @@ function BlogDisplay() {
         }
     }, [posts]);
 
-    function getStrippedPath(inputString) {
-        const parts = inputString.split('/');
-        parts.splice(0, 3); // Remove first 3 parts
-        const path = parts.join('/');
-        return path;
-    }
+  // Get the path to use when getting info from the database
+  function getStrippedPath(inputString) {
+    const parts = inputString.split("/");
+    parts.splice(0, 3); // Remove first 3 parts
+    const path = parts.join("/");
+    return path;
+  }
 
-    function toggleCommentBox(key) {
-        setOpenCommentBoxes(prevState => ({
-            ...prevState,
-            [key]: !prevState[key]
-        }));
-    }
+  // Function to show/hide the comment text box
+  function toggleCommentBox(key) {
+    setOpenCommentBoxes((prevState) => ({
+      ...prevState,
+      [key]: !prevState[key],
+    }));
+  }
 
     function handleEditImage(imageSrc, postKey) {
         setEditingImage(imageSrc);
