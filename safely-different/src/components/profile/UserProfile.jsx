@@ -1,3 +1,12 @@
+/**
+ * UserProfile component displays the user's profile information and allows them to update their password.
+ *
+ * @component
+ * @example
+ * return (
+ *   <UserProfile />
+ * )
+ */
 import React, { useState, useEffect } from 'react';
 import { ReturnEmail, ReturnPrivilege, ReturnName, ReturnRegDate, ReturnFollows, ReturnFollowers } from '../UsersDetails';
 import { getAuth, updatePassword } from 'firebase/auth';

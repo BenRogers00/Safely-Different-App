@@ -1,4 +1,10 @@
-
+/**
+ * Represents the navigation bar component.
+ * 
+ * @param {Object} props - The component props.
+ * @param {boolean} props.isMobile - Indicates if the device is mobile.
+ * @returns {JSX.Element} The rendered navigation bar.
+ */
 import { useState, useContext } from "react";
 import { BsSun } from "react-icons/bs";
 import { HiOutlineMenu } from "react-icons/hi";
