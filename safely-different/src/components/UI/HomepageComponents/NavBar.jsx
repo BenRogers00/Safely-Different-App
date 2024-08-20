@@ -5,6 +5,7 @@ import { HiOutlineMenu } from "react-icons/hi";
 import { MdClose } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { AuthContext } from '../../AuthDetails';
+import ReadOneDB from "../../../readOneEntry";
 
 function NavBar(props) {
   const {isMobile} = props;
@@ -22,6 +23,9 @@ function NavBar(props) {
       console.log("Logged out successfully");
     });
   };
+
+  const isAdmin = authUser && ReadOneDB(`users/${authUser.uid}/privileges`) === "admin";
+  console.log("is admin? " + isAdmin)
 
   return (
     <>
@@ -71,6 +75,11 @@ function NavBar(props) {
                 <Link to="/blogPosts">View Posts</Link></li>
               {authUser ? (
                 <>
+                {isAdmin && (
+                    <li className="mx-2">
+                      <Link to="/admin">Admin Panel</Link>
+                    </li>
+                  )}
                   <li className="mx-2">
                     <Link to="/profile">{authUser.email}</Link>
                   </li>
@@ -104,6 +113,11 @@ function NavBar(props) {
               </li>
               {authUser ? (
                   <>
+                  {isAdmin && (
+                    <li className="mx-2">
+                      <Link to="/admin">Admin Panel</Link>
+                    </li>
+                  )}
                     <li className="mx-2">
                       <Link to="/profile">{authUser.email}</Link>
                     </li>
