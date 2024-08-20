@@ -1,3 +1,9 @@
+/**
+ * PayPal component for handling payment using PayPal Checkout.
+ *
+ * @component
+ * @returns {JSX.Element} PayPal component
+ */
 import React, { useEffect, useRef } from "react";
 
 export default function PayPal() {

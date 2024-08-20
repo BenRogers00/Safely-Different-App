@@ -1,3 +1,51 @@
+/**
+ * Returns the unique identifier (UID) of the currently logged-in user.
+ * @returns {Promise<string>} A promise that resolves with the UID of the user.
+ * @throws {Error} If no user is logged in.
+ */
+ 
+/**
+ * Returns the currently logged-in user.
+ * @returns {firebase.User} The currently logged-in user.
+ * @throws {Error} If no user is logged in.
+ */
+
+/**
+ * Returns the email of the currently logged-in user.
+ * @returns {Promise<string>} A promise that resolves with the email of the user.
+ * @throws {Error} If no user is logged in.
+ */
+
+/**
+ * Returns the privilege of the currently logged-in user.
+ * @returns {Promise<string>} A promise that resolves with the privilege of the user.
+ * @throws {Error} If no user is logged in.
+ */
+
+/**
+ * Returns the display name of the currently logged-in user.
+ * @returns {Promise<string>} A promise that resolves with the display name of the user.
+ * @throws {Error} If no user is logged in.
+ */
+
+/**
+ * Returns the registration date of the currently logged-in user.
+ * @returns {Promise<string>} A promise that resolves with the registration date of the user.
+ * @throws {Error} If no user is logged in.
+ */
+
+/**
+ * Returns the list of users that the currently logged-in user follows.
+ * @returns {Promise<Array<string>>} A promise that resolves with the list of followed users.
+ * @throws {Error} If no user is logged in.
+ */
+
+/**
+ * Returns the list of users who follow the currently logged-in user.
+ * @returns {Promise<Array<string>>} A promise that resolves with the list of followers.
+ * @throws {Error} If no user is logged in.
+ */
+
 import { get } from "firebase/database";
 import { auth, database } from "../firebase/firebase";
 //import { getAnalytics } from "firebase/analytics";

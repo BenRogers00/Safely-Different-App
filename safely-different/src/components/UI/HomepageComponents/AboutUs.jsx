@@ -1,3 +1,8 @@
+/**
+ * Renders the About Us component.
+ * 
+ * @returns {JSX.Element} The rendered About Us component.
+ */
 function AboutUs() {
     return (
       <>

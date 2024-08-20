@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database } from '../../firebase/firebase';
 
-const DrawingComponent = ({ drawingRef }) => {
+const DrawingComponent = ({ drawingRef, onEdit }) => {
     const [imageUrl, setImageUrl] = useState(null);
 
     useEffect(() => {
@@ -30,9 +30,12 @@ const DrawingComponent = ({ drawingRef }) => {
     return (
         <>
             {imageUrl ? (
-                <img src={imageUrl} alt="Drawing" style={{ display: 'block', margin: '10px auto', maxWidth: '80%' }} />
+                <>
+                    <img src={imageUrl} alt="Drawing" style={{ display: 'block', margin: '10px auto', maxWidth: '80%' }} />
+                    {onEdit && <button onClick={() => onEdit(imageUrl)}>Edit Drawing</button>}
+                </>
             ) : (
-                <p>Loading drawing...</p> // Debugging
+                <p>Loading drawing...</p>
             )}
         </>
     );

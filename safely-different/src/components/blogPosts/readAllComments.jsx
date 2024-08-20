@@ -20,11 +20,11 @@ function CommentDisplay({ postId }) {
             let updatedHTML = "<h2>Comments: </h2>";
             const commentKeys = Object.keys(comments);
 
-            for (let key of commentKeys) {
-              const commentData = comments[key];
-              if (commentData !== null) {
-                //styling to display comments neatly
-                updatedHTML += `
+                        for (let key of commentKeys) {
+                            const commentData = comments[key];
+                            if (commentData !== null) {
+                                // Add styling and image rendering if available
+                                updatedHTML += `
                                     <div style="
                                         border: 1px solid #ddd;
                                         border-radius: 8px;
@@ -37,9 +37,8 @@ function CommentDisplay({ postId }) {
                                             font-weight: bold;
                                             color: #333;
                                             margin-bottom: 10px;
-                                            margin-right: 10px;
-                                            display:contents;
-                                            ">
+                                            display: contents;
+                                        ">
                                             ${commentData.user}
                                         </div>
                                         <div style="
@@ -48,6 +47,11 @@ function CommentDisplay({ postId }) {
                                         ">
                                             ${commentData.text}
                                         </div>
+                                        ${commentData.image ? `
+                                            <div style="margin-top: 10px;">
+                                                <img src="${commentData.image}" alt="Comment Drawing" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                                            </div>
+                                        ` : ''}
                                     </div>
                                 `;
               }
