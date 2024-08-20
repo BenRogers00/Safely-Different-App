@@ -3,7 +3,7 @@
 // The saveDrawing method is exposed using the drawingRef prop to allow saving the drawing from outside the component.
 
 import React, { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react';
-import { Canvas, PencilBrush, PatternBrush, FabricImage } from 'fabric';
+import { Canvas, PencilBrush, Line, Circle, FabricImage } from 'fabric';
 import { getDatabase, ref as dbRef, set } from 'firebase/database';
 
 const DrawingBoard = forwardRef((props, drawingRef) => {
@@ -101,50 +101,108 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
 
                 <select onChange={(e) => {
                     const brushType = e.target.value;
-                    let brush;
-                    switch (brushType) {
-                        case 'hline':
-                            brush = new PatternBrush(fabricCanvasRef.current);
-                            brush.getPatternSrc = function () {
-                                const patternCanvas = document.createElement('canvas');
-                                patternCanvas.width = patternCanvas.height = 10;
-                                const ctx = patternCanvas.getContext('2d');
-                                ctx.strokeStyle = this.color;
-                                ctx.lineWidth = 5;
-                                ctx.beginPath();
-                                ctx.moveTo(0, 5);
-                                ctx.lineTo(10, 5);
-                                ctx.closePath();
-                                ctx.stroke();
-                                return patternCanvas;
-                            };
-                            break;
-                        case 'vline':
-                            brush = new PatternBrush(fabricCanvasRef.current);
-                            brush.getPatternSrc = function () {
-                                const patternCanvas = document.createElement('canvas');
-                                patternCanvas.width = patternCanvas.height = 10;
-                                const ctx = patternCanvas.getContext('2d');
-                                ctx.strokeStyle = this.color;
-                                ctx.lineWidth = 5;
-                                ctx.beginPath();
-                                ctx.moveTo(5, 0);
-                                ctx.lineTo(5, 10);
-                                ctx.closePath();
-                                ctx.stroke();
-                                return patternCanvas;
-                            };
-                            break;
-                        default:
-                            brush = new PencilBrush(fabricCanvasRef.current);
-                            break;
+
+                    if (brushType === 'line') {
+                        let isDrawing = false;
+                        let line = null;
+
+                        fabricCanvasRef.current.off('mouse:down');  // Clear previous events
+                        fabricCanvasRef.current.off('mouse:move');
+
+                        fabricCanvasRef.current.on('mouse:down', (event) => {
+                            if (!isDrawing) {
+                                const pointer = fabricCanvasRef.current.getPointer(event.e);
+                                const points = [pointer.x, pointer.y, pointer.x, pointer.y];
+                                line = new Line(points, {
+                                    strokeWidth: drawingLineWidthRef.current.value,
+                                    fill: drawingColorRef.current.value,
+                                    stroke: drawingColorRef.current.value,
+                                    selectable: false,
+                                    evented: false,
+                                });
+                                fabricCanvasRef.current.add(line);
+                                isDrawing = true;
+                            } else {
+                                isDrawing = false;
+                                line.setCoords();  // Ensure the line gets its final coordinates
+                            }
+                        });
+
+                        fabricCanvasRef.current.on('mouse:move', (event) => {
+                            if (isDrawing && line) {
+                                const pointer = fabricCanvasRef.current.getPointer(event.e);
+                                line.set({ x2: pointer.x, y2: pointer.y });
+                                fabricCanvasRef.current.renderAll();
+                            }
+                        });
+
+                    }  else if (brushType === 'circle') {
+                        let isDrawing = false;
+                        let circle = null;
+                        let startX, startY;
+                
+                        fabricCanvasRef.current.off('mouse:down');  // Clear previous events
+                        fabricCanvasRef.current.off('mouse:move');
+                
+                        fabricCanvasRef.current.on('mouse:down', (event) => {
+                            if (!isDrawing) {
+                                const pointer = fabricCanvasRef.current.getPointer(event.e);
+                                startX = pointer.x;
+                                startY = pointer.y;
+                                circle = new Circle({
+                                    left: startX,
+                                    top: startY,
+                                    radius: 1,  // Start with a small radius
+                                    strokeWidth: drawingLineWidthRef.current.value,
+                                    stroke: drawingColorRef.current.value,
+                                    fill: 'transparent',  // Ensure it only has an outline
+                                    originX: 'center',
+                                    originY: 'center',
+                                    selectable: false,
+                                    evented: false,
+                                });
+                                fabricCanvasRef.current.add(circle);
+                                isDrawing = true;
+                            } else {
+                                isDrawing = false;
+                                circle.setCoords();  // Finalize the circle
+                            }
+                        });
+                
+                        fabricCanvasRef.current.on('mouse:move', (event) => {
+                            if (isDrawing && circle) {
+                                const pointer = fabricCanvasRef.current.getPointer(event.e);
+                                const radius = Math.sqrt(
+                                    Math.pow(pointer.x - startX, 2) + Math.pow(pointer.y - startY, 2)
+                                );
+                                circle.set({ radius });
+                                fabricCanvasRef.current.renderAll();
+                            }
+                        });
+                
+                    } else {
+                        // Default to free drawing mode (or pencil) if not using line tool
+                        fabricCanvasRef.current.off('mouse:down');
+                        fabricCanvasRef.current.off('mouse:move');
+                        let brush;
+                        switch (brushType) {
+                            case 'Pencil':
+                                brush = new PencilBrush(fabricCanvasRef.current);
+                                break;
+                            default:
+                                brush = new PencilBrush(fabricCanvasRef.current);
+                                break;
+                        }
+                        fabricCanvasRef.current.freeDrawingBrush = brush;
+                        fabricCanvasRef.current.isDrawingMode = true;  // Enable free drawing mode
                     }
-                    fabricCanvasRef.current.freeDrawingBrush = brush;
                 }}>
                     <option value="Pencil">Pencil</option>
-                    <option value="hline">Horizontal Line</option>
-                    <option value="vline">Vertical Line</option>
+                    <option value="line">Line</option>
+                    <option value="circle">Circle</option>
                 </select>
+
+
                 <br />
                 <button ref={clearRef}>Clear</button>
                 <span> </span>
