@@ -13,6 +13,7 @@ import Payment from './components/payment/Payment';
 import DrawingBoard from './components/drawing/DrawingBoard';
 import MyEditor from './components/blogPosts/MyEditor';
 import PayPal from './components/payment/purchase.js';
+import AdminPage from './components/admin/adminPage.jsx';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
               <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>}/>
               <Route path="/memberPricing" element={<ProtectedRoute><Payment /></ProtectedRoute>}/>
               <Route path="/MyEditor" element={<ProtectedRoute><MyEditor /></ProtectedRoute>}/>
+              <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>}/>
 
             </Routes>
           </AuthDetails>
