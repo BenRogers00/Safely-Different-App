@@ -5,17 +5,15 @@ import WriteToDatabase from '../../databaseWriting';
 import { ReturnEmail } from '../UsersDetails';
 
 
-function CommentTextBox({ path }) {
-    //set variables for email and comment data
+function CommentTextBox({ path, imageUrl }) {
     const [userEmail, setUserEmail] = useState('');
     const [comment, setComment] = useState('');
-    //update comment data when comment is changed
+
     const handleInputChange = (event) => {
         setComment(event.target.value);
     };
-    
+
     useEffect(() => {
-        //get the email so it can be used to display who posted the comment
         ReturnEmail()
             .then((emailData) => {
                 setUserEmail(emailData);
@@ -27,19 +25,19 @@ function CommentTextBox({ path }) {
 
     const handleSubmit = () => {
         const dataInput = comment.toString();
-        //make database reference to check how many sets of data are stored there
-        const lengthCheckBranch = ref(database, path+"/comments");
+        const lengthCheckBranch = ref(database, path + "/comments");
         get(lengthCheckBranch).then((snapshot) => {
-            //get length of branch and use as key for each comment
             const length = snapshot.size;
-            const commentPath = path + "/comments/"+length;
-            //write body of comment 
-            WriteToDatabase({dataInput, path: commentPath+"/text"});
-            //write user making comment
-            WriteToDatabase({dataInput: userEmail, path: commentPath+"/user"});
-          }).catch((error) => {
+            const commentPath = path + "/comments/" + length;
+            WriteToDatabase({ dataInput, path: commentPath + "/text" });
+            WriteToDatabase({ dataInput: userEmail, path: commentPath + "/user" });
+            // Save the image if there is one
+            if (imageUrl) {
+                WriteToDatabase({ dataInput: imageUrl, path: commentPath + "/image" });
+            }
+        }).catch((error) => {
             console.error('Error reading data:', error);
-          });
+        });
     };
 
     return (

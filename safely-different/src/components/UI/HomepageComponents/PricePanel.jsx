@@ -1,5 +1,11 @@
+/**
+ * Renders the PricePanel component.
+ * 
+ * This component displays the details of a lifetime membership, including the included features and the price.
+ * 
+ * @returns {JSX.Element} The rendered PricePanel component.
+ */
 import { FaCheck } from "react-icons/fa";
-
 
 const includedFeatures = [
   'Private forum access',

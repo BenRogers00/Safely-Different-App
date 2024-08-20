@@ -3,267 +3,215 @@
 // The saveDrawing method is exposed using the drawingRef prop to allow saving the drawing from outside the component.
 
 import React, { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react';
-import { Canvas, PatternBrush, Rect, Shadow, PencilBrush, CircleBrush, SprayBrush } from 'fabric';
-import { getDatabase, ref, set } from 'firebase/database';
+import { Canvas, PencilBrush, Line, Circle, FabricImage } from 'fabric';
+import { getDatabase, ref as dbRef, set } from 'firebase/database';
 
 const DrawingBoard = forwardRef((props, drawingRef) => {
+    const { imageSrc, isEditing = false, saveDrawing } = props;
     const canvasRef = useRef(null);
-    const drawingModeRef = useRef(null);
-    const drawingOptionsRef = useRef(null);
+    const fabricCanvasRef = useRef(null);
     const drawingColorRef = useRef(null);
-    const drawingShadowColorRef = useRef(null);
     const drawingLineWidthRef = useRef(null);
-    const drawingShadowWidthRef = useRef(null);
-    const drawingShadowOffsetRef = useRef(null);
     const clearRef = useRef(null);
-    const drawingModeSelectorRef = useRef(null);
     const saveRef = useRef(null);
+    const fileInputRef = useRef(null);
 
-
-    // Save the drawing to the Firebase Realtime Database
     const handleSave = useCallback(async () => {
-        const canvas = canvasRef.current;
+        const canvas = fabricCanvasRef.current;
         const dataURL = canvas.toDataURL('image/png');
-        const drawingRef = ref(getDatabase(), 'drawings/' + Date.now());
-        await set(drawingRef, {
-            image: dataURL
-        });
+        const drawingRef = dbRef(getDatabase(), 'drawings/' + Date.now());
+        await set(drawingRef, { image: dataURL });
+        if (saveDrawing) {
+            saveDrawing(dataURL);  // Pass the image URL back
+        }
         return drawingRef.toString();
-    }, [canvasRef]);
-
+    }, [saveDrawing]);
 
     useImperativeHandle(drawingRef, () => ({
         saveDrawing: handleSave
     }));
 
-    // Initialize the canvas and drawing tools
+    // Initialize the canvas and tools
     useEffect(() => {
-        let canvas;
+        const canvas = new Canvas(canvasRef.current, { isDrawingMode: true });
+        fabricCanvasRef.current = canvas;
 
-        const initializeCanvas = () => {
-            canvas = new Canvas(canvasRef.current, {
-                isDrawingMode: true
-            });
+        canvas.freeDrawingBrush = new PencilBrush(canvas);
+        canvas.freeDrawingBrush.color = '#000000';
+        canvas.freeDrawingBrush.width = 1;
 
-            canvas.freeDrawingBrush = new PencilBrush(canvas);
-            canvas.freeDrawingBrush.color = '#000000';
-            canvas.freeDrawingBrush.width = 1;
-            canvas.freeDrawingBrush.shadow = new Shadow({
-                blur: 0,
-                offsetX: 0,
-                offsetY: 0,
-                affectStroke: true,
-                color: '#000000',
-            });
+        clearRef.current.onclick = () => canvas.clear();
+        saveRef.current.onclick = handleSave;
 
-            clearRef.current.onclick = () => canvas.clear();
-            drawingModeRef.current.onclick = () => {
-                canvas.isDrawingMode = !canvas.isDrawingMode;
-                if (canvas.isDrawingMode) {
-                    drawingModeRef.current.innerHTML = 'Cancel drawing mode';
-                    drawingOptionsRef.current.style.display = '';
-                } else {
-                    drawingModeRef.current.innerHTML = 'Enter drawing mode';
-                    drawingOptionsRef.current.style.display = 'none';
-                }
-            };
-            saveRef.current.onclick = handleSave;
-
-            drawingModeSelectorRef.current.onchange = () => {
-                const brushType = drawingModeSelectorRef.current.value;
-                let brush;
-
-                switch (brushType) {
-                    case 'hline':
-                        brush = new PatternBrush(canvas);
-                        brush.getPatternSrc = function () {
-                            const patternCanvas = document.createElement('canvas');
-                            patternCanvas.width = patternCanvas.height = 10;
-                            const ctx = patternCanvas.getContext('2d');
-                            ctx.strokeStyle = this.color;
-                            ctx.lineWidth = 5;
-                            ctx.beginPath();
-                            ctx.moveTo(0, 5);
-                            ctx.lineTo(10, 5);
-                            ctx.closePath();
-                            ctx.stroke();
-                            return patternCanvas;
-                        };
-                        break;
-                    case 'vline':
-                        brush = new PatternBrush(canvas);
-                        brush.getPatternSrc = function () {
-                            const patternCanvas = document.createElement('canvas');
-                            patternCanvas.width = patternCanvas.height = 10;
-                            const ctx = patternCanvas.getContext('2d');
-                            ctx.strokeStyle = this.color;
-                            ctx.lineWidth = 5;
-                            ctx.beginPath();
-                            ctx.moveTo(5, 0);
-                            ctx.lineTo(5, 10);
-                            ctx.closePath();
-                            ctx.stroke();
-                            return patternCanvas;
-                        };
-                        break;
-                    case 'square':
-                        brush = new PatternBrush(canvas);
-                        brush.getPatternSrc = function () {
-                            const squareWidth = 10, squareDistance = 2;
-                            const patternCanvas = document.createElement('canvas');
-                            patternCanvas.width = patternCanvas.height = squareWidth + squareDistance;
-                            const ctx = patternCanvas.getContext('2d');
-                            ctx.fillStyle = this.color;
-                            ctx.fillRect(0, 0, squareWidth, squareWidth);
-                            return patternCanvas;
-                        };
-                        break;
-                    case 'diamond':
-                        brush = new PatternBrush(canvas);
-                        brush.getPatternSrc = function () {
-                            const squareWidth = 10, squareDistance = 5;
-                            const patternCanvas = document.createElement('canvas');
-                            const rect = new Rect({
-                                width: squareWidth,
-                                height: squareWidth,
-                                angle: 45,
-                                fill: this.color
-                            });
-                            const canvasWidth = rect.getBoundingRect().width;
-                            patternCanvas.width = patternCanvas.height = canvasWidth + squareDistance;
-                            rect.set({ left: canvasWidth / 2, top: canvasWidth / 2 });
-                            const ctx = patternCanvas.getContext('2d');
-                            rect.render(ctx);
-                            return patternCanvas;
-                        };
-                        break;
-                    case 'texture':
-                        brush = new PatternBrush(canvas);
-                        const img = new Image();
-                        img.src = '../assets/honey_im_subtle.png';
-                        brush.source = img;
-                        break;
-                    case 'Pencil':
-                        brush = new PencilBrush(canvas);
-                        break;
-                    case 'Circle':
-                        brush = new CircleBrush(canvas);
-                        break;
-                    case 'Spray':
-                        brush = new SprayBrush(canvas);
-                        break;
-                    default:
-                        brush = new PencilBrush(canvas);
-                        break;
-                }
-
-                if (brush) {
-                    canvas.freeDrawingBrush = brush;
-                    brush.color = drawingColorRef.current.value;
-                    brush.width = parseInt(drawingLineWidthRef.current.value, 10) || 1;
-                    brush.shadow = new Shadow({
-                        blur: parseInt(drawingShadowWidthRef.current.value, 10) || 0,
-                        offsetX: 0,
-                        offsetY: 0,
-                        affectStroke: true,
-                        color: drawingShadowColorRef.current.value,
-                    });
-
-                    if (brush.getPatternSrc) {
-                        brush.source = brush.getPatternSrc.call(brush);
-                    }
-                }
-            };
-
-            drawingColorRef.current.onchange = function () {
-                const brush = canvas.freeDrawingBrush;
-                if (brush) {
-                    brush.color = this.value;
-                    if (brush.getPatternSrc) {
-                        brush.source = brush.getPatternSrc.call(brush);
-                    }
-                }
-            };
-
-            drawingShadowColorRef.current.onchange = function () {
-                const brush = canvas.freeDrawingBrush;
-                if (brush && brush.shadow) {
-                    brush.shadow.color = this.value;
-                }
-            };
-
-            drawingLineWidthRef.current.onchange = function () {
-                const brush = canvas.freeDrawingBrush;
-                if (brush) {
-                    brush.width = parseInt(this.value, 10) || 1;
-                    this.previousSibling.innerHTML = this.value;
-                }
-            };
-
-            drawingShadowWidthRef.current.onchange = function () {
-                const brush = canvas.freeDrawingBrush;
-                if (brush && brush.shadow) {
-                    brush.shadow.blur = parseInt(this.value, 10) || 0;
-                    this.previousSibling.innerHTML = this.value;
-                }
-            };
-
-            drawingShadowOffsetRef.current.onchange = function () {
-                const brush = canvas.freeDrawingBrush;
-                if (brush && brush.shadow) {
-                    brush.shadow.offsetX = parseInt(this.value, 10) || 0;
-                    brush.shadow.offsetY = parseInt(this.value, 10) || 0;
-                    this.previousSibling.innerHTML = this.value;
-                }
-            };
+        drawingColorRef.current.onchange = function () {
+            canvas.freeDrawingBrush.color = this.value;
         };
 
-        initializeCanvas();
+        drawingLineWidthRef.current.onchange = function () {
+            const width = parseInt(this.value, 10) || 1;
+            canvas.freeDrawingBrush.width = width;
+        };
+
+        // Load image if editing and imageSrc is provided
+        if (isEditing && imageSrc) {
+            FabricImage.fromURL(imageSrc).then((img) => {
+                canvas.add(img);
+                canvas.renderAll();
+            }).catch((error) => {
+                console.error('Error loading image:', error);
+            });
+        }
 
         return () => {
             canvas.dispose();
         };
-    }, [handleSave]);
+    }, [handleSave, isEditing, imageSrc]);
+
+    // Handle file input change and load the image to the canvas
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                FabricImage.fromURL(e.target.result).then((img) => {
+                    img.scaleToHeight(750);  // Set the image height
+                    img.scaleToWidth(750);   // Set the image width
+                    fabricCanvasRef.current.add(img); // Use the correct canvas instance
+                    fabricCanvasRef.current.renderAll();
+                }).catch((error) => {
+                    console.error('Error loading image:', error);
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <div>
-            <canvas id="c" ref={canvasRef} width={800} height={600} style={{ border: '1px solid #000' }} />
+            <canvas ref={canvasRef} width={800} height={600} style={{ border: '1px solid #000' }} />
             <div>
-                <button ref={drawingModeRef}>Enter drawing mode</button>
-                <div ref={drawingOptionsRef} style={{ display: 'none' }}>
-                    <label>
-                        Brush color:
-                        <input ref={drawingColorRef} type="color" id="drawing-color" />
-                    </label>
-                    <label>
-                        Shadow color:
-                        <input ref={drawingShadowColorRef} type="color" id="drawing-shadow-color" />
-                    </label>
-                    <label>
-                        Line width:
-                        <input ref={drawingLineWidthRef} type="range" id="drawing-line-width" min="0" max="150" />
-                    </label>
-                    <label>
-                        Shadow width:
-                        <input ref={drawingShadowWidthRef} type="range" id="drawing-shadow-width" min="0" max="50" />
-                    </label>
-                    <label>
-                        Shadow offset:
-                        <input ref={drawingShadowOffsetRef} type="range" id="drawing-shadow-offset" min="0" max="50" />
-                    </label>
-                    <select ref={drawingModeSelectorRef} id="drawing-mode-selector">
-                        <option value="Pencil">Pencil</option>
-                        <option value="Circle">Circle</option>
-                        <option value="Spray">Spray</option>
-                        <option value="hline">Horizontal Line</option>
-                        <option value="vline">Vertical Line</option>
-                        <option value="square">Square</option>
-                        <option value="diamond">Diamond</option>
-                        <option value="texture">Texture</option>
-                    </select>
-                </div>
+                <label>
+                    Brush color:
+                    <input ref={drawingColorRef} type="color" />
+                </label>
+                <label>
+                    Line width:
+                    <input ref={drawingLineWidthRef} type="range" min="1" max="100" defaultValue="1" />
+                </label>
+
+                <select onChange={(e) => {
+                    const brushType = e.target.value;
+
+                    if (brushType === 'line') {
+                        let isDrawing = false;
+                        let line = null;
+
+                        fabricCanvasRef.current.off('mouse:down');  // Clear previous events
+                        fabricCanvasRef.current.off('mouse:move');
+
+                        fabricCanvasRef.current.on('mouse:down', (event) => {
+                            if (!isDrawing) {
+                                const pointer = fabricCanvasRef.current.getPointer(event.e);
+                                const points = [pointer.x, pointer.y, pointer.x, pointer.y];
+                                line = new Line(points, {
+                                    strokeWidth: drawingLineWidthRef.current.value,
+                                    fill: drawingColorRef.current.value,
+                                    stroke: drawingColorRef.current.value,
+                                    selectable: false,
+                                    evented: false,
+                                });
+                                fabricCanvasRef.current.add(line);
+                                isDrawing = true;
+                            } else {
+                                isDrawing = false;
+                                line.setCoords();  // Ensure the line gets its final coordinates
+                            }
+                        });
+
+                        fabricCanvasRef.current.on('mouse:move', (event) => {
+                            if (isDrawing && line) {
+                                const pointer = fabricCanvasRef.current.getPointer(event.e);
+                                line.set({ x2: pointer.x, y2: pointer.y });
+                                fabricCanvasRef.current.renderAll();
+                            }
+                        });
+
+                    }  else if (brushType === 'circle') {
+                        let isDrawing = false;
+                        let circle = null;
+                        let startX, startY;
+                
+                        fabricCanvasRef.current.off('mouse:down');  // Clear previous events
+                        fabricCanvasRef.current.off('mouse:move');
+                
+                        fabricCanvasRef.current.on('mouse:down', (event) => {
+                            if (!isDrawing) {
+                                const pointer = fabricCanvasRef.current.getPointer(event.e);
+                                startX = pointer.x;
+                                startY = pointer.y;
+                                circle = new Circle({
+                                    left: startX,
+                                    top: startY,
+                                    radius: 1,  // Start with a small radius
+                                    strokeWidth: drawingLineWidthRef.current.value,
+                                    stroke: drawingColorRef.current.value,
+                                    fill: 'transparent',  // Ensure it only has an outline
+                                    originX: 'center',
+                                    originY: 'center',
+                                    selectable: false,
+                                    evented: false,
+                                });
+                                fabricCanvasRef.current.add(circle);
+                                isDrawing = true;
+                            } else {
+                                isDrawing = false;
+                                circle.setCoords();  // Finalize the circle
+                            }
+                        });
+                
+                        fabricCanvasRef.current.on('mouse:move', (event) => {
+                            if (isDrawing && circle) {
+                                const pointer = fabricCanvasRef.current.getPointer(event.e);
+                                const radius = Math.sqrt(
+                                    Math.pow(pointer.x - startX, 2) + Math.pow(pointer.y - startY, 2)
+                                );
+                                circle.set({ radius });
+                                fabricCanvasRef.current.renderAll();
+                            }
+                        });
+                
+                    } else {
+                        // Default to free drawing mode (or pencil) if not using line tool
+                        fabricCanvasRef.current.off('mouse:down');
+                        fabricCanvasRef.current.off('mouse:move');
+                        let brush;
+                        switch (brushType) {
+                            case 'Pencil':
+                                brush = new PencilBrush(fabricCanvasRef.current);
+                                break;
+                            default:
+                                brush = new PencilBrush(fabricCanvasRef.current);
+                                break;
+                        }
+                        fabricCanvasRef.current.freeDrawingBrush = brush;
+                        fabricCanvasRef.current.isDrawingMode = true;  // Enable free drawing mode
+                    }
+                }}>
+                    <option value="Pencil">Pencil</option>
+                    <option value="line">Line</option>
+                    <option value="circle">Circle</option>
+                </select>
+
+
+                <br />
                 <button ref={clearRef}>Clear</button>
+                <span> </span>
                 <button ref={saveRef}>Save</button>
+                <br />
+                <label>
+                    Upload Image:
+                    <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} />
+                </label>
             </div>
         </div>
     );
