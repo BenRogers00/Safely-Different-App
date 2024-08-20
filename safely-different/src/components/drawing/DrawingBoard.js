@@ -48,7 +48,8 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
         };
 
         drawingLineWidthRef.current.onchange = function () {
-            canvas.freeDrawingBrush.width = parseInt(this.value, 10) || 1;
+            const width = parseInt(this.value, 10) || 1;
+            canvas.freeDrawingBrush.width = width;
         };
 
         // Load image if editing and imageSrc is provided
@@ -95,8 +96,9 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                 </label>
                 <label>
                     Line width:
-                    <input ref={drawingLineWidthRef} type="range" min="0" max="150" />
+                    <input ref={drawingLineWidthRef} type="range" min="1" max="100" defaultValue="1" />
                 </label>
+
                 <select onChange={(e) => {
                     const brushType = e.target.value;
                     let brush;
