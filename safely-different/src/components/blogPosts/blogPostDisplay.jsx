@@ -6,30 +6,30 @@ import CommentTextBox from './writeComment';
 import { readOneDBCallback } from '../../readOneEntry';
 import CommentDisplay from './readAllComments';
 import DrawingComponent from '../drawing/DrawingComponent';
-import EditingDrawingBoard from '../drawing/EditingDrawingBoard'; // Adjust the import path as needed
+import EditingDrawingBoard from '../drawing/EditingDrawingBoard';
 import NavBar from '../UI/HomepageComponents/NavBar';
 import './blogDisplay.css'; 
 
 function BlogDisplay() {
     const [posts, setPosts] = useState([]);
     const [userNames, setUserNames] = useState({});
-    const [openCommentBoxes, setOpenCommentBoxes] = useState({});
+    const [openComments, setOpenComments] = useState({});
     const [editingImage, setEditingImage] = useState(null); // State for the image being edited
     const [editingPostKey, setEditingPostKey] = useState(null); // State for the post being edited
-    const [imageUrl, setImageUrl] = useState(null); // State for the image URL for comments
+    const [imageUrls, setImageUrls] = useState({}); // Track image URLs for each post
 
-  useEffect(() => {
-    const listen = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        readAllPostsCallback(setPosts); // get all posts
-      } else {
-        setPosts([]);
-      }
-    });
-    return () => {
-      listen();
-    };
-  }, []);
+    useEffect(() => {
+        const listen = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                readAllPostsCallback(setPosts); // Get all posts
+            } else {
+                setPosts([]);
+            }
+        });
+        return () => {
+            listen();
+        };
+    }, []);
 
     useEffect(() => {
         const fetchUserNames = () => {
@@ -47,31 +47,35 @@ function BlogDisplay() {
         }
     }, [posts]);
 
-  // Get the path to use when getting info from the database
-  function getStrippedPath(inputString) {
-    const parts = inputString.split("/");
-    parts.splice(0, 3); // Remove first 3 parts
-    const path = parts.join("/");
-    return path;
-  }
+    // Get the path to use when getting info from the database
+    function getStrippedPath(inputString) {
+        const parts = inputString.split("/");
+        parts.splice(0, 3); // Remove first 3 parts
+        const path = parts.join("/");
+        return path;
+    }
 
-  // Function to show/hide the comment text box
-  function toggleCommentBox(key) {
-    setOpenCommentBoxes((prevState) => ({
-      ...prevState,
-      [key]: !prevState[key],
-    }));
-  }
+    // Function to show/hide the comment section
+    function toggleComments(postKey) {
+        setOpenComments((prevState) => ({
+            ...prevState,
+            [postKey]: !prevState[postKey],
+        }));
+    }
 
+    // Handle setting the image URL for a specific post
     function handleEditImage(imageSrc, postKey) {
         setEditingImage(imageSrc);
         setEditingPostKey(postKey);
+        setImageUrls((prevState) => ({
+            ...prevState,
+            [postKey]: imageSrc // Only set the image for the specific post
+        }));
     }
 
     return (
         <div>
             <NavBar Mobile={false} />
-
             <div id="blogDisp">
                 <h1>Blog Display</h1>
                 {posts.map(post => (
@@ -90,18 +94,27 @@ function BlogDisplay() {
                                     <EditingDrawingBoard 
                                         imageSrc={editingImage} 
                                         ref={null} 
-                                        saveDrawing={setImageUrl}  // Set the image URL to be passed to CommentTextBox
+                                        saveDrawing={(imageUrl) => handleEditImage(imageUrl, post.key)}  // Set the image URL for this post
                                     />
                                     <button onClick={() => setEditingPostKey(null)}>Close Editor</button>
                                 </div>
                             )}
-                            <button onClick={() => toggleCommentBox(post.key)}>Show Comments</button><br />
-                            {openCommentBoxes[post.key] && (
-                                <CommentTextBox path={getStrippedPath(post.postRef)} imageUrl={imageUrl} />  // Pass imageUrl to CommentTextBox
-                            )}
-                        </div>
-                        <div id="comments">
-                            {openCommentBoxes[post.key] && (
+
+                            {/* Comment input field always visible */}
+                            <CommentTextBox 
+                                path={getStrippedPath(post.postRef)} 
+                                imageUrl={imageUrls[post.key]} // Only pass the image for this post
+                                toggleCommentBox={() => toggleComments(post.key)} 
+                                postId={post.key} 
+                            />
+
+                            {/* Button to show/hide the comments */}
+                            <button onClick={() => toggleComments(post.key)}>
+                                {openComments[post.key] ? 'Hide Comments' : 'Show Comments'}
+                            </button>
+
+                            {/* Only show the comments if they are toggled open */}
+                            {openComments[post.key] && (
                                 <CommentDisplay key={`comment-${post.key}`} postId={post.key} />
                             )}
                         </div>
@@ -111,6 +124,5 @@ function BlogDisplay() {
         </div>
     );
 }
-
 
 export default BlogDisplay;
