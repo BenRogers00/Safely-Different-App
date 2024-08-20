@@ -25,8 +25,7 @@ function NavBar(props) {
   };
 
   const isAdmin = authUser && ReadOneDB(`users/${authUser.uid}/privileges`) === "admin";
-  console.log("is admin? " + isAdmin)
-
+  
   return (
     <>
       <nav className="  flex items-center ">
