@@ -33,7 +33,6 @@ function App() {
               <Route path="/memberPricing" element={<ProtectedRoute><Payment /></ProtectedRoute>}/>
               <Route path="/MyEditor" element={<ProtectedRoute><MyEditor /></ProtectedRoute>}/>
               <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>}/>
-
             </Routes>
           </AuthDetails>
         </Router>
