@@ -8,12 +8,16 @@ function AdminPage() {
   const isAdmin =
     authUser && ReadOneDB(`users/${authUser.uid}/privileges`) === "admin";
 
-    //check if user is an admin, display admin page if they are
-  if (isAdmin) {
-    return <h1>ADMIN PAGE</h1>;
-  } else
-  //if user not an admin, display appropriate error message 
-    return <h1>Not an admin account, access denied</h1>;
+  //check if user is an admin, display admin page if they are
+  return (
+    <div id="adminPage">
+      {isAdmin ? (
+        <h1 style={{color:"white"}}>ADMIN PAGE</h1>
+      ) : (
+        <h1 style={{color:"red"}}>Not an admin account, access denied</h1>
+      )}
+    </div>
+  );
 }
 
 export default AdminPage;
