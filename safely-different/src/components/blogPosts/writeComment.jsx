@@ -4,8 +4,7 @@ import { ref, get } from 'firebase/database';
 import WriteToDatabase from '../../databaseWriting';
 import { ReturnEmail } from '../UsersDetails';
 
-
-function CommentTextBox({ path, imageUrl }) {
+function CommentTextBox({ path, imageUrl, toggleCommentBox, postId }) {
     const [userEmail, setUserEmail] = useState('');
     const [comment, setComment] = useState('');
 
@@ -31,32 +30,38 @@ function CommentTextBox({ path, imageUrl }) {
             const commentPath = path + "/comments/" + length;
             WriteToDatabase({ dataInput, path: commentPath + "/text" });
             WriteToDatabase({ dataInput: userEmail, path: commentPath + "/user" });
-            // Save the image if there is one
             if (imageUrl) {
                 WriteToDatabase({ dataInput: imageUrl, path: commentPath + "/image" });
             }
         }).catch((error) => {
             console.error('Error reading data:', error);
         });
+
+        if (toggleCommentBox) {
+            toggleCommentBox();
+        }
     };
 
     return (
-        //style and display the comment text area
         <div>
-        <div style={{color:'black'}} id='commentTextArea'>
-            <br/>
-            <input
-                type="textarea"
-                value={comment}
-                onChange={handleInputChange}
-                placeholder="Enter your comment"
-                style={{float:"left", marginLeft:'10%', padding:'5px'}}
-            />
-            <br/><br/>
+            <div style={{color:'black'}} id='commentTextArea'>
+                <br/>
+                {/* Display drawing miniature if available */}
+                {imageUrl && (
+                    <div style={{ margin: '10px', border: '1px solid #ccc', display: 'inline-block' }}>
+                        <img src={imageUrl} alt="Miniature drawing" style={{ width: '100px', height: '100px', objectFit: 'contain' }} />
+                    </div>
+                )}
+                <input
+                    type="textarea"
+                    value={comment}
+                    onChange={handleInputChange}
+                    placeholder="Enter your comment"
+                    style={{float:"left", marginLeft:'10%', padding:'5px'}}
+                />
+                <br/><br/>
             </div>
-            {/*button to submit the comment */}
-            <button id="postComment"onClick={handleSubmit}
-            >Post Comment</button>
+            <button id="postComment" onClick={handleSubmit}>Post Comment</button>
         </div>
     );
 }

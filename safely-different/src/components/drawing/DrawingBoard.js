@@ -206,7 +206,10 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                 <br />
                 <button ref={clearRef}>Clear</button>
                 <span> </span>
-                <button ref={saveRef}>Save</button>
+                <button ref={saveRef}>Attach Drawing</button>
+                <p style={{ fontSize: '12px', color: '#888' }}>
+                    Make sure to attach the drawing before posting.
+                </p>
                 <br />
                 <label>
                     Upload Image:
