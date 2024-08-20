@@ -14,6 +14,7 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
     const drawingLineWidthRef = useRef(null);
     const clearRef = useRef(null);
     const saveRef = useRef(null);
+    const fileInputRef = useRef(null);
 
     const handleSave = useCallback(async () => {
         const canvas = fabricCanvasRef.current;
@@ -30,6 +31,7 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
         saveDrawing: handleSave
     }));
 
+    // Initialize the canvas and tools
     useEffect(() => {
         const canvas = new Canvas(canvasRef.current, { isDrawingMode: true });
         fabricCanvasRef.current = canvas;
@@ -63,6 +65,25 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
             canvas.dispose();
         };
     }, [handleSave, isEditing, imageSrc]);
+
+    // Handle file input change and load the image to the canvas
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                FabricImage.fromURL(e.target.result).then((img) => {
+                    img.scaleToHeight(750);  // Set the image height
+                    img.scaleToWidth(750);   // Set the image width
+                    fabricCanvasRef.current.add(img); // Use the correct canvas instance
+                    fabricCanvasRef.current.renderAll();
+                }).catch((error) => {
+                    console.error('Error loading image:', error);
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     return (
         <div>
@@ -126,6 +147,11 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                 <button ref={clearRef}>Clear</button>
                 <span> </span>
                 <button ref={saveRef}>Save</button>
+                <br />
+                <label>
+                    Upload Image:
+                    <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} />
+                </label>
             </div>
         </div>
     );
