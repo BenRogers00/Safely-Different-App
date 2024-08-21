@@ -17,7 +17,7 @@ import AdminPage from './components/admin/adminPage.jsx';
 
 function App() {
   return (
-    <div  style={{backgroundColor:'#282c34'}}>
+    <div  /*style={{backgroundColor:'#282c34'}}*/>
       <div className="App">
         <Router>
           <AuthDetails>
@@ -31,7 +31,7 @@ function App() {
               <Route path="/blogPosts" element={<ProtectedRoute><BlogDisplay /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>}/>
               <Route path="/memberPricing" element={<ProtectedRoute><Payment /></ProtectedRoute>}/>
-              <Route path="/MyEditor" element={<ProtectedRoute><MyEditor /></ProtectedRoute>}/>
+              {/*<Route path="/MyEditor" element={<ProtectedRoute><MyEditor /></ProtectedRoute>}/>*/}
               <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>}/>
             </Routes>
           </AuthDetails>
