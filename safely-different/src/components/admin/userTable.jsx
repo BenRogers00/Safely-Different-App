@@ -81,6 +81,10 @@ const TableDisplay = () => {
               <td>{data[userId].privileges}</td>
               <td>{userId}</td>
               <td>
+                {(data[userId].privileges === "Admin" || data[userId].privileges === "admin") ? (
+                  <p>Admin</p>
+                )
+                :(
                 <select
                   value={data[userId].privileges}
                   onChange={(event) => handleSelectChange(userId, event)}
@@ -92,6 +96,7 @@ const TableDisplay = () => {
                     </option>
                   ))}
                 </select>
+                )}
               </td>
             </tr>
           ))}
