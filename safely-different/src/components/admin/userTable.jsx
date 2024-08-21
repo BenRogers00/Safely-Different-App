@@ -1,27 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { database } from "../../firebase/firebase";
 import { ref, onValue } from "firebase/database";
 import "./styleAdminTable.css";
 import WriteToDatabase from "../../databaseWriting";
+import { AuthContext } from "../AuthDetails";
+
 
 const TableDisplay = () => {
   //data for the dropdown menu for privilege changes
   const [data, setData] = useState({});
+  const { authUser } = useContext(AuthContext);
+  const currentUserID = authUser.uid;
+  console.log(currentUserID)
   const privilegeOptions = [
+    
     {
       value: 1,
-      label: "Select",
-    },
-    {
-      value: 2,
       label: "Free",
     },
     {
-      value: 3,
+      value: 2,
       label: "Paid",
     },
     {
-      value: 4,
+      value: 3,
       label: "Admin",
     },
   ];
@@ -81,7 +83,7 @@ const TableDisplay = () => {
               <td>{data[userId].privileges}</td>
               <td>{userId}</td>
               <td>
-                {(data[userId].privileges === "Admin" || data[userId].privileges === "admin") ? (
+                {(data[userId].privileges === "Admin" || data[userId].privileges === "admin") && userId === currentUserID ? ( 
                   <p>Admin</p>
                 )
                 :(
