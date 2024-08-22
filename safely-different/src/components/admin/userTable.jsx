@@ -11,19 +11,19 @@ const TableDisplay = () => {
   const [data, setData] = useState({});
   const { authUser } = useContext(AuthContext);
   const currentUserID = authUser.uid;
-  const isAdmin = authUser && (ReadOneDB(`users/${authUser.uid}/privileges`) === "admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "owner" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Owner");
+  const isAdmin = authUser && (ReadOneDB(`users/${authUser.uid}/privileges`) === "admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Admin");
   const isOwner = authUser && (ReadOneDB(`users/${authUser.uid}/privileges`) === "owner" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Owner");
   const [privilegeOptions, setPrivilegeOptions] = useState([]);
 
   useEffect(() => {
+    //update options array so admins can add admins, but only owners can add owners
     const options = [
       { value: 1, label: "Free" },
       { value: 2, label: "Paid" },
+      { value: 3, label: "Admin" }
     ];
-    console.log(isOwner)
     if (isOwner) {
       options.push(
-        { value: 3, label: "Admin" },
         { value: 4, label: "Owner" }
       );
     }

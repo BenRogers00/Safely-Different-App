@@ -1,16 +1,18 @@
-import AuthDetails, { AuthContext } from "../AuthDetails";
-import ReadOneDB from "../../readOneEntry";
 import { useContext } from "react";
+import { AuthContext } from "../AuthDetails";
+import useReadOneDB from "../../readOneEntry";
 import NavBar from "../UI/HomepageComponents/NavBar";
 import TableDisplay from "./userTable";
 
 function AdminPage() {
   const { authUser } = useContext(AuthContext);
-  const username = ReadOneDB(`users/${authUser.uid}/displayName`);
+  const username = useReadOneDB(`users/${authUser?.uid}/displayName`);
+  const privileges = useReadOneDB(`users/${authUser?.uid}/privileges`);
 
-  //check if user is admin variable
-  const isAdmin = authUser && (ReadOneDB(`users/${authUser.uid}/privileges`) === "admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "owner" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Owner");
-  //make whole page red if user is not admin, and display clearly that access is denied
+  //check user has access (if they are owner or admin)
+  const hasAccess =
+    privileges === "admin" || privileges === "Admin" || privileges === "owner" || privileges === "Owner";
+
   const errorStyles = {
     padding: "20px",
     borderRadius: "8px",
@@ -24,25 +26,23 @@ function AdminPage() {
     fontFamily: "'Arial', sans-serif",
   };
 
-  //check if user is an admin, display admin page
   return (
     <div id="adminPage">
       <NavBar />
-      {isAdmin ? (
+      {hasAccess ? (
         <div id="adminSuccess">
-          <h1>
-            Hello {username}, welcome to the admin dashboard!
-          </h1>
-          {/**
+          <br/>
+          <h1>Hello {username}, welcome to the admin dashboard!</h1>
+          <TableDisplay />
+            {/**
            * TODO: add users table as dropdown, including upgrading privileges
            *       add admin profile
            *       visits to the page in last week?
            *
            */}
-
-           <TableDisplay/>
         </div>
       ) : (
+        //display error if a non-admin/owner attempts to access the admin page
         <h1 style={errorStyles}>Not an admin account, access denied</h1>
       )}
     </div>
