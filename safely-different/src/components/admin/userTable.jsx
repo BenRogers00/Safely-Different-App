@@ -1,30 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { database } from "../../firebase/firebase";
 import { ref, onValue } from "firebase/database";
 import "./styleAdminTable.css";
 import WriteToDatabase from "../../databaseWriting";
+import { AuthContext } from "../AuthDetails";
+import ReadOneDB from "../../readOneEntry";
 
 const TableDisplay = () => {
   //data for the dropdown menu for privilege changes
   const [data, setData] = useState({});
-  const privilegeOptions = [
-    {
-      value: 1,
-      label: "Select",
-    },
-    {
-      value: 2,
-      label: "Free",
-    },
-    {
-      value: 3,
-      label: "Paid",
-    },
-    {
-      value: 4,
-      label: "Admin",
-    },
-  ];
+  const { authUser } = useContext(AuthContext);
+  const currentUserID = authUser.uid;
+  const isAdmin =
+    authUser &&
+    (ReadOneDB(`users/${authUser.uid}/privileges`) === "admin" ||
+      ReadOneDB(`users/${authUser.uid}/privileges`) === "Admin");
+  const isOwner =
+    authUser &&
+    (ReadOneDB(`users/${authUser.uid}/privileges`) === "owner" ||
+      ReadOneDB(`users/${authUser.uid}/privileges`) === "Owner");
+  const [privilegeOptions, setPrivilegeOptions] = useState([]);
+
+  useEffect(() => {
+    //update options array so admins can add admins, but only owners can add owners
+    const options = [
+      { value: 1, label: "Free" },
+      { value: 2, label: "Paid" },
+      { value: 3, label: "Admin" },
+    ];
+    if (isOwner) {
+      options.push({ value: 4, label: "Owner" });
+    }
+
+    setPrivilegeOptions(options);
+  }, [isOwner]);
 
   //handle a change in privilege
   const handleSelectChange = (userId, event) => {
@@ -44,7 +53,7 @@ const TableDisplay = () => {
         //if user found, save the data in a variable
         if (snapshot.exists()) {
           const usersData = snapshot.val();
-          setData(usersData); 
+          setData(usersData);
         } else {
           console.log("No data available");
         }
@@ -55,7 +64,7 @@ const TableDisplay = () => {
 
     return () => {
       const usersRef = ref(database, "users");
-      onValue(usersRef, () => {}); 
+      onValue(usersRef, () => {});
     };
   }, []);
 
@@ -81,21 +90,22 @@ const TableDisplay = () => {
               <td>{data[userId].privileges}</td>
               <td>{userId}</td>
               <td>
-                {(data[userId].privileges === "Admin" || data[userId].privileges === "admin") ? (
-                  <p>Admin</p>
-                )
-                :(
-                <select
-                  value={data[userId].privileges}
-                  onChange={(event) => handleSelectChange(userId, event)}
-                >
-                  {privilegeOptions.map((option) => (
-                    //dropdown menu for an admin to manually change the privilege of a user
-                    <option key={option.value} value={option.label}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+                {userId === currentUserID ? (
+                  <p>{data[userId].privileges}</p>
+                ) : { isOwner } ? (
+                  <select
+                    value={data[userId].privileges}
+                    onChange={(event) => handleSelectChange(userId, event)}
+                  >
+                    {privilegeOptions.map((option) => (
+                      //dropdown menu for an admin to manually change the privilege of a user
+                      <option key={option.value} value={option.label}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <p>{data[userId].privileges}</p>
                 )}
               </td>
             </tr>

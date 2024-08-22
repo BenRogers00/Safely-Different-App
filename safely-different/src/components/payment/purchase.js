@@ -1,12 +1,13 @@
 import PayPal from "./PayPal";
 import React, { useState } from 'react';
 import './payment.css';
-
+import NavBar from "../UI/HomepageComponents/NavBar";
 const Purchase = () => {
     const [checkout, setCheckout] = useState(false);
 
     return (
         <div>
+            <NavBar/>
             <h1>PayPal Mock</h1>
 
             <div className="description">
