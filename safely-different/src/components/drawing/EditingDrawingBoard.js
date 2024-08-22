@@ -2,7 +2,7 @@
 // The component takes the drawingRef to identify the drawing in the db and renders the image inside the canvas. 
 
 import React, { forwardRef } from 'react';
-import DrawingBoard from './DrawingBoard'; // Assuming path adjustment is needed
+import DrawingBoard from './DrawingBoard';
 
 const EditingDrawingBoard = forwardRef((props, ref) => {
     const { imageSrc, saveDrawing } = props;
