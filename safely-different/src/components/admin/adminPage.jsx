@@ -9,9 +9,7 @@ function AdminPage() {
   const username = ReadOneDB(`users/${authUser.uid}/displayName`);
 
   //check if user is admin variable
-  const isAdmin =
-    authUser && (ReadOneDB(`users/${authUser.uid}/privileges`) === "admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Admin");
-
+  const isAdmin = authUser && (ReadOneDB(`users/${authUser.uid}/privileges`) === "admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "owner" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Owner");
   //make whole page red if user is not admin, and display clearly that access is denied
   const errorStyles = {
     padding: "20px",

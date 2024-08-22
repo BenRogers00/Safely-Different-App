@@ -30,7 +30,7 @@ function NavBar(props) {
     });
   };
 
-  const isAdmin = authUser && (ReadOneDB(`users/${authUser.uid}/privileges`) === "admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Admin");
+  const isAdmin = authUser && (ReadOneDB(`users/${authUser.uid}/privileges`) === "admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "owner" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Owner");
   
   return (
     <>
