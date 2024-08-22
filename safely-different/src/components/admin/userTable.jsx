@@ -4,29 +4,33 @@ import { ref, onValue } from "firebase/database";
 import "./styleAdminTable.css";
 import WriteToDatabase from "../../databaseWriting";
 import { AuthContext } from "../AuthDetails";
-
+import ReadOneDB from "../../readOneEntry";
 
 const TableDisplay = () => {
   //data for the dropdown menu for privilege changes
   const [data, setData] = useState({});
   const { authUser } = useContext(AuthContext);
   const currentUserID = authUser.uid;
-  console.log(currentUserID)
-  const privilegeOptions = [
-    
-    {
-      value: 1,
-      label: "Free",
-    },
-    {
-      value: 2,
-      label: "Paid",
-    },
-    {
-      value: 3,
-      label: "Admin",
-    },
-  ];
+  const isAdmin = authUser && (ReadOneDB(`users/${authUser.uid}/privileges`) === "admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "owner" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Owner");
+  const isOwner = authUser && (ReadOneDB(`users/${authUser.uid}/privileges`) === "owner" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Owner");
+  const [privilegeOptions, setPrivilegeOptions] = useState([]);
+
+  useEffect(() => {
+    const options = [
+      { value: 1, label: "Free" },
+      { value: 2, label: "Paid" },
+    ];
+    console.log(isOwner)
+    if (isOwner) {
+      options.push(
+        { value: 3, label: "Admin" },
+        { value: 4, label: "Owner" }
+      );
+    }
+
+    setPrivilegeOptions(options);
+  }, [isOwner]);
+
 
   //handle a change in privilege
   const handleSelectChange = (userId, event) => {
@@ -83,10 +87,11 @@ const TableDisplay = () => {
               <td>{data[userId].privileges}</td>
               <td>{userId}</td>
               <td>
-                {(data[userId].privileges === "Admin" || data[userId].privileges === "admin") && userId === currentUserID ? ( 
-                  <p>Admin</p>
+                {userId === currentUserID ? ( 
+                  <p>{data[userId].privileges}</p>
                 )
                 :(
+                  {isOwner} ?(
                 <select
                   value={data[userId].privileges}
                   onChange={(event) => handleSelectChange(userId, event)}
@@ -98,7 +103,10 @@ const TableDisplay = () => {
                     </option>
                   ))}
                 </select>
-                )}
+                ) : (
+                  <p>{data[userId].privileges}</p>
+                )
+              )}
               </td>
             </tr>
           ))}
