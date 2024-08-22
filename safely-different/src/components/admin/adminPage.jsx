@@ -11,7 +11,10 @@ function AdminPage() {
 
   //check user has access (if they are owner or admin)
   const hasAccess =
-    privileges === "admin" || privileges === "Admin" || privileges === "owner" || privileges === "Owner";
+    privileges === "admin" ||
+    privileges === "Admin" ||
+    privileges === "owner" ||
+    privileges === "Owner";
 
   const errorStyles = {
     padding: "20px",
@@ -31,14 +34,12 @@ function AdminPage() {
       <NavBar />
       {hasAccess ? (
         <div id="adminSuccess">
-          <br/>
+          <br />
           <h1>Hello {username}, welcome to the admin dashboard!</h1>
           <TableDisplay />
-            {/**
-           * TODO: add users table as dropdown, including upgrading privileges
-           *       add admin profile
+          {/**
+           * TODO: add feature for admin to upload documents for download
            *       visits to the page in last week?
-           *
            */}
         </div>
       ) : (
