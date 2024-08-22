@@ -11,8 +11,14 @@ const TableDisplay = () => {
   const [data, setData] = useState({});
   const { authUser } = useContext(AuthContext);
   const currentUserID = authUser.uid;
-  const isAdmin = authUser && (ReadOneDB(`users/${authUser.uid}/privileges`) === "admin" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Admin");
-  const isOwner = authUser && (ReadOneDB(`users/${authUser.uid}/privileges`) === "owner" || ReadOneDB(`users/${authUser.uid}/privileges`) === "Owner");
+  const isAdmin =
+    authUser &&
+    (ReadOneDB(`users/${authUser.uid}/privileges`) === "admin" ||
+      ReadOneDB(`users/${authUser.uid}/privileges`) === "Admin");
+  const isOwner =
+    authUser &&
+    (ReadOneDB(`users/${authUser.uid}/privileges`) === "owner" ||
+      ReadOneDB(`users/${authUser.uid}/privileges`) === "Owner");
   const [privilegeOptions, setPrivilegeOptions] = useState([]);
 
   useEffect(() => {
@@ -20,17 +26,14 @@ const TableDisplay = () => {
     const options = [
       { value: 1, label: "Free" },
       { value: 2, label: "Paid" },
-      { value: 3, label: "Admin" }
+      { value: 3, label: "Admin" },
     ];
     if (isOwner) {
-      options.push(
-        { value: 4, label: "Owner" }
-      );
+      options.push({ value: 4, label: "Owner" });
     }
 
     setPrivilegeOptions(options);
   }, [isOwner]);
-
 
   //handle a change in privilege
   const handleSelectChange = (userId, event) => {
@@ -50,7 +53,7 @@ const TableDisplay = () => {
         //if user found, save the data in a variable
         if (snapshot.exists()) {
           const usersData = snapshot.val();
-          setData(usersData); 
+          setData(usersData);
         } else {
           console.log("No data available");
         }
@@ -61,7 +64,7 @@ const TableDisplay = () => {
 
     return () => {
       const usersRef = ref(database, "users");
-      onValue(usersRef, () => {}); 
+      onValue(usersRef, () => {});
     };
   }, []);
 
@@ -87,26 +90,23 @@ const TableDisplay = () => {
               <td>{data[userId].privileges}</td>
               <td>{userId}</td>
               <td>
-                {userId === currentUserID ? ( 
+                {userId === currentUserID ? (
                   <p>{data[userId].privileges}</p>
-                )
-                :(
-                  {isOwner} ?(
-                <select
-                  value={data[userId].privileges}
-                  onChange={(event) => handleSelectChange(userId, event)}
-                >
-                  {privilegeOptions.map((option) => (
-                    //dropdown menu for an admin to manually change the privilege of a user
-                    <option key={option.value} value={option.label}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+                ) : { isOwner } ? (
+                  <select
+                    value={data[userId].privileges}
+                    onChange={(event) => handleSelectChange(userId, event)}
+                  >
+                    {privilegeOptions.map((option) => (
+                      //dropdown menu for an admin to manually change the privilege of a user
+                      <option key={option.value} value={option.label}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
                 ) : (
                   <p>{data[userId].privileges}</p>
-                )
-              )}
+                )}
               </td>
             </tr>
           ))}
