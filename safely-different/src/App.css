@@ -5,6 +5,7 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  transform: scale(1.9);
 }
 
 .App-header {
@@ -228,4 +229,36 @@ textarea {
   width: 100%;
   overflow: hidden;
   overflow-y: auto;
+}
+
+/* Additional CSS code */
+
+.App-header {
+  min-height: 100vh;
+}
+
+textarea {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.loginPage {
+  background-color: #f2f2f2;
+}
+
+.loginPage p {
+  color: #333;
+}
+
+.homePage .post {
+  border: 1px solid #ccc;
+}
+
+.postHeader .title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.deletePost button {
+  color: red;
 }

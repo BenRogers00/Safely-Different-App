@@ -195,3 +195,93 @@ button:hover {
   font-size: 24px;
   cursor: pointer;
 }
+
+/* Additional CSS code */
+
+/* Styling for the blog post title */
+.blogPostTitle {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+/* Styling for the blog post date */
+.blogPostDate {
+  font-size: 0.8rem;
+  color: #777;
+  margin-bottom: 0.5rem;
+}
+
+/* Styling for the blog post content */
+.blogPostContent {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+/* Styling for the comments section */
+.commentsSection {
+  margin-top: 20px;
+}
+
+/* Styling for the comment */
+.comment {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Styling for the comment author */
+.commentAuthor {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Styling for the comment content */
+.commentContent {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* Styling for the comment date */
+.commentDate {
+  font-size: 0.8rem;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+/* Styling for the comment form */
+.commentForm {
+  margin-top: 20px;
+}
+
+/* Styling for the comment input */
+.commentInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Styling for the comment submit button */
+.commentSubmit {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.commentSubmit:hover {
+  background-color: #0056b3;
+}
