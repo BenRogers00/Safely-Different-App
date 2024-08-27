@@ -6,12 +6,12 @@
 function AboutUs() {
     return (
       <>
-        <div className="dark:text-gray-300 text-dark-blue font-semibold md:grid md:grid-cols-8 md:gap-20">
+        <div className="dark:text-white text-black font-semibold md:grid md:grid-cols-8 md:gap-20">
        
           <div className="w-full h-auto md:col-start-2 col-span-3">
-            <div className="w-full text-[50px] ">
+            <div className="w-full text-[200px] ">
              
-              <h1 className="text-start ml-5">About Us</h1>
+              <h1 className="text-start ml-5 text-black">About Us</h1>
             </div>
   
             <div className="ml-5 text-start">
@@ -56,13 +56,13 @@ function AboutUs() {
             </div>
   
             <div className="text-start ">
-              <button className=" ml-5 font-serif text-20 mt-3 mb-3 py-1 px-4 font-extrabold bg-purple-500 rounded-[14px] hover:bg-violet-400 ">
+              <button className=" ml-5 font-serif text-20 mt-3 mb-3 py-1 px-4 font-extrabold bg-teal-500 rounded-[14px] hover:bg-teal-400 ">
                 Get in Touch
               </button>
             </div>
           </div>
   
-          <div className="w-full md:col-span-3 flex justify-center items-center ">
+          <div className="w-full md: ">
             <img
               src="images/workplace.png"
               alt="workplace"

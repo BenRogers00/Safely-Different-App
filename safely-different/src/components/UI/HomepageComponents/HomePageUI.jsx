@@ -30,10 +30,13 @@ function HomePageUI() {
    }
   },[windowSize])
   return (
-    <div className="overflow-y-auto overflow-x-hidden h-screen px-4 py-8 bg-gradient-to-b dark:from-purple-700 to purple-900 from-slate-200 to bg-slate-400">
+<<<<<<< HEAD
+    <div className="overflow-y-auto overflow-x-hidden h-screen px-4 py-8 bg-gradient-to-b dark:from-teal-700 to bg-teal-300 from-slate-200 to bg-slate-400">
+=======
+    <div className="overflow-y-auto overflow-x-hidden h-screen px-4 py-8 bg-gradient-to-b dark:from-teal-500 to bg-teal-300 from-slate-200 to bg-slate-400">
+>>>>>>> 98193cc3bd47a3e44eeaa03a35ec0f76068d3773
       <NavBar Mobile ={isMobile}/> {/* putting props inside mobile */}
       <Slogan/>
-      <AboutUs/>
       <PricePanel/>
       
 
