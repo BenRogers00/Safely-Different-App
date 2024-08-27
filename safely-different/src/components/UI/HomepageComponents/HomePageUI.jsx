@@ -19,7 +19,7 @@ function HomePageUI() {
    };
    window.addEventListener("resize", handleSize);
    handleSize();
-   return () => window.removeEventListener("resize", handleSize); // code clenliness and optimism
+   return () => window.removeEventListener("resize", handleSize); // code cleanliness and optimism
   },[]); // finding the size of window size, dependency not calling useEffect again when it is a call back(when there is a change in state or props)
    
   useEffect(()=>{
