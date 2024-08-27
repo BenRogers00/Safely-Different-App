@@ -87,7 +87,7 @@ function NavBar(props) {
             <div className="flex ">
               <li className="mx-2"><Link to="/">Home</Link></li>
               <li className="mx-2"><Link to="/price">Subscribe</Link></li>
-              <li className="mx-2"><Link to="/about">About</Link></li>
+              <li className="mx-2"><Link to="/about us">About</Link></li>
               <li className="mx-2"><Link to="/blogWriter">Make Post</Link></li>
               <li className="mx-2"><Link to="/blogPosts">View Posts</Link></li>
               {authUser ? (
