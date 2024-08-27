@@ -76,8 +76,9 @@ function BlogDisplay() {
     return (
         <div>
             <NavBar Mobile={false} />
+            <h1 style={{fontSize:'3em'}}>User Posts</h1>
+            <h2>See what users are talking about!</h2>
             <div id="blogDisp">
-                <h1>Blog Display</h1>
                 {posts.map(post => (
                     <div key={post.key}>
                         <div id='blogPost'>

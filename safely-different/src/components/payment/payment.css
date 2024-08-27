@@ -1,36 +1,76 @@
-.description {
-    margin: 20px 0;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Light grey background for the whole page */
 }
 
-.description h2 {
+h1 {
+    text-align: center;
+    color: #333; /* Dark grey color for the heading */
+    margin-top: 20px;
+}
+
+h2 {
+    color: #333; /* Dark grey color for subheadings */
     margin-bottom: 10px;
-    font-size: 24px;
-    color: #333;
+    font-size: 1.9em;
 }
 
-.description p {
-    margin-bottom: 15px;
+p {
+    color: #555; /* Medium grey color for text */
     line-height: 1.6;
-    font-size: 16px;
-    color: #555;
 }
 
-.description ul {
-    padding-left: 20px;
-    list-style-type: disc;
-    margin-bottom: 15px;
+ul {
+    list-style-type: none; /* Removes bullet points */
+    padding: 0;
+    margin: 20px 0;
 }
 
 .description li {
-    margin-bottom: 8px;
-    font-size: 16px;
-    color: #555;
+    font-style: italic;
+    color: black;
 }
 
-.paypalButton {
-    background-color: aqua;
+/* Description Container */
+.description {
+    max-width: 70%; /* Limits the width of the content */
+    margin: 20px auto; /* Centers the content horizontally */
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* PayPal Button Container */
+#paypalButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa; /* Light grey background */
+    border: 1px solid #dee2e6;  /* Light border */
+    border-radius: 8px;         /* Rounded corners */
+    padding: 20px;              /* Padding inside the div */
+    width: 900px;               /* Fixed width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin: 20px auto;          /* Centers the div horizontally and adds top margin */
+}
+
+/* Button Styles */
+button {
+    background-color: #007bff; /* Blue background for the button */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue when hovering */
 }

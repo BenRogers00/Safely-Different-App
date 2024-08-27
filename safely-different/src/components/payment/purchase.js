@@ -8,10 +8,10 @@ const Purchase = () => {
     return (
         <div>
             <NavBar/>
-            <h1>PayPal Mock</h1>
+            <h1>Upgrade to Premium!</h1>
 
             <div className="description">
-                <h2>Purchase Your Plan</h2>
+                <h2>Extra Access!</h2>
                 <p>
                     Unlock exclusive features and benefits by purchasing our premium plan.
                     Enjoy seamless integration, priority support, and access to all updates.
@@ -25,9 +25,9 @@ const Purchase = () => {
                     Get started today and take your experience to the next level with our premium plan!
                 </p>
             <div id="paypalButton">
-                {checkout ? (
+                {/* {checkout ? ( */}
                 <PayPal />
-            ) : (
+            {/* ) : (
                 <button 
                     onClick={() => { 
                         setCheckout(true);
@@ -36,7 +36,7 @@ const Purchase = () => {
                 >
                     Buy Plan
                 </button>
-            )}
+            )} */}
             </div>
         </div>
             
