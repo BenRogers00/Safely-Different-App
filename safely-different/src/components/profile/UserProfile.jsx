@@ -108,7 +108,7 @@ const UserProfile = () => {
   };
 
   return (
-    <div>
+    <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600">
       <NavBar Mobile ={false}/> {/* putting props inside mobile */}
       <div id="profile">
         <h1>Your Profile</h1>

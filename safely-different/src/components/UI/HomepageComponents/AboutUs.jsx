@@ -8,7 +8,7 @@ function AboutUs() {
     return (
       <>
       <NavBar></NavBar>
-        <div className="dark:text-white text-black font-semibold md:grid md:grid-cols-8 md:gap-20">
+        <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600">
        
           <div className="w-full h-auto md:col-start-2 col-span-3">
             <div className="w-full text-[200px] ">

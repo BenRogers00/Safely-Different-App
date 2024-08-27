@@ -11,7 +11,6 @@ import BlogWriter from './components/blogPosts/blogWriter';
 import BlogDisplay from './components/blogPosts/blogPostDisplay.jsx';
 import Payment from './components/payment/Payment';
 import DrawingBoard from './components/drawing/DrawingBoard';
-import MyEditor from './components/blogPosts/MyEditor';
 import PayPal from './components/payment/purchase.js';
 import AdminPage from './components/admin/adminPage.jsx';
 import AboutUs from './components/UI/HomepageComponents/AboutUs.jsx';
@@ -31,7 +30,6 @@ function App() {
               <Route path="/blogPosts" element={<ProtectedRoute><BlogDisplay /></ProtectedRoute>} />
               <Route path="/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>}/>
               <Route path="/memberPricing" element={<ProtectedRoute><Payment /></ProtectedRoute>}/>
-              {/*<Route path="/MyEditor" element={<ProtectedRoute><MyEditor /></ProtectedRoute>}/>*/}
               <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>}/>
               <Route path="/about us" element={<ProtectedRoute><AboutUs /></ProtectedRoute>}/>
             </Routes>

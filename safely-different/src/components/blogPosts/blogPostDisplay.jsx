@@ -9,6 +9,7 @@ import DrawingComponent from "../drawing/DrawingComponent";
 import EditingDrawingBoard from "../drawing/EditingDrawingBoard";
 import NavBar from "../UI/HomepageComponents/NavBar";
 import "./blogDisplay.css";
+import BlogWriter from "./blogWriter";
 
 function BlogDisplay() {
   const [posts, setPosts] = useState([]);
@@ -74,7 +75,7 @@ function BlogDisplay() {
   }
 
   return (
-    <div>
+    <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600">
       <NavBar Mobile={false} />
       <h1 style={{ fontSize: "3em" }}>User Posts</h1>
       <h2>See what users are talking about!</h2>
