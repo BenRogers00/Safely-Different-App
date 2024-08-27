@@ -14,7 +14,7 @@ import DrawingBoard from './components/drawing/DrawingBoard';
 import MyEditor from './components/blogPosts/MyEditor';
 import PayPal from './components/payment/purchase.js';
 import AdminPage from './components/admin/adminPage.jsx';
-
+import AboutUs from './components/UI/HomepageComponents/AboutUs.jsx';
 function App() {
   return (
     <div  /*style={{backgroundColor:'#282c34'}}*/>
@@ -33,6 +33,7 @@ function App() {
               <Route path="/memberPricing" element={<ProtectedRoute><Payment /></ProtectedRoute>}/>
               {/*<Route path="/MyEditor" element={<ProtectedRoute><MyEditor /></ProtectedRoute>}/>*/}
               <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>}/>
+              <Route path="/about us" element={<ProtectedRoute><AboutUs /></ProtectedRoute>}/>
             </Routes>
           </AuthDetails>
         </Router>
