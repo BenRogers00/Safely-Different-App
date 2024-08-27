@@ -6,7 +6,7 @@ const Purchase = () => {
   const [checkout, setCheckout] = useState(false);
 
   return (
-    <div>
+    <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600">
       <NavBar />
       <h1>Upgrade to Premium!</h1>
 

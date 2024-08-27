@@ -1,5 +1,7 @@
 import { getDatabase, ref, get } from "firebase/database";
 
+<div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600"></div>
+
 export const readAllPostsCallback = async (setPosts) => {
   //get all the posts from the database
   const db = getDatabase();

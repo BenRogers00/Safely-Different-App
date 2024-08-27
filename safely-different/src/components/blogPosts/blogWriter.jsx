@@ -121,7 +121,7 @@ function BlogWriter() {
   };
 
   return (
-    <div>
+    <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600">
       <NavBar Mobile={false} /> {/* putting props inside mobile */}
       {/*if user is logged in show the posting text box, otherwise tell user they must log in*/}
       {authUser ? (
