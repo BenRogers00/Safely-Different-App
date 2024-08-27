@@ -72,14 +72,14 @@ function NavBar(props) {
           {openMenu && isMobile ? (
             <MdClose
               size={"30px"}
-              color="grey"
+              color="teal"
               className="cursor-pointer"
               onClick={handleMenu}
             />
           ) : !openMenu && isMobile ? (
             <HiOutlineMenu
               size={"30px"}
-              color="grey"
+              color="teal"
               className="cursor-pointer"
               onClick={handleMenu}
             />
