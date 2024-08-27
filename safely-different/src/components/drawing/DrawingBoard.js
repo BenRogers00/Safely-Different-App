@@ -97,31 +97,18 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
             fontFamily: fontRef.current.value,
             fill: drawingColorRef.current.value,
             fontSize: parseInt(fontSizeRef.current.value, 10) || 30,
-            editable: true
+            editable: true,
+            selectable: true // Allow the object to be selectable and moved
         });
-
-        // Add the text object to the canvas
+    
         fabricCanvasRef.current.add(text);
         fabricCanvasRef.current.setActiveObject(text);
-        text.enterEditing();  // Enter editing mode right after creation
+        text.enterEditing();  // Enter editing mode immediately after creation
         text.selectAll();     // Automatically select the placeholder text
-
-        // Remove "Type here" once the user starts typing
-        text.on('editing:entered', () => {
-            console.log('Editing started');
-            text.selectAll();  // Ensure "Type here" is selected for overwriting
-        });
-
-        // Clear "Type here" if the user starts typing
-        text.on('changed', () => {
-            if (text.text === 'Type here') {
-                text.text = '';  // Clear the placeholder
-                fabricCanvasRef.current.renderAll();  // Re-render the canvas
-            }
-        });
-
+    
         currentTextObject = text;
     };
+    
 
     const updateTextProperties = () => {
         if (currentTextObject) {
@@ -137,32 +124,43 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
     // Initialize events for text and other drawing tools
     const handleTextTool = () => {
         fabricCanvasRef.current.isDrawingMode = false; // Disable drawing mode
-
+    
         // Remove previous event listeners to prevent conflicts
         fabricCanvasRef.current.off('mouse:down');
         fabricCanvasRef.current.off('object:selected');
-
-        // Click to create new text object only when not clicking on an existing object
+    
+        // Click event listener for text object creation and selection
         fabricCanvasRef.current.on('mouse:down', (event) => {
             const target = fabricCanvasRef.current.findTarget(event.e);
-            if (!target) {
+    
+            if (currentTextObject && !target) {
+                // If clicked outside the active text object, exit editing mode
+                currentTextObject.exitEditing();
+                fabricCanvasRef.current.discardActiveObject(); // Deselect the active object
+                fabricCanvasRef.current.renderAll();
+                currentTextObject = null; // Clear the current text object
+            } else if (target && target.type === 'i-text') {
+                // If clicked on an existing text object, allow moving or editing
+                if (target.isEditing) {
+                    // Let the current text be edited if it was clicked for editing
+                    currentTextObject = target;
+                } else {
+                    // If not in editing mode, allow moving the text object
+                    fabricCanvasRef.current.setActiveObject(target);
+                    currentTextObject = target;
+                }
+            } else if (!currentTextObject && !target) {
+                // If no current text object and clicked on an empty spot, create a new text object
                 const pointer = fabricCanvasRef.current.getPointer(event.e);
                 createTextObject(pointer);
             }
         });
-
-        // Select existing text object to allow editing and moving
-        fabricCanvasRef.current.on('object:selected', (event) => {
-            if (event.target && event.target.type === 'i-text') {
-                fabricCanvasRef.current.setActiveObject(event.target);
-                event.target.enterEditing();
-            }
-        });
-
+    
         // Apply font size change to the active text object
         fontSizeRef.current.onchange = updateTextProperties;
         fontRef.current.onchange = updateTextProperties;
     };
+    
 
     return (
         <div id="drawingBoard">
