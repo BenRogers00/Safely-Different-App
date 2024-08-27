@@ -3,7 +3,7 @@
 // The saveDrawing method is exposed using the drawingRef prop to allow saving the drawing from outside the component.
 
 import React, { useRef, useEffect, forwardRef, useImperativeHandle, useCallback } from 'react';
-import { Canvas, PencilBrush, Line, Circle, FabricImage } from 'fabric';
+import { Canvas, PencilBrush, Line, Circle, FabricImage, IText } from 'fabric';
 import { getDatabase, ref as dbRef, set } from 'firebase/database';
 
 const DrawingBoard = forwardRef((props, drawingRef) => {
@@ -12,9 +12,12 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
     const fabricCanvasRef = useRef(null);
     const drawingColorRef = useRef(null);
     const drawingLineWidthRef = useRef(null);
+    const fontSizeRef = useRef(null);
     const clearRef = useRef(null);
     const saveRef = useRef(null);
     const fileInputRef = useRef(null);
+    const fontRef = useRef(null);
+    let currentTextObject = null;
 
     const handleSave = useCallback(async () => {
         const canvas = fabricCanvasRef.current;
@@ -86,8 +89,83 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
         }
     };
 
+    // Handle creating and interacting with text fields
+    const createTextObject = (pointer) => {
+        const text = new IText('Type here', {
+            left: pointer.x,
+            top: pointer.y,
+            fontFamily: fontRef.current.value,
+            fill: drawingColorRef.current.value,
+            fontSize: parseInt(fontSizeRef.current.value, 10) || 30,
+            editable: true
+        });
+
+        // Add the text object to the canvas
+        fabricCanvasRef.current.add(text);
+        fabricCanvasRef.current.setActiveObject(text);
+        text.enterEditing();  // Enter editing mode right after creation
+        text.selectAll();     // Automatically select the placeholder text
+
+        // Remove "Type here" once the user starts typing
+        text.on('editing:entered', () => {
+            console.log('Editing started');
+            text.selectAll();  // Ensure "Type here" is selected for overwriting
+        });
+
+        // Clear "Type here" if the user starts typing
+        text.on('changed', () => {
+            if (text.text === 'Type here') {
+                text.text = '';  // Clear the placeholder
+                fabricCanvasRef.current.renderAll();  // Re-render the canvas
+            }
+        });
+
+        currentTextObject = text;
+    };
+
+    const updateTextProperties = () => {
+        if (currentTextObject) {
+            currentTextObject.set({
+                fontFamily: fontRef.current.value,
+                fontSize: parseInt(fontSizeRef.current.value, 10) || 30,
+                fill: drawingColorRef.current.value
+            });
+            fabricCanvasRef.current.renderAll();
+        }
+    };
+
+    // Initialize events for text and other drawing tools
+    const handleTextTool = () => {
+        fabricCanvasRef.current.isDrawingMode = false; // Disable drawing mode
+
+        // Remove previous event listeners to prevent conflicts
+        fabricCanvasRef.current.off('mouse:down');
+        fabricCanvasRef.current.off('object:selected');
+
+        // Click to create new text object only when not clicking on an existing object
+        fabricCanvasRef.current.on('mouse:down', (event) => {
+            const target = fabricCanvasRef.current.findTarget(event.e);
+            if (!target) {
+                const pointer = fabricCanvasRef.current.getPointer(event.e);
+                createTextObject(pointer);
+            }
+        });
+
+        // Select existing text object to allow editing and moving
+        fabricCanvasRef.current.on('object:selected', (event) => {
+            if (event.target && event.target.type === 'i-text') {
+                fabricCanvasRef.current.setActiveObject(event.target);
+                event.target.enterEditing();
+            }
+        });
+
+        // Apply font size change to the active text object
+        fontSizeRef.current.onchange = updateTextProperties;
+        fontRef.current.onchange = updateTextProperties;
+    };
+
     return (
-        <div>
+        <div id="drawingBoard">
             <canvas ref={canvasRef} width={800} height={600} style={{ border: '1px solid #000' }} />
             <div>
                 <label>
@@ -99,6 +177,22 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                     <input ref={drawingLineWidthRef} type="range" min="1" max="100" defaultValue="1" />
                 </label>
 
+                <label>
+                    Font size:
+                    <select ref={fontSizeRef} defaultValue="30">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                        <option value="60">60</option>
+                        <option value="70">70</option>
+                        <option value="80">80</option>
+                        <option value="90">90</option>
+                        <option value="100">100</option>
+                    </select>
+                </label>
+
                 <select onChange={(e) => {
                     const brushType = e.target.value;
 
@@ -106,6 +200,7 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                         let isDrawing = false;
                         let line = null;
 
+                        fabricCanvasRef.current.isDrawingMode = false;  // Disable free drawing mode
                         fabricCanvasRef.current.off('mouse:down');  // Clear previous events
                         fabricCanvasRef.current.off('mouse:move');
 
@@ -141,6 +236,7 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                         let circle = null;
                         let startX, startY;
                 
+                        fabricCanvasRef.current.isDrawingMode = false; // Disable free drawing mode
                         fabricCanvasRef.current.off('mouse:down');  // Clear previous events
                         fabricCanvasRef.current.off('mouse:move');
                 
@@ -180,6 +276,8 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                             }
                         });
                 
+                    } else if (brushType === 'text') {
+                        handleTextTool();
                     } else {
                         // Default to free drawing mode (or pencil) if not using line tool
                         fabricCanvasRef.current.off('mouse:down');
@@ -188,20 +286,32 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                         switch (brushType) {
                             case 'Pencil':
                                 brush = new PencilBrush(fabricCanvasRef.current);
+                                fabricCanvasRef.current.isDrawingMode = true;  // Enable free drawing mode
                                 break;
                             default:
                                 brush = new PencilBrush(fabricCanvasRef.current);
                                 break;
                         }
                         fabricCanvasRef.current.freeDrawingBrush = brush;
-                        fabricCanvasRef.current.isDrawingMode = true;  // Enable free drawing mode
                     }
                 }}>
                     <option value="Pencil">Pencil</option>
                     <option value="line">Line</option>
                     <option value="circle">Circle</option>
+                    <option value="text">Text</option> 
                 </select>
 
+                <br />
+                <label>
+                    Select Font:
+                    <select ref={fontRef}>
+                        <option value="Arial">Arial</option>
+                        <option value="Courier New">Courier New</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Verdana">Verdana</option>
+                    </select>
+                </label>
 
                 <br />
                 <button ref={clearRef}>Clear</button>
