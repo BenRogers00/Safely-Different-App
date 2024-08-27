@@ -54,6 +54,22 @@
   flex-grow: 1; /* Ensure content fills available space */
 }
 
+#postBody{
+  height: 500px;
+  overflow-y: auto;
+}
+
+.commentSection
+{
+  height: 300px;
+  overflow-y: auto;
+}
+
+#commentDiv
+{
+  height: 500px;
+}
+
 /* Styling for the comments button */
 button {
   background-color: #007bff;
