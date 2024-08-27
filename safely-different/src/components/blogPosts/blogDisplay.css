@@ -1,21 +1,14 @@
-/* BlogDisplay.css */
-
 /* General container styling for the blog display */
 #blogDisp {
-  max-width: 800px;
+  max-width: 85%;
   margin: 0 auto;
   padding: 20px;
   background-color: #f5f5f5;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Styling for the main title */
-h1 {
-  text-align: center;
-  color: #333;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
 /* Styling for individual blog posts */
@@ -24,9 +17,13 @@ h1 {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; /* Ensure that the post container stretches to fill its grid cell */
+  margin: 2%;
 }
 
 /* Styling for user info and user email */
@@ -37,6 +34,7 @@ h1 {
   font-size: 0.9rem;
   color: #555;
   font-weight: bold;
+  max-height: 3em;
 }
 
 #userInfo p {
@@ -53,6 +51,21 @@ h1 {
   line-height: 1.6;
   font-size: 1rem;
   word-wrap: break-word;
+  flex-grow: 1; /* Ensure content fills available space */
+}
+
+#postBody {
+  height: 500px;
+  overflow-y: auto;
+}
+
+.commentSection {
+  height: 300px;
+  overflow-y: auto;
+}
+
+#commentDiv {
+  height: 500px;
 }
 
 /* Styling for the comments button */
@@ -60,26 +73,12 @@ button {
   background-color: #007bff;
   color: #ffffff;
   border: none;
-  border-radius: 5px 5px 0px 0px;
+  border-radius: 5px;
   padding: 8px 12px;
   cursor: pointer;
   font-size: 0.9rem;
   transition: background-color 0.3s ease;
-  position: relative;
-  float: left;
-}
-
-#postComment {
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 0px 0px 5px 5px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
-  position: relative;
-  float: left;
+  margin-top: 10px;
 }
 
 button:hover {
@@ -97,6 +96,7 @@ button:hover {
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
   #blogDisp {
+    grid-template-columns: 1fr; /* Stack all posts in a single column on smaller screens */
     padding: 10px;
   }
 
@@ -169,11 +169,11 @@ button:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Ensure the modal is above other content */
+  z-index: 1000;
 }
 
 .modal-content {

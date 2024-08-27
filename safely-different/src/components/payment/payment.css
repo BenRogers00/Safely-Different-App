@@ -1,36 +1,65 @@
-.description {
-    margin: 20px 0;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4; /* Light grey background for the whole page */
 }
 
-.description h2 {
-    margin-bottom: 10px;
-    font-size: 24px;
-    color: #333;
+h1 {
+  text-align: center;
+  color: #333; /* Dark grey color for the heading */
+  margin-top: 20px;
 }
 
-.description p {
-    margin-bottom: 15px;
-    line-height: 1.6;
-    font-size: 16px;
-    color: #555;
+h2 {
+  color: #333; /* Dark grey color for subheadings */
+  margin-bottom: 10px;
+  font-size: 1.9em;
 }
 
-.description ul {
-    padding-left: 20px;
-    list-style-type: disc;
-    margin-bottom: 15px;
+p {
+  color: #555; /* Medium grey color for text */
+  line-height: 1.6;
+}
+
+ul {
+  list-style-type: none; /* Removes bullet points */
+  padding: 0;
+  margin: 20px 0;
 }
 
 .description li {
-    margin-bottom: 8px;
-    font-size: 16px;
-    color: #555;
+  font-style: italic;
+  color: black;
 }
 
-.paypalButton {
-    background-color: aqua;
+/* Description Container */
+.description {
+  max-width: 70%; /* Limits the width of the content */
+  margin: 20px auto; /* Centers the content horizontally */
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
+
+#paypalButton {
+    display: flex;
+    justify-content: center; /* Centers the child div horizontally */
+    align-items: center; /* Centers the child div vertically */
+    background-color: #f8f9fa; 
+    border: 1px solid #dee2e6; 
+    border-radius: 8px; 
+    padding: 20px; 
+    width: 80%; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    margin: 20px auto; 
+}
+
+#paypalButton > div {
+    width: 80%; /* Set the desired width of the PayPal button */
+    margin-left: auto;
+}
+
+
