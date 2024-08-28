@@ -13,7 +13,7 @@ function AboutUs() {
           <div className="w-full h-auto md:col-start-2 col-span-3">
             <div className="w-full text-[200px] ">
              
-              <h1 className="text-start ml-5 text-black">About Us</h1>
+              <h1 className="text-start ml-5 text-white">About Us</h1>
             </div>
   
             <div className="ml-5 text-start">
