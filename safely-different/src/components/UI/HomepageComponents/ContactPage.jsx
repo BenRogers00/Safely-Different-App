@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import the hook for navigation
+import emailjs from 'emailjs-com'; // Import EmailJS library
+import { database } from '../../../firebase/firebase'; // Import Firebase
+import { ref, push, set } from 'firebase/database'; // Import Firebase functions
 import './ContactPage.css'; 
-import { database } from '../../../firebase/firebase'; 
-import { ref, push, set } from 'firebase/database';
-import { useNavigate } from 'react-router-dom'; // Updated import for navigation
 
 const ContactPage = () => {
     const [formData, setFormData] = useState({
@@ -35,10 +36,25 @@ const ContactPage = () => {
         }
 
         try {
+            // Send email using EmailJS
+            const templateParams = {
+                from_name: formData.firstName + ' ' + formData.lastName,
+                to_name: 'Recipient', // Adjust if needed
+                from_email: formData.email,
+                phone_number: formData.phoneNumber,
+                message: formData.message,
+                organisation_name: formData.organisationName,
+                contact_method: formData.contactMethod
+            };
+
+            await emailjs.send('service_uki5oid', 'template_s6bwxfq', templateParams, 'NxlfKIxpOQxQTNLuH');
+            
+            // Store the data in Firebase
             const contactsRef = ref(database, 'Contacts'); // Reference to the Contacts node
             const newMessageRef = push(contactsRef); // Create a new reference with a unique key
             await set(newMessageRef, formData);
-            alert('Message sent successfully!');
+            
+            alert('Message sent and saved successfully!');
             
             // Set state to show the message link option
             setMessageId(newMessageRef.key);
@@ -56,8 +72,8 @@ const ContactPage = () => {
                 terms: false
             });
         } catch (error) {
-            console.error('Error sending message:', error.message);
-            alert(`Error sending message: ${error.message}`); // Fixed template literal
+            console.error('Error:', error.message);
+            alert(`Error: ${error.message}`);
         }
     };
 
