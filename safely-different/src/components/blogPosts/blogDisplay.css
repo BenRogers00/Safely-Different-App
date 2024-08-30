@@ -78,8 +78,20 @@ button {
   cursor: pointer;
   font-size: 0.9rem;
   transition: background-color 0.3s ease;
+}
+
+/*button {                           original, solved the misalignment issue in toolbar for the font
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
   margin-top: 10px;
 }
+*/
 
 button:hover {
   background-color: #0056b3;
