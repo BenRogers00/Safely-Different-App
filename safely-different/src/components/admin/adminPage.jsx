@@ -30,13 +30,17 @@ function AdminPage() {
   };
 
   return (
+    <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600">
     <div id="adminPage">
       <NavBar />
       {hasAccess ? (
         <div id="adminSuccess">
           <br />
           <h1>Hello {username}, welcome to the admin dashboard!</h1>
-          <TableDisplay />
+          <div className="table" style={{backgroundColor:'white'}}>
+            <h2>User Table</h2>
+            <TableDisplay />
+          </div>
           {/**
            * TODO: add feature for admin to upload documents for download
            *       visits to the page in last week?
@@ -46,6 +50,7 @@ function AdminPage() {
         //display error if a non-admin/owner attempts to access the admin page
         <h1 style={errorStyles}>Not an admin account, access denied</h1>
       )}
+    </div>
     </div>
   );
 }
