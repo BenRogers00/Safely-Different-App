@@ -121,29 +121,32 @@ function BlogWriter() {
   };
 
   return (
-    <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600">
+    <div className="overflow-y-auto overflow-x-hidden h-screen">
       <NavBar Mobile={false} /> {/* putting props inside mobile */}
       {/*if user is logged in show the posting text box, otherwise tell user they must log in*/}
       {authUser ? (
         <>
           <br />
-          <div id="quill-box">
+          <div id="quill-box" className="h-[80%]">
             <ReactQuill
               theme="snow"
               value={value}
               onChange={handleEditorChange}
               modules={modules}
               formats={formats}
+              className="h-[95%]"
             />
+
           </div>
           {/*button to open drawing area*/}
-          <button onClick={() => setShowCanvas(!showCanvas)}>
-            {showCanvas ? "Close the editor" : "Open the editor"}
-          </button>
+          <div className="w-[80%] ml-[10%] flex flex-row justify-between">
+            <button onClick={() => setShowCanvas(!showCanvas)}>
+              {showCanvas ? "Close the editor" : "Open the editor"}
+            </button>
 
+            <button onClick={post}>Post to your blog!</button>
+          </div>
           {showCanvas && <DrawingBoard ref={drawingBoardRef} />}
-
-          <button onClick={post}>Post to your blog!</button>
           {/*if modal should be open (user has clicked post), show modal, with link to home or to close */}
           <Modal isOpen={isModalOpen} onClose={closeModal}>
             <h1>Post Success!</h1>
