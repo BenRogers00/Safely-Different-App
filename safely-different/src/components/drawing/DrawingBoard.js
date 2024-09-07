@@ -57,15 +57,7 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
         // Load image if editing and imageSrc is provided
         if (isEditing && imageSrc) {
             FabricImage.fromURL(imageSrc).then((img) => {
-                img.set({
-                    left: 0,
-                    top: 0,
-                    selectable: false,
-                    evented: false // Disable interaction
-                });
-                canvas.add(img);
-                canvas.sendToBack(img); // Send image to the back
-                canvas.renderAll();
+                fitAndCentralizeImage(img, canvas); // Fit and centralize image
             }).catch((error) => {
                 console.error('Error loading image:', error);
             });
@@ -76,23 +68,46 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
         };
     }, [handleSave, isEditing, imageSrc]);
 
+    // Fit image to canvas if larger, centralize if smaller
+    const fitAndCentralizeImage = (img, canvas) => {
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+
+        const imageWidth = img.width;
+        const imageHeight = img.height;
+
+        let scaleFactor = 1;
+
+        // If image is larger than canvas, scale it down
+        if (imageWidth > canvasWidth || imageHeight > canvasHeight) {
+            scaleFactor = Math.min(canvasWidth / imageWidth, canvasHeight / imageHeight);
+        }
+
+        img.scale(scaleFactor); // Scale the image
+
+        // Centralize the image on canvas if smaller
+        const left = (canvasWidth - img.getScaledWidth()) / 2;
+        const top = (canvasHeight - img.getScaledHeight()) / 2;
+
+        img.set({
+            left: left,
+            top: top,
+            selectable: false,
+            evented: false
+        });
+
+        canvas.add(img);
+        canvas.sendToBack(img);
+        canvas.renderAll();
+    };
+
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = function (e) {
                 FabricImage.fromURL(e.target.result).then((img) => {
-                    img.scaleToHeight(750);  // Set the image height
-                    img.scaleToWidth(750);   // Set the image width
-                    img.set({
-                        left: 0,
-                        top: 0,
-                        selectable: false, // Make image unselectable
-                        evented: false // Prevent any interaction with the image
-                    });
-                    fabricCanvasRef.current.add(img);
-                    fabricCanvasRef.current.sendToBack(img); // Ensure the image is always behind other elements
-                    fabricCanvasRef.current.renderAll();
+                    fitAndCentralizeImage(img, fabricCanvasRef.current);
                 }).catch((error) => {
                     console.error('Error loading image:', error);
                 });
