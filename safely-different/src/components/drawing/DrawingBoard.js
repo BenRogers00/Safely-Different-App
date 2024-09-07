@@ -34,7 +34,6 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
         saveDrawing: handleSave
     }));
 
-    // Initialize the canvas and tools
     useEffect(() => {
         const canvas = new Canvas(canvasRef.current, { isDrawingMode: true });
         fabricCanvasRef.current = canvas;
@@ -58,7 +57,14 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
         // Load image if editing and imageSrc is provided
         if (isEditing && imageSrc) {
             FabricImage.fromURL(imageSrc).then((img) => {
+                img.set({
+                    left: 0,
+                    top: 0,
+                    selectable: false,
+                    evented: false // Disable interaction
+                });
                 canvas.add(img);
+                canvas.sendToBack(img); // Send image to the back
                 canvas.renderAll();
             }).catch((error) => {
                 console.error('Error loading image:', error);
@@ -70,7 +76,6 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
         };
     }, [handleSave, isEditing, imageSrc]);
 
-    // Handle file input change and load the image to the canvas
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -79,7 +84,14 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                 FabricImage.fromURL(e.target.result).then((img) => {
                     img.scaleToHeight(750);  // Set the image height
                     img.scaleToWidth(750);   // Set the image width
-                    fabricCanvasRef.current.add(img); // Use the correct canvas instance
+                    img.set({
+                        left: 0,
+                        top: 0,
+                        selectable: false, // Make image unselectable
+                        evented: false // Prevent any interaction with the image
+                    });
+                    fabricCanvasRef.current.add(img);
+                    fabricCanvasRef.current.sendToBack(img); // Ensure the image is always behind other elements
                     fabricCanvasRef.current.renderAll();
                 }).catch((error) => {
                     console.error('Error loading image:', error);
@@ -89,7 +101,6 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
         }
     };
 
-    // Handle creating and interacting with text fields
     const createTextObject = (pointer) => {
         const text = new IText('Type here', {
             left: pointer.x,
@@ -98,17 +109,16 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
             fill: drawingColorRef.current.value,
             fontSize: parseInt(fontSizeRef.current.value, 10) || 30,
             editable: true,
-            selectable: true // Allow the object to be selectable and moved
+            selectable: true
         });
-    
+
         fabricCanvasRef.current.add(text);
         fabricCanvasRef.current.setActiveObject(text);
-        text.enterEditing();  // Enter editing mode immediately after creation
-        text.selectAll();     // Automatically select the placeholder text
-    
+        text.enterEditing();
+        text.selectAll();
+
         currentTextObject = text;
     };
-    
 
     const updateTextProperties = () => {
         if (currentTextObject) {
@@ -121,46 +131,33 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
         }
     };
 
-    // Initialize events for text and other drawing tools
     const handleTextTool = () => {
-        fabricCanvasRef.current.isDrawingMode = false; // Disable drawing mode
-    
-        // Remove previous event listeners to prevent conflicts
+        fabricCanvasRef.current.isDrawingMode = false;
+
         fabricCanvasRef.current.off('mouse:down');
-        fabricCanvasRef.current.off('object:selected');
-    
-        // Click event listener for text object creation and selection
         fabricCanvasRef.current.on('mouse:down', (event) => {
             const target = fabricCanvasRef.current.findTarget(event.e);
-    
             if (currentTextObject && !target) {
-                // If clicked outside the active text object, exit editing mode
                 currentTextObject.exitEditing();
-                fabricCanvasRef.current.discardActiveObject(); // Deselect the active object
+                fabricCanvasRef.current.discardActiveObject();
                 fabricCanvasRef.current.renderAll();
-                currentTextObject = null; // Clear the current text object
+                currentTextObject = null;
             } else if (target && target.type === 'i-text') {
-                // If clicked on an existing text object, allow moving or editing
                 if (target.isEditing) {
-                    // Let the current text be edited if it was clicked for editing
                     currentTextObject = target;
                 } else {
-                    // If not in editing mode, allow moving the text object
                     fabricCanvasRef.current.setActiveObject(target);
                     currentTextObject = target;
                 }
             } else if (!currentTextObject && !target) {
-                // If no current text object and clicked on an empty spot, create a new text object
                 const pointer = fabricCanvasRef.current.getPointer(event.e);
                 createTextObject(pointer);
             }
         });
-    
-        // Apply font size change to the active text object
+
         fontSizeRef.current.onchange = updateTextProperties;
         fontRef.current.onchange = updateTextProperties;
     };
-    
 
     return (
         <div id="drawingBoard">
@@ -195,11 +192,11 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                     const brushType = e.target.value;
 
                     if (brushType === 'line') {
+                        fabricCanvasRef.current.isDrawingMode = false;
                         let isDrawing = false;
                         let line = null;
 
-                        fabricCanvasRef.current.isDrawingMode = false;  // Disable free drawing mode
-                        fabricCanvasRef.current.off('mouse:down');  // Clear previous events
+                        fabricCanvasRef.current.off('mouse:down');
                         fabricCanvasRef.current.off('mouse:move');
 
                         fabricCanvasRef.current.on('mouse:down', (event) => {
@@ -208,16 +205,15 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                                 const points = [pointer.x, pointer.y, pointer.x, pointer.y];
                                 line = new Line(points, {
                                     strokeWidth: drawingLineWidthRef.current.value,
-                                    fill: drawingColorRef.current.value,
                                     stroke: drawingColorRef.current.value,
                                     selectable: false,
-                                    evented: false,
+                                    evented: false
                                 });
                                 fabricCanvasRef.current.add(line);
                                 isDrawing = true;
                             } else {
                                 isDrawing = false;
-                                line.setCoords();  // Ensure the line gets its final coordinates
+                                line.setCoords();
                             }
                         });
 
@@ -228,16 +224,15 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                                 fabricCanvasRef.current.renderAll();
                             }
                         });
-
-                    }  else if (brushType === 'circle') {
+                    } else if (brushType === 'circle') {
+                        fabricCanvasRef.current.isDrawingMode = false;
                         let isDrawing = false;
                         let circle = null;
                         let startX, startY;
-                
-                        fabricCanvasRef.current.isDrawingMode = false; // Disable free drawing mode
-                        fabricCanvasRef.current.off('mouse:down');  // Clear previous events
+
+                        fabricCanvasRef.current.off('mouse:down');
                         fabricCanvasRef.current.off('mouse:move');
-                
+
                         fabricCanvasRef.current.on('mouse:down', (event) => {
                             if (!isDrawing) {
                                 const pointer = fabricCanvasRef.current.getPointer(event.e);
@@ -246,23 +241,23 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                                 circle = new Circle({
                                     left: startX,
                                     top: startY,
-                                    radius: 1,  // Start with a small radius
+                                    radius: 1,
                                     strokeWidth: drawingLineWidthRef.current.value,
                                     stroke: drawingColorRef.current.value,
-                                    fill: 'transparent',  // Ensure it only has an outline
+                                    fill: 'transparent',
                                     originX: 'center',
                                     originY: 'center',
                                     selectable: false,
-                                    evented: false,
+                                    evented: false
                                 });
                                 fabricCanvasRef.current.add(circle);
                                 isDrawing = true;
                             } else {
                                 isDrawing = false;
-                                circle.setCoords();  // Finalize the circle
+                                circle.setCoords();
                             }
                         });
-                
+
                         fabricCanvasRef.current.on('mouse:move', (event) => {
                             if (isDrawing && circle) {
                                 const pointer = fabricCanvasRef.current.getPointer(event.e);
@@ -273,30 +268,19 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                                 fabricCanvasRef.current.renderAll();
                             }
                         });
-                
                     } else if (brushType === 'text') {
                         handleTextTool();
                     } else {
-                        // Default to free drawing mode (or pencil) if not using line tool
+                        fabricCanvasRef.current.isDrawingMode = true;
                         fabricCanvasRef.current.off('mouse:down');
                         fabricCanvasRef.current.off('mouse:move');
-                        let brush;
-                        switch (brushType) {
-                            case 'Pencil':
-                                brush = new PencilBrush(fabricCanvasRef.current);
-                                fabricCanvasRef.current.isDrawingMode = true;  // Enable free drawing mode
-                                break;
-                            default:
-                                brush = new PencilBrush(fabricCanvasRef.current);
-                                break;
-                        }
-                        fabricCanvasRef.current.freeDrawingBrush = brush;
+                        fabricCanvasRef.current.freeDrawingBrush = new PencilBrush(fabricCanvasRef.current);
                     }
                 }}>
                     <option value="Pencil">Pencil</option>
                     <option value="line">Line</option>
                     <option value="circle">Circle</option>
-                    <option value="text">Text</option> 
+                    <option value="text">Text</option>
                 </select>
 
                 <br />
@@ -315,9 +299,6 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                 <button ref={clearRef}>Clear</button>
                 <span> </span>
                 <button ref={saveRef}>Attach Drawing</button>
-                <p style={{ fontSize: '12px', color: '#888' }}>
-                    Make sure to attach the drawing before posting.
-                </p>
                 <br />
                 <label>
                     Upload Image:
