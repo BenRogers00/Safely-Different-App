@@ -7,8 +7,7 @@ import { Canvas, PencilBrush, Line, Circle, FabricImage, IText } from 'fabric';
 import { getDatabase, ref as dbRef, set } from 'firebase/database';
 
 const DrawingBoard = forwardRef((props, drawingRef) => {
-    const { imageSrc, isEditing = false, saveDrawing } = props;
-    const canvasRef = useRef(null);
+    const { imageSrc, isEditing = false, saveDrawing, canvasRef } = props;
     const fabricCanvasRef = useRef(null);
     const drawingColorRef = useRef(null);
     const drawingLineWidthRef = useRef(null);

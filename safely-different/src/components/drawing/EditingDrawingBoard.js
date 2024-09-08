@@ -9,7 +9,7 @@ const EditingDrawingBoard = forwardRef((props, ref) => {
 
     return (
         <DrawingBoard
-            ref={ref}
+            canvasRef={ref}  // Forwarding the canvas DOM ref
             imageSrc={imageSrc}
             isEditing={true}  // Set editing mode
             saveDrawing={saveDrawing}
