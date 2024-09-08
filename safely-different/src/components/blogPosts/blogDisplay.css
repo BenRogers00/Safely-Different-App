@@ -11,6 +11,11 @@
   gap: 20px;
 }
 
+/* When in edit mode, make it a single column */
+#blogDisp.edit-mode {
+  grid-template-columns: 1fr; /* All posts in a single column */
+}
+
 /* Styling for individual blog posts */
 #blogPost {
   background-color: #ffffff;
@@ -24,6 +29,22 @@
   justify-content: space-between;
   height: 100%; /* Ensure that the post container stretches to fill its grid cell */
   margin: 2%;
+}
+
+/* Enlarged post styling (applies when the post is being edited) */
+#blogPost.enlarged {
+  grid-column: span 1;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Space between the enlarged post and others */
+}
+
+/* Styling for hidden posts when in edit mode */
+#blogPost:not(.enlarged) {
+  display: block;
 }
 
 /* Styling for user info and user email */
