@@ -1,11 +1,10 @@
 /* css to display the admin table */
 .adminTable {
-  margin: 20px auto;
-  max-width: 800px;
+  margin: 20px;
   border-collapse: collapse;
   font-family: Arial, sans-serif;
   float: left;
-  padding-left: 2%;
+  padding: 2%;
 }
 
 .adminTable table {
@@ -25,6 +24,10 @@
   background-color: #4caf50;
   color: white;
   font-weight: bold;
+}
+
+.adminTable tr:nth-child(odd){
+  background-color: white;
 }
 
 .adminTable tr:nth-child(even) {
