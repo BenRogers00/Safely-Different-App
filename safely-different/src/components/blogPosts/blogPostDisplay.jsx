@@ -19,6 +19,7 @@ function BlogDisplay() {
   const [editingPostKey, setEditingPostKey] = useState(null); // State for the post being edited
   const [imageUrls, setImageUrls] = useState({}); // Track image URLs for each post
   const postRefs = useRef({}); // Store refs for each post to scroll to the edited one
+  const canvasRef = useRef(null); // Ref to the canvas (drawing board)
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -49,13 +50,23 @@ function BlogDisplay() {
     }
   }, [posts]);
 
-  // Scroll to the post being edited
+  // Scroll to the post and canvas being edited
   useEffect(() => {
     if (editingPostKey && postRefs.current[editingPostKey]) {
       postRefs.current[editingPostKey].scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
+
+      // Scroll directly to the canvas after the post is in view
+      if (canvasRef.current) {
+        setTimeout(() => {
+          canvasRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }, 500); // Slight delay to ensure the post scroll finishes first
+      }
     }
   }, [editingPostKey]);
 
@@ -117,10 +128,10 @@ function BlogDisplay() {
                   <h2>Edit Drawing</h2>
                   <EditingDrawingBoard
                     imageSrc={editingImage}
-                    ref={null}
+                    ref={canvasRef} // Ref to the canvas for direct scrolling
                     saveDrawing={(imageUrl) =>
                       handleEditImage(imageUrl, post.key)
-                    } // Set the image URL for this post
+                    }
                   />
                   <button onClick={() => setEditingPostKey(null)}>
                     Close Editor
