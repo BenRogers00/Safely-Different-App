@@ -71,7 +71,6 @@ const TableDisplay = () => {
   //display table using data received from fetchData
   return (
     <div className="adminTable">
-      <h2>Data from Firebase Realtime Database</h2>
       <table border="1">
         <thead>
           <tr>
