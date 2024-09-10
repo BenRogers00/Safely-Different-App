@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-//import { Editor } from '@tinymce/tinymce-react';
 import { auth, database } from "../../firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import WriteToDatabase from "../../databaseWriting";
@@ -14,20 +13,16 @@ import { Link } from "react-router-dom";
 function BlogWriter() {
   const [authUser, setAuthUser] = useState(null);
   const drawingBoardRef = useRef(null);
+  const canvasRef = useRef(null); // Ref for scrolling to the canvas
   const [path, setPath] = useState("users/null");
-  //user id so post can be attributed to them
   const [uid, setUid] = useState(null);
   const [showCanvas, setShowCanvas] = useState(false);
-  //value of text box (post body)
   const [value, setValue] = useState("");
-  //state of modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  //set the path to save the blog post of the logged in user
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
-        //get user, and use their id to save the blogPost
         setAuthUser(user);
         setPath("users/" + user.uid + "/blogPost");
         setUid(user.uid);
@@ -40,7 +35,16 @@ function BlogWriter() {
     };
   }, []);
 
-  //save drawing to the database
+  // Scroll to canvas when showCanvas is true
+  useEffect(() => {
+    if (showCanvas && canvasRef.current) {
+      canvasRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [showCanvas]);
+
   const saveDrawing = async () => {
     if (drawingBoardRef.current) {
       const drawingKey = await drawingBoardRef.current.saveDrawing();
@@ -49,7 +53,6 @@ function BlogWriter() {
     return null;
   };
 
-  //functions to open and close modal
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -58,7 +61,6 @@ function BlogWriter() {
     setIsModalOpen(false);
   };
 
-  //when user clicks post button, show the user a preview of their post, and write their blog post to database as HTML
   const post = async () => {
     const drawingKey = await saveDrawing();
     if (value) {
@@ -66,7 +68,6 @@ function BlogWriter() {
       const postsRef = ref(database, "posts");
       const uniquePostRef = push(postsRef);
 
-      //fields that are saved to the database and their data (field: data)
       await set(uniquePostRef, {
         body: dataInput,
         user: uid,
@@ -74,14 +75,11 @@ function BlogWriter() {
         drawingRef: drawingKey || null,
       });
 
-      //save post to database
       WriteToDatabase({ dataInput, path });
-      //open success modal
       openModal();
     }
   };
 
-  // Modules and formats should be defined inside the component or outside it
   const modules = {
     toolbar: [
       [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -121,7 +119,7 @@ function BlogWriter() {
   };
 
   return (
-    <div className="overflow-y-auto overflow-x-hidden h-screen">
+    <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600">
       <NavBar Mobile={false} /> {/* putting props inside mobile */}
       {/*if user is logged in show the posting text box, otherwise tell user they must log in*/}
       {authUser ? (
@@ -138,16 +136,15 @@ function BlogWriter() {
             />
 
           </div>
-          {/*button to open drawing area*/}
-          <div className="w-[80%] ml-[10%] flex flex-row justify-between">
-            <button onClick={() => setShowCanvas(!showCanvas)}>
-              {showCanvas ? "Close the editor" : "Open the editor"}
-            </button>
+          <button onClick={() => setShowCanvas(!showCanvas)}>
+            {showCanvas ? "Close the editor" : "Open the editor"}
+          </button>
 
-            <button onClick={post}>Post to your blog!</button>
-          </div>
-          {showCanvas && <DrawingBoard ref={drawingBoardRef} />}
-          {/*if modal should be open (user has clicked post), show modal, with link to home or to close */}
+          {showCanvas && (
+            <DrawingBoard ref={drawingBoardRef} canvasRef={canvasRef} />
+          )}
+
+          <button onClick={post}>Post to your blog!</button>
           <Modal isOpen={isModalOpen} onClose={closeModal}>
             <h1>Post Success!</h1>
             <p>Feel free to leave this page at any time</p>
@@ -158,7 +155,6 @@ function BlogWriter() {
           </Modal>
         </>
       ) : (
-        //if user is not logged in, tell them they must log in to post
         <p>Please log in to create a blog post</p>
       )}
     </div>
@@ -166,28 +162,3 @@ function BlogWriter() {
 }
 
 export default BlogWriter;
-
-{
-  /* REDUNDANT EDITOR AS BACKUP
-                    {/*tinymce text editor API logic /}
-                    <Editor
-                        apiKey='by46301wfp914l08znnta78iu6169zud0lq4gc8y5whuwwp0'
-                        onInit={(_evt, editor) => editorRef.current = editor}
-                        initialValue={"Write your post here!"}
-                        init={{
-                            height: 500,
-                            menubar: false,
-                            plugins: [
-                                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                            ],
-                            toolbar: 'undo redo | blocks | ' +
-                                'bold italic forecolor | alignleft aligncenter ' +
-                                'alignright alignjustify | bullist numlist outdent indent | ' +
-                                'removeformat | help',
-                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-                        }}
-                    />
-*/
-}
