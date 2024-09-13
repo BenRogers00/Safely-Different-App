@@ -21,6 +21,16 @@ function BlogDisplay() {
   const postRefs = useRef({}); // Store refs for each post to scroll to the edited one
   const canvasRef = useRef(null); // Ref to the canvas (drawing board)
 
+  function downloadImage(imageUrl) {
+    const link = document.createElement("a");
+    link.href = imageUrl;
+    link.download = "downloadedDoc.png"; 
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link); 
+  }
+
+
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -122,7 +132,17 @@ function BlogDisplay() {
                   drawingRef={post.drawingRef}
                   onEdit={(imageUrl) => handleEditImage(imageUrl, post.key)}
                 />
+                
               )}
+              
+              {imageUrls[post.key] && (
+  <button
+    onClick={() => downloadImage(imageUrls[post.key])}
+    className="download-button"
+  >
+    Download Image
+  </button>
+)}
               {editingPostKey === post.key && (
                 <div className="editing-drawing-board">
                   <h2>Edit Drawing</h2>
