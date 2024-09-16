@@ -320,7 +320,7 @@ button:hover {
 
 /* Styling for the DrawingBoard labels */
 #drawingBoard label {
-  color: #333; /* Darker color for better visibility */
+  color: #790d0d; /* Darker color for better visibility */
   font-weight: bold;
 }
 
@@ -338,4 +338,27 @@ button:hover {
 #drawingBoard select option {
   background-color: #ffffff; /* White background for dropdown options */
   color: #333; /* Dark text color */
+}
+
+#drawingBoardContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+#drawingBoard {
+  margin-top: 20px;
+  text-align: center;
+}
+
+#drawingBoard canvas {
+  border: 0.5px solid #cccccc;
+}
+
+#drawingBoardControls label {
+  justify-content: left;
+  font-weight: bold;
+  color: #333;
 }
