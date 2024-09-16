@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import the hook for navigation
-import emailjs from 'emailjs-com'; // Import EmailJS library
-import { database } from '../../../firebase/firebase'; // Import Firebase
-import { ref, push, set } from 'firebase/database'; // Import Firebase functions
+import { useNavigate } from 'react-router-dom'; // navigation
+import emailjs from 'emailjs-com'; //  EmailJS library
+import { database } from '../../../firebase/firebase'; // Firebase
+import { ref, push, set } from 'firebase/database'; // Firebase functions
 import './ContactPage.css'; 
 
 const ContactPage = () => {
