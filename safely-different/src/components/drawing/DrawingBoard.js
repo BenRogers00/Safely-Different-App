@@ -37,6 +37,9 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
         const canvas = new Canvas(canvasRef.current, { isDrawingMode: true });
         fabricCanvasRef.current = canvas;
 
+        canvas.backgroundColor = '#ffffff';
+        canvas.renderAll();
+        
         canvas.freeDrawingBrush = new PencilBrush(canvas);
         canvas.freeDrawingBrush.color = '#000000';
         canvas.freeDrawingBrush.width = 1;
@@ -174,9 +177,11 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
     };
 
     return (
-        <div id="drawingBoard">
-            <canvas ref={canvasRef} width={800} height={600} style={{ border: '1px solid #000' }} />
-            <div>
+        <div id="drawingBoardContainer">
+            <div id="drawingBoard">
+                <canvas ref={canvasRef} width={800} height={600} />
+            </div>
+            <div id="drawingBoardControls">
                 <label>
                     Brush color:
                     <input ref={drawingColorRef} type="color" />
@@ -308,16 +313,16 @@ const DrawingBoard = forwardRef((props, drawingRef) => {
                         <option value="Verdana">Verdana</option>
                     </select>
                 </label>
-
-                <br />
-                <button ref={clearRef}>Clear</button>
-                <span> </span>
-                <button ref={saveRef}>Attach Drawing</button>
                 <br />
                 <label>
                     Upload Image:
                     <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} />
                 </label>
+                <br /><br />
+                <button ref={clearRef}>Clear</button>
+                <span> </span>
+                <button ref={saveRef}>Attach Drawing</button>
+                <br />
             </div>
         </div>
     );
