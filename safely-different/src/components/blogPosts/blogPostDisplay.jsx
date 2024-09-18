@@ -10,6 +10,8 @@ import EditingDrawingBoard from "../drawing/EditingDrawingBoard";
 import NavBar from "../UI/HomepageComponents/NavBar";
 import "./blogDisplay.css";
 import BlogWriter from "./blogWriter";
+import { jsPDF } from "jspdf";
+
 
 function BlogDisplay() {
   const [posts, setPosts] = useState([]);
@@ -30,6 +32,20 @@ function BlogDisplay() {
     document.body.removeChild(link); 
   }
 
+  function downloadImageAsPDF(imageUrl) {
+    const img = new Image();
+    img.src = imageUrl;
+    
+    img.onload = () => {
+      const pdf = new jsPDF();
+      const imgWidth = 180;
+      const imgHeight = (img.height * imgWidth) / img.width; // Maintain image aspect ratio
+      
+      pdf.addImage(img, "PNG", 15, 40, imgWidth, imgHeight);
+      pdf.save("downloadedDocument.pdf");
+    };
+  }
+  
 
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -107,6 +123,8 @@ function BlogDisplay() {
   }
 
   return (
+    <>
+   
     <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600">
       <NavBar Mobile={false} />
       <h1 style={{ fontSize: "3em" }}>User Posts</h1>
@@ -136,13 +154,29 @@ function BlogDisplay() {
               )}
               
               {imageUrls[post.key] && (
-  <button
-    onClick={() => downloadImage(imageUrls[post.key])}
-    className="download-button"
+                <>
+                  <button
+                  onClick={() => downloadImage(imageUrls[post.key])}
+                  className="mx-1"
+                >
+                  Download Image
+                 </button>
+                
+                 <button
+    onClick={() => downloadImageAsPDF(imageUrls[post.key])}
+    className="mx-1"
   >
-    Download Image
+    Download as PDF
   </button>
+  <div>
+
+  </div>
+                </>
+
+
+  
 )}
+
               {editingPostKey === post.key && (
                 <div className="editing-drawing-board">
                   <h2>Edit Drawing</h2>
@@ -175,7 +209,9 @@ function BlogDisplay() {
         ))}
       </div>
     </div>
+    </>
   );
+
 }
 
 export default BlogDisplay;
