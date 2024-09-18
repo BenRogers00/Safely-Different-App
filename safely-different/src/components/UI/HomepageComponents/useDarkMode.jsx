@@ -1,3 +1,9 @@
+
+/**
+ * Custom hook for managing dark mode state.
+ *
+ * @returns {Array} An array containing the current dark mode state and a function to toggle the dark mode.
+ */
 import { useEffect, useState } from "react";
 
 function useDarkMode(){

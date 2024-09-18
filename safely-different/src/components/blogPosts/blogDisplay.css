@@ -1,0 +1,364 @@
+/* General container styling for the blog display */
+#blogDisp {
+  max-width: 85%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: block;
+
+}
+
+/* When in edit mode, make it a single column */
+#blogDisp.edit-mode {
+  grid-template-columns: 1fr; /* All posts in a single column */
+}
+
+/* Styling for individual blog posts */
+#blogPost {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; /* Ensure that the post container stretches to fill its grid cell */
+  margin: 2%;
+}
+
+/* Enlarged post styling (applies when the post is being edited) */
+#blogPost.enlarged {
+  grid-column: span 1;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Space between the enlarged post and others */
+}
+
+/* Styling for hidden posts when in edit mode */
+#blogPost:not(.enlarged) {
+  display: block;
+}
+
+/* Styling for user info and user email */
+#userInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: bold;
+  max-height: 3em;
+}
+
+#userInfo p {
+  margin: 0;
+}
+
+/* Styling for the blog post body */
+#blogPost > div {
+  color: #333;
+  background-color: #f9f9f9;
+  max-width: 100%;
+  margin: 10px 0;
+  border-radius: 8px;
+  line-height: 1.6;
+  font-size: 1rem;
+  word-wrap: break-word;
+  flex-grow: 1; /* Ensure content fills available space */
+}
+
+#postBody {
+  height: 500px;
+  overflow-y: auto;
+}
+
+.commentSection {
+  height: 300px;
+  overflow-y: auto;
+}
+
+#commentDiv {
+  height: 500px;
+}
+
+/* Styling for the comments button */
+button {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+/*button {                           original, solved the misalignment issue in toolbar for the font
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+*/
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Styling for comment sections */
+#commentTextArea {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 0px 8px 8px 0px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  #blogDisp {
+    grid-template-columns: 1fr; /* Stack all posts in a single column on smaller screens */
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  #blogPost {
+    padding: 15px;
+  }
+
+  button {
+    font-size: 0.8rem;
+  }
+}
+
+/*Quill styling*/
+#quill-box {
+  max-width: 80%;
+  margin-left: 10%;
+  padding-bottom: 2%;
+}
+
+.ql-toolbar {
+  background-color: #e1e1e1;
+  border: 1px solid #ddd;
+}
+
+.ql-toolbar .ql-picker {
+  color: #333;
+}
+
+.ql-toolbar .ql-picker-label:hover {
+  color: #858585;
+}
+
+.ql-toolbar .ql-picker-options {
+  background-color: #ddd;
+}
+
+.ql-toolbar button {
+  color: #333;
+}
+
+.ql-toolbar button:hover {
+  background-color: #ddd;
+}
+
+.ql-container {
+  border: 1px solid #ddd;
+}
+
+.ql-editor {
+  min-height: 200px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  padding: 10px;
+  line-height: 1.5;
+  background-color: #ffffff;
+}
+
+.ql-editor p {
+  margin: 0;
+}
+
+/*Modal styling:*/
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  color: black;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Additional CSS code */
+
+/* Styling for the blog post title */
+.blogPostTitle {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+/* Styling for the blog post date */
+.blogPostDate {
+  font-size: 0.8rem;
+  color: #777;
+  margin-bottom: 0.5rem;
+}
+
+/* Styling for the blog post content */
+.blogPostContent {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+/* Styling for the comments section */
+.commentsSection {
+  margin-top: 20px;
+}
+
+/* Styling for the comment */
+.comment {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Styling for the comment author */
+.commentAuthor {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Styling for the comment content */
+.commentContent {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* Styling for the comment date */
+.commentDate {
+  font-size: 0.8rem;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+/* Styling for the comment form */
+.commentForm {
+  margin-top: 20px;
+}
+
+/* Styling for the comment input */
+.commentInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Styling for the comment submit button */
+.commentSubmit {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.commentSubmit:hover {
+  background-color: #0056b3;
+}
+
+/* Styling for the DrawingBoard labels */
+#drawingBoard label {
+  color: #790d0d; /* Darker color for better visibility */
+  font-weight: bold;
+}
+
+/* Styling for the select dropdown and input fields */
+#drawingBoard select,
+#drawingBoard input {
+  margin: 5px 0;
+  background-color: #f0f0f0; /* Light background for better visibility */
+  color: #333; /* Dark text color */
+  border: 1px solid #ccc; /* Border for better definition */
+  padding: 5px;
+  border-radius: 4px;
+}
+
+#drawingBoard select option {
+  background-color: #ffffff; /* White background for dropdown options */
+  color: #333; /* Dark text color */
+}
+
+#drawingBoardContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+#drawingBoard {
+  margin-top: 20px;
+  text-align: center;
+}
+
+#drawingBoard canvas {
+  border: 0.5px solid #cccccc;
+}
+
+#drawingBoardControls label {
+  justify-content: left;
+  font-weight: bold;
+  color: #333;
+}

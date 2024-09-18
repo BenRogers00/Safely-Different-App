@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
-import app from '../../firebase/firebase';
+import { app } from '../../firebase/firebase';
 import WriteToDatabase from '../../databaseWriting.js'
 import { useNavigate } from 'react-router-dom';
 
@@ -30,7 +30,7 @@ const SignUp = () => {
           const userID = userCredential.user.uid;
           const userPath = 'users/' + userID;
           WriteToDatabase({ dataInput: email, path: userPath + '/email' });
-          WriteToDatabase({ dataInput: 'free', path: userPath + '/privileges' });
+          WriteToDatabase({ dataInput: 'Free', path: userPath + '/privileges' });
           WriteToDatabase({ dataInput: displayName, path: userPath + '/displayName' });
           WriteToDatabase({ dataInput: new Date().toISOString(), path: userPath + '/registrationDate' });
           

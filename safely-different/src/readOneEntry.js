@@ -30,5 +30,25 @@ function readOneDBCallback(path, callback) {
     });
 }
 
+//new function to account for some invalid hook errors
+function useReadOneDB(path) {
+    const [data, setData] = useState(null);
+  
+    useEffect(() => {
+      const dbRef = ref(database, path);
+      const unsubscribe = onValue(dbRef, (snapshot) => {
+        if (snapshot.exists()) {
+          setData(snapshot.val());
+        } else {
+          setData(null);
+        }
+      });
+  
+      return () => unsubscribe();
+    }, [path]);
+  
+    return data;
+  }
+
 export default ReadOneDB;
 export {readOneDBCallback};

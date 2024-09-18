@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 // import { getAuth } from 'firebase/auth';
 import { ref, set } from 'firebase/database';
-import { database } from '../../firebase/firebase'; // Assuming you have this set up
+import { database } from '../../firebase/firebase'; 
 import { useAuth } from '../AuthDetails';
 
 const Payment = () => {

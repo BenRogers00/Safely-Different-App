@@ -1,0 +1,43 @@
+/* css to display the admin table */
+.adminTable {
+  margin: 20px;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  float: left;
+  padding: 2%;
+}
+
+.adminTable table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.adminTable th,
+.adminTable td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.adminTable th {
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+}
+
+.adminTable tr:nth-child(odd){
+  background-color: white;
+}
+
+.adminTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.adminTable tr:hover {
+  background-color: #ddd;
+}
+
+.adminTable td {
+  color: #333;
+}
