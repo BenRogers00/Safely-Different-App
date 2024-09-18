@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { ref, onValue } from "firebase/database";
-import { database } from "../../firebase/firebase";
+import React, { useState, useEffect } from 'react';
+import { ref, onValue } from 'firebase/database';
+import { database } from '../../firebase/firebase';
 
 function CommentDisplay({ postId }) {
   //dipslay title

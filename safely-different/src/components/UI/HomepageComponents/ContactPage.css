@@ -1,0 +1,123 @@
+/* Container Styling */
+.contact-container {
+    padding: 25px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #333;
+    background-color: #e0f7fa; /* Light cyan background */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading Styling */
+.main-heading {
+    font-weight: 700;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #006064; /* Dark cyan for main heading */
+    text-align: center;
+}
+
+.section-heading {
+    font-weight: 600;
+    font-size: 1.8em;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #00838f; /* Medium cyan for section headings */
+}
+
+/* Form Styling */
+.enquiry-form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #004d40; /* Darker cyan for labels */
+}
+
+.enquiry-form input,
+.enquiry-form select,
+.enquiry-form textarea {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #b2ebf2; /* Cyan border */
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1.1em;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease;
+}
+
+.enquiry-form input:focus,
+.enquiry-form select:focus,
+.enquiry-form textarea:focus {
+    border-color: #007bff; /* Focus effect with a stronger blue */
+    outline: none;
+}
+
+/* Contact Method Styling */
+.contact-method-inline {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.contact-method-inline label {
+    font-weight: 500;
+    font-size: 1em;
+    color: #333;
+}
+
+.contact-method-inline input {
+    margin-right: 10px;
+}
+
+/* Terms Styling */
+.terms {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.terms input[type="checkbox"] {
+    margin: 0;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+/* Button Styling */
+.submit-button {
+    padding: 12px 24px;
+    background-color: #00838f; /* Cyan button */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-button:hover {
+    background-color: #006064; /* Darker cyan on hover */
+    transform: translateY(-2px); /* Lift effect */
+}
+
+.submit-button:active {
+    background-color: #004d40; /* Even darker cyan on click */
+    transform: translateY(0); /* Reset lift effect on click */
+}
+
+/* Improved layout for better readability */
+.form-block {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}

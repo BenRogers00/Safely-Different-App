@@ -1,9 +1,6 @@
-// This file is used to initialise the Firebase app and export the objects to be used in other files
-
-import '../App.css';
 import { initializeApp } from "firebase/app";
-import {getAuth} from "firebase/auth";
-import { getDatabase, ref } from 'firebase/database';
+import { getAuth } from "firebase/auth";
+import { getDatabase, ref } from "firebase/database";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -17,8 +14,6 @@ const firebaseConfig = {
   measurementId: "G-ER3JKS4E2K"
 };
 
-
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
@@ -28,4 +23,5 @@ const database = getDatabase(app);
 const storage = getStorage(app);
 
 // Export the initialized services for use in other files
-export { app, auth, database, storage };
+export { auth, database, storage };
+export default app;
