@@ -4,6 +4,8 @@ import { ref, get } from 'firebase/database';
 import WriteToDatabase from '../../databaseWriting';
 import { ReturnEmail } from '../UsersDetails';
 
+
+
 function CommentTextBox({ path, imageUrl, toggleCommentBox, postId }) {
     const [userEmail, setUserEmail] = useState('');
     const [comment, setComment] = useState('');

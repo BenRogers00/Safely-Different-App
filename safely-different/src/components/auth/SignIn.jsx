@@ -1,9 +1,6 @@
-// This component is used to sign in a user using their email and password.
-
 import React, { useState } from 'react';
-import { app } from '../../firebase/firebase';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from '../../firebase/firebase'; // Use the correct auth import
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 
 const SignIn = () => {
@@ -11,7 +8,6 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const [error, setError] = useState('');
-  const auth = getAuth(app);
 
   // Function to handle sign in
   const handleSignIn = async (e) => {
@@ -31,7 +27,6 @@ const SignIn = () => {
       alert('Logged in successfully!');
       navigate('/');
     } catch (error) {
-      // Log the error code and message for debugging
       console.log('Error code:', error.code);
       console.log('Error message:', error.message);
 
@@ -60,42 +55,39 @@ const SignIn = () => {
     }
   };
 
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Sign In</h1>
+      {error && <p className="text-red-500">{error}</p>}
+      <form onSubmit={handleSignIn}>
+        <div className="mb-4">
+          <label htmlFor="email" className="block mb-2">Email</label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+          />
 
-return (
-  <div className="container mx-auto p-4">
-    <h1 className="text-2xl font-bold mb-4">Sign In</h1>
-    {error && <p className="text-red-500">{error}</p>}
-    <form onSubmit={handleSignIn}>
-      <div className="mb-4">
-      <label htmlFor="email" className="block mb-2">Email</label>
-      <input
-        id="email"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded"
-      />
-
-      <label htmlFor="password" className="block mb-2">Password</label>
-      <input
-        id="password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="w-full p-2 border border-gray-300 rounded"
-      />
-      </div>
-      <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded mr-4">
-        Sign In
-      </button>
-      <button onClick={handleResetPassword} className="px-4 py-2 bg-blue-500 text-white rounded">
-        Forgot Password?
-      </button>
-
-    </form>
-  </div>
-);
-}
-
+          <label htmlFor="password" className="block mb-2">Password</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded mr-4">
+          Sign In
+        </button>
+        <button onClick={handleResetPassword} className="px-4 py-2 bg-blue-500 text-white rounded">
+          Forgot Password?
+        </button>
+      </form>
+    </div>
+  );
+};
 
 export default SignIn;

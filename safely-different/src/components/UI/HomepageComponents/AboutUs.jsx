@@ -1,18 +1,19 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import NavBar from "./NavBar";
+
 /**
  * Renders the About Us component.
  * 
  * @returns {JSX.Element} The rendered About Us component.
  */
-import NavBar from "./NavBar";
 function AboutUs() {
     return (
       <>
-      <NavBar></NavBar>
+      <NavBar />
         <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600">
-       
           <div className="w-full h-auto md:col-start-2 col-span-3">
-            <div className="w-full text-[200px] ">
-             
+            <div className="w-full text-[200px]">
               <h1 className="text-start ml-5 text-white">About Us</h1>
             </div>
   
@@ -34,25 +35,25 @@ Safety as an Emergent Property: The philosophy views safety not as something tha
               </p>
             </div>
   
-            <div className="text-start ">
-              <button className=" ml-5 font-serif text-20 mt-3 mb-3 py-1 px-4 font-extrabold bg-teal-500 rounded-[14px] hover:bg-teal-400 ">
-                Get in Touch
-              </button>
+            <div className="text-start">
+              <Link to="/contact">
+                <button className="ml-5 font-serif text-20 mt-3 mb-3 py-1 px-4 font-extrabold bg-teal-500 rounded-[14px] hover:bg-teal-400">
+                  Get in Touch
+                </button>
+              </Link>
             </div>
           </div>
-  
-          <div className="w-full md: ">
+
+          <div className="w-full md:w-96">
             <img
               src="images/workplace.png"
               alt="workplace"
-              className=" w-full md:w-96"
-              
+              className="w-full md:w-96"
             />
           </div>
         </div>
       </>
     );
-  }
-  
-  export default AboutUs;
-  
+}
+
+export default AboutUs;
