@@ -1,7 +1,18 @@
+/**
+ * UserProfile component displays the user's profile information and allows them to update their password.
+ *
+ * @component
+ * @example
+ * return (
+ *   <UserProfile />
+ * )
+ */
 import React, { useState, useEffect } from 'react';
 import { ReturnEmail, ReturnPrivilege, ReturnName, ReturnRegDate, ReturnFollows, ReturnFollowers } from '../UsersDetails';
 import { getAuth, updatePassword } from 'firebase/auth';
 import { useAuth } from '../AuthDetails';
+import NavBar from '../UI/HomepageComponents/NavBar';
+import './profile.css';
 
 const UserProfile = () => {
     //variable that will store email after it is correctly fetched
@@ -66,13 +77,19 @@ const UserProfile = () => {
 
         ReturnFollows()
           .then((follows) => {
-            console.log("Follows from Profile: ", follows);
+            if(follows == null)
+            {
+              follows = 0;
+            }
             setFollows(follows);
           });
 
           ReturnFollowers()
           .then((followers) => {
-            console.log("Followers from Profile: ", followers);
+            if(followers == null)
+            {
+              followers = 0;
+            }
             setFollowers(followers);
           });
         }
@@ -91,32 +108,35 @@ const UserProfile = () => {
   };
 
   return (
-    <div id="profile">
-      <h1>Your Profile</h1>
-      {authUser ? (
+    <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600">
+      <NavBar Mobile ={false}/> {/* putting props inside mobile */}
+      <div id="profile">
+        <h1>Your Profile</h1>
+        {authUser ? (
+          <div>
+            <p>Email: {email ? email : authUser.email}</p>
+            <p>Privilege: {privilege}</p>
+            <p>Display Name: {displayName}</p>
+            <p>Registration Date: {regDate}</p>
+            <p>Follows: {follows}</p>
+            <p>Followers: {followers}</p>
+          </div>
+        ) : (
+          <p>Loading email...</p>
+        )}
         <div>
-          <p>Email: {email ? email : authUser.email}</p>
-          <p>Privilege: {privilege}</p>
-          <p>Display Name: {displayName}</p>
-          <p>Registration Date: {regDate}</p>
-          <p>Follows: {follows}</p>
-          <p>Followers: {followers}</p>
+          <h2 style={{color:'black'}}>Update Profile</h2>
+          <div>
+            <label style={{color:'black'}}>New Password:</label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <button onClick={handleUpdatePassword}>Update Password</button>
+          </div>
+          {message && <p>{message}</p>}
         </div>
-      ) : (
-        <p>Loading email...</p>
-      )}
-      <div>
-        <h2>Update Profile</h2>
-        <div>
-          <label>New Password:</label>
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-          <button onClick={handleUpdatePassword}>Update Password</button>
-        </div>
-        {message && <p>{message}</p>}
       </div>
     </div>
   );

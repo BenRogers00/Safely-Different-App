@@ -1,3 +1,5 @@
+//No longer needed
+////This was andrew's propsed draft for the login page. Attempted to clean up the original.
 import React from "react";
 import { connect } from "react-redux";
 import { createPost } from "../../../store/actions/postActions";        
