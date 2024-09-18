@@ -20,7 +20,7 @@ const app = initializeApp(firebaseConfig);
 // Initialize services
 const auth = getAuth(app);
 const database = getDatabase(app);
-const storage = getStorage(appapp);
+const storage = getStorage(app);
 
 // Export the initialized services for use in other files
 export { auth, database, storage };
