@@ -15,6 +15,7 @@ import DrawingBoard from './components/drawing/DrawingBoard';
 import PayPal from './components/payment/purchase.js';
 import AdminPage from './components/admin/adminPage.jsx';
 import AboutUs from './components/UI/HomepageComponents/AboutUs.jsx';
+import PdfMain from './components/blogPosts/PdfMain.jsx';
 function App() {
   return (
     <div /*style={{ backgroundColor: '#282c34' }}*/>
@@ -35,6 +36,8 @@ function App() {
               <Route path="/message/:id" element={<MessagePage />} /> 
               <Route path="/admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>}/>
               <Route path="/about us" element={<ProtectedRoute><AboutUs /></ProtectedRoute>}/>
+              <Route path="/PDF template" element={<ProtectedRoute><PdfMain /></ProtectedRoute>}/>
+              
             </Routes>
           </AuthDetails>
         </Router>
