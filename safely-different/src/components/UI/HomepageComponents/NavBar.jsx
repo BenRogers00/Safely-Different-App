@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from '../../AuthDetails';
 import { ref, onValue } from 'firebase/database'; 
 import { database } from '../../../firebase/firebase';
+import Logo from "../../../fssRender";
 
 function NavBar(props) {
   const { isMobile } = props;
@@ -55,11 +56,7 @@ function NavBar(props) {
       <div className="flex items-center">
         <div className="mr-2">
           <a href=" ">
-            <img
-              src="/images/logotype_dark.PNG"
-              alt="null"
-              style={{ width: "100px", height: "auto" }}
-            />
+              <Logo />
           </a>
         </div>
         <BsSun size={"30px"} color="#e9c46a" className="cursor-pointer" />
