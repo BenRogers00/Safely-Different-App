@@ -2,7 +2,7 @@
 
 function Logo(){
     return(
-        <img src={require("./images/fssLogo.jpg")} alt="First Step Solutions Logo" />
+        <img src={require("./images/fssLogo.png")} alt="First Step Solutions Logo" style={{maxWidth:"200px"}}/>
     );
 }
 

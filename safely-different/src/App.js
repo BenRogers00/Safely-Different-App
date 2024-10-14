@@ -15,7 +15,7 @@ import DrawingBoard from './components/drawing/DrawingBoard';
 import PayPal from './components/payment/purchase.js';
 import AdminPage from './components/admin/adminPage.jsx';
 import AboutUs from './components/UI/HomepageComponents/AboutUs.jsx';
-import PdfMain from './components/blogPosts/PdfMain.jsx';
+import PdfMain from './components/blogPosts/pdfMain.jsx';
 function App() {
   return (
     <div /*style={{ backgroundColor: '#282c34' }}*/>
