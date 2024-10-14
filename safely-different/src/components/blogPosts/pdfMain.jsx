@@ -18,7 +18,7 @@ import {
 } from "firebase/storage";
 import PostCard from "./PostCard";
 import PSPDFKit from "pspdfkit";
-
+import NavBar from "../UI/HomepageComponents/NavBar";
 
 
 
@@ -39,7 +39,7 @@ const PdfMain = () => {
   const [pdfUrl, setPdfUrl] = useState(null);
   const postRef = doc(collectionRef);
   const document = postRef.id;
-
+  const storage = getStorage();
   const metadata = {
     contentType: "application/pdf",
   };
@@ -83,8 +83,21 @@ const PdfMain = () => {
     }
   }, [file]);
   
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      if (user) {
+        try {
+          const idTokenResult = await user.getIdTokenResult();
+          setIsAdmin(!!idTokenResult.claims.admin);
+        } catch (error) {
+          console.error("Error fetching user token:", error);
+        }
+      }
+    };
+    fetchUserRole();
+  }, [user]);
 
-  const storage = getStorage();
+  
 
   
 
@@ -142,28 +155,7 @@ const PdfMain = () => {
     }
   };
 
-  const handleSubmitPost = async (e) => {
-    e.preventDefault();
-    if (text.current.value !== "") {
-      try {
-        await setDoc(postRef, {
-          documentId: document,
-          uid: user?.uid ,
-          name: user?.displayName ,
-          email: user?.email ,
-          text: text.current.value,
-          pdfUrl: pdfUrl,  // Add the PDF URL to the post data
-          timestamp: serverTimestamp(),
-        });
-        text.current.value = "";
-        setPdfUrl(null);
-        setFile(null);
-      } catch (err) {
-        alert(err.message);
-        console.log(err.message);
-      }
-    } 
-  };
+  
 
   useEffect(() => {
     const postData = async () => {
@@ -180,7 +172,9 @@ const PdfMain = () => {
   }, []);
 
   return (
+    <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600" >
     <div className="flex flex-col items-center">
+      <NavBar Mobile={false} />
       <div className="flex flex-col py-4 w-full bg-white rounded-3xl shadow-lg">
         <div className="flex items-center border-b-2 border-gray-300 pb-4 pl-4 w-full">
           <form className="w-full">
@@ -258,6 +252,7 @@ const PdfMain = () => {
       
   
       <div ref={scrollRef}></div>
+    </div>
     </div>
   );
 } 

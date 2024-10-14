@@ -10,8 +10,9 @@ import NavBar from "./NavBar";
 function AboutUs() {
     return (
       <>
-      <NavBar />
+      
         <div className="overflow-y-auto overflow-x-hidden h-screen bg-gradient-to-b from-teal-400 to teal-600">
+        <NavBar />
           <div className="w-full h-auto md:col-start-2 col-span-3">
             <div className="w-full text-[200px]">
               <h1 className="text-start ml-5 text-white">About Us</h1>

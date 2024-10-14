@@ -2,7 +2,6 @@
   "name": "safely-different",
   "version": "0.1.0",
   "private": true,
-  
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -56,6 +55,4 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "tailwindcss": "^3.4.3"
   }
-  
-  
 }

@@ -1,15 +1,14 @@
 import React from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+
 
 const PostCard = ({ uid, id, logo, name, email, text, pdf, timestamp }) => {
-  // Set the worker source for pdf.js
-  pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
 
   const handleDownloadPdf = () => {
     const pdfUrl = "Sample.pdf";
         const link = document.createElement("a");
         link.href = pdf;
-        link.download = "document.pdf"; // specify the filename
+        link.download = "document.pdf"; 
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
