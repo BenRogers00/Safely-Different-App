@@ -2,6 +2,7 @@
 
 S2 is a proof of concept, designed to streamline Health & Safety collaboration by consolidating the key features you need into one easy-to-use community driven platform. Whether you're posting about questions how to install a door, 
 or going about DIY at home jobs, or planning to share your ideas with the community, S2 has you covered.
+Main Technologies: JavaScript, React, Firebase
 
 Note: This project is currently a proof of concept. Key features are being actively developed and refined.
 
