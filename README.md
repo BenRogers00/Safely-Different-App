@@ -16,7 +16,7 @@ Follow these instructions to set up S2 on your local machine for development and
    
 # Installation
 1. Clone the repository: git clone [https://github.com/your-username/tripago.git](https://github.com/BenRogers00/Safely-Different-App.git)
-2. Navigate to the project directory: cd S2
+2. Navigate to the project directory: cd Safely-Different-App/safely-different
 3. Install dependancies: npm i
 4. Create environmental variables: You'll need to create .env files for both the frontend and backend. See the Environment Variables section for more details.
 5. Start the server with a split console window:
