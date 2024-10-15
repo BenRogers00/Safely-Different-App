@@ -31,14 +31,16 @@ Follow these instructions to set up S2 on your local machine for development and
 # :link: Navigation
 As the navigation is full functional, you may use these direct links to access the respective pages:
 ```bash
+ 0. Home: http://localhost:3000
  1. Admin: http://localhost:3000/admin
  2. Login: http://localhost:3000/login
- 3. Subscribe: http://localhost:3000/subscibe
- 4. About: http://localhost:3000/about
- 5. Make Post: http://localhost:3000/makepost
- 6. View Posts: http://localhost:3000/viewposts
- 7. My Profile: http://localhost:3000/myprofile
- 8. Sign Out: http://localhost:3000/signout
+ 3. Subscribe: http://localhost:3000/price
+ 4. About: http://localhost:3000/about%20us
+ 5. Make Post: http://localhost:3000/blogWriter
+ 6. View Posts: http://localhost:3000/blogPosts
+ 7. My Profile: http://localhost:3000/profile
+ 8. Template: http://localhost:3000/PDF%20template
+ 9. Sign Out: http://localhost:3000/signout
 ```
 # :hammer_and_wrench: Built With
  - Next.js - Frontend framework for React-based apps.
@@ -76,6 +78,7 @@ Sign up to get your own API key:
 ### 🖼️ Drawing on the existing posts & adding as comments
 ### 🖼️ Flexible & Many options to edit existing posts 
 ### 🖼️ Allowing the upload of images and existing video links
+### 🔐: Logged in users are able to update their password
 
 
 # 📧 Contact
