@@ -67,8 +67,8 @@ Sign up to get your own API key:
 
 # 🚧 Features
 ### 🌐 International Payments
-### 👌: User authentication
-### 🚨: Making Posts
+### 👌 User authentication
+### 🚨 Making Posts
 ### 🖼️ Viewing Posts
 ### ⭐ Liking, Commenting on Posts
 ### 🪄 Uploading & Downloading Templates
