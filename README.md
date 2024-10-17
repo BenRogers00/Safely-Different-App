@@ -78,7 +78,7 @@ Sign up to get your own API key:
 ### 🖼️ Drawing on the existing posts & adding as comments
 ### 🖼️ Flexible & Many options to edit existing posts 
 ### 🖼️ Allowing the upload of images and existing video links
-### 🔐: Logged in users are able to update their password
+### 🔐 Logged in users are able to update their password
 
 
 # 📧 Contact
