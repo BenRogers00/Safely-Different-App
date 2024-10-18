@@ -73,8 +73,8 @@ Sign up to get your own API key:
 ### 👌 User authentication
 ### 🚨 Making Posts
 ### 🖼️ Viewing Posts
-### ⭐ Liking, Commenting on Posts
-### 🪄 Uploading & Downloading Templates
+### ⭐ Commenting on Posts
+### 🪄 Uploading & Downloading PDF Templates
 ### 🖼️ Drawing on the existing posts & adding as comments
 ### 🖼️ Flexible & Many options to edit existing posts 
 ### 🖼️ Allowing the upload of images and existing video links
