@@ -11,7 +11,7 @@ Follow these instructions to set up S2 on your local machine for development and
 
 # Prerequisites
  - Node.js: Download and install from Node.js Official Site.
- - npm: Typically comes with Node.js. Verify installation with npm -v.
+ - npm: Typically comes with Node.js. Verify installation with ```npm -v.```
  - Visual Studio Code: https://code.visualstudio.com/download [After downloading & installing Visual Studio Code] - Make sure to install TailwindCSS from VSC Extentions 
    
 # Installation
