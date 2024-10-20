@@ -15,7 +15,7 @@ Follow these instructions to set up S2 on your local machine for development and
  - Visual Studio Code: https://code.visualstudio.com/download [After downloading & installing Visual Studio Code] - Make sure to install TailwindCSS from VSC Extentions 
    
 # Installation
-1. Clone the repository: git clone [https://github.com/your-username/tripago.git](https://github.com/BenRogers00/Safely-Different-App.git)
+1. Clone the repository: git clone [[https://github.com/BenRogers/Safely-Different-App.git](https://github.com/BenRogers00/Safely-Different-App)](https://github.com/BenRogers00/Safely-Different-App.git)
 2. Navigate to the project directory: cd Safely-Different-App/safely-different
 3. Install dependancies: npm i
 4. Create environmental variables: You'll need to create .env files for both the frontend and backend. See the Environment Variables section for more details.
@@ -63,10 +63,6 @@ Sign up to get your own API key:
  - https://firebase.google.com/products/auth
  - https://quilljs.com/
  - https://developer.paypal.com/api/rest/
- - 
-
-
-
 
 # 🚧 Features
 ### 🌐 International Payments
