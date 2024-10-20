@@ -94,7 +94,7 @@ function NavBar(props) {
                     //if user is an admin, render a link to the admin panel
                     <li className="mx-2"><Link to="/admin">Admin Panel</Link></li>
                   )}
-                  <li className="mx-2"><Link to="/profile">{authUser.email}</Link></li>
+                  <li className="mx-2"><Link to="/profile">Profile</Link></li>
                   <li className="mx-2"><Link to="/" onClick={handleSignOut}>Sign Out</Link></li>
                 </>
               ) : (
