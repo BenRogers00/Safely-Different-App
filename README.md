@@ -15,7 +15,7 @@ Follow these instructions to set up S2 on your local machine for development and
  - Visual Studio Code: https://code.visualstudio.com/download [After downloading & installing Visual Studio Code] - Make sure to install TailwindCSS from VSC Extentions 
    
 # Installation
-1. Clone the repository: git clone [[https://github.com/BenRogers/Safely-Different-App.git](https://github.com/BenRogers00/Safely-Different-App)](https://github.com/BenRogers00/Safely-Different-App.git)
+1. Clone the repository: git clone [https://github.com/BenRogers/Safely-Different-App.git](https://github.com/BenRogers00/Safely-Different-App.git)
 2. Navigate to the project directory: cd Safely-Different-App/safely-different
 3. Install dependancies: npm i
 4. Create environmental variables: You'll need to create .env files for both the frontend and backend. See the Environment Variables section for more details.
@@ -55,7 +55,7 @@ We are using external API services (Paypal, QuillJS, Firebase, etc.). In order f
 for both frontend and backend and populate them with the following:
 .env are used to put sensitive data that you do not wish to make public, aka your API keys
 
-# Environmental Variables
+# Environmental Variables (View the Handover Documentation)
 ⚠️ Important: Ensure that the .env files are correctly set up before running the application to prevent any issues.
 To run S2, you'll need to set up the following environment variables in .env files for both the frontend and backend.
 
