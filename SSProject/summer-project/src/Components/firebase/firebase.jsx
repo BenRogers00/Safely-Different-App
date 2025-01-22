@@ -1,17 +1,16 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB2uT3entYkePLTjc-6J1Gyp3dUj-3MRzg",
-  authDomain: "summer-project-144f3.firebaseapp.com",
-  projectId: "summer-project-144f3",
-  storageBucket: "summer-project-144f3.firebasestorage.app",
-  messagingSenderId: "381666784873",
-  appId: "1:381666784873:web:709848882e774d962bd4f8",
-  measurementId: "G-3DBYKESCD0"
+  apiKey: "AIzaSyB78TadJ7iYeZMWa8bPjazbPOpD3I4Mc5Y",
+  authDomain: "media-b69d0.firebaseapp.com",
+  projectId: "media-b69d0",
+  storageBucket: "media-b69d0.appspot.com",
+  messagingSenderId: "82341034818",
+  appId: "1:82341034818:web:fb668c9dfcb3ea6ec866db",
+  measurementId: "G-2TT8EFVEMM"
 };
 
 // Initialize Firebase

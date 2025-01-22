@@ -1,14 +1,18 @@
-import Pages from "./Components/Pages/Pages"
-import { BrowserRouter } from "react-router-dom"
+import "./App.css";
+import Pages from "./Components/Pages/Pages";
+import { BrowserRouter } from "react-router-dom";
+import AppContext from "./Components/AppContext/AppContext";
 
-
-export default function App() {
+function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
+    <h1 className="App">
       <BrowserRouter>
-      <Pages></Pages>
+        <AppContext>
+          <Pages></Pages>
+        </AppContext>
       </BrowserRouter>
-      
     </h1>
-  )
+  );
 }
+
+export default App;

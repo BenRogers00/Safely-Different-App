@@ -2,40 +2,62 @@ import React, { useContext, useEffect,useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
+import { AuthContext } from "../AppContext/AppContext";
+import { auth, onAuthStateChanged } from "../firebase/firebase";
 const Login = () => {
     
 
-    const initialValues = {
-        email: '',
-        password: '',
-    };
+    const [loading, setLoading] = useState(false);
+  const { signInWithGoogle, loginWithEmailAndPassword } =
+    useContext(AuthContext);
+  const navigate = useNavigate();
 
-    const validationSchema = Yup.object({
-        email: Yup.string().email('Invalid email address').required('Required'),
-        password: Yup.string()
-            .required('Required')
-            .min(6, 'Must be at least 6 characters long')
-            .matches(/^[a-zA-Z]+$/, 'Password can only contain letters'),
+  useEffect(() => {
+    setLoading(true);
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/");
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
     });
+  }, [navigate]);
 
-    const formik = useFormik({
-        initialValues,
-        validationSchema,
-        onSubmit: (values) => {
-            const { email, password } = values;
-            if (formik.isValid) {
-                alert('good');
-            } else {
-                alert('check your email or password');
-            }
-        },
-    });
+  let initialValues = {
+    email: "",
+    password: "",
+  };
+
+  const validationSchema = Yup.object({
+    email: Yup.string().email("Invalid email address").required("Required"),
+    password: Yup.string()
+      .required("Required")
+      .min("6", "Must be at least 6 characters long")
+      .matches(/^[a-zA-Z]+$/, "Password can only contain letters"),
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { email, password } = formik.values;
+    if (formik.isValid === true) {
+      loginWithEmailAndPassword(email, password);
+      setLoading(true);
+    } else {
+      setLoading(false);
+      alert("Check your input fields");
+    }
+
+    console.log("formik", formik);
+  };
+
+  const formik = useFormik({ initialValues, validationSchema, handleSubmit });
+
 
     return (
         <div className="bg-gray-100 flex items-center justify-center min-h-screen">
             <div className="w-full max-w-md">
-                <form  className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                     <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
 
                     <div className="mb-4">

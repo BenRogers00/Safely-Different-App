@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import UserLink from './UserLink';
+import { AuthContext } from '../AppContext/AppContext';
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-
+  const { signOutUser } = useContext(AuthContext);
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
@@ -21,6 +22,15 @@ const Navbar = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await signOutUser();
+      setIsDropdownOpen(false);
+    } catch (err) {
+      console.error('Error signing out:', err.message);
+    }
+  };
 
   return (
     <div className='flex items-center border-b border-gray-100 w-full px-20 py-2 relative'>
@@ -44,7 +54,9 @@ const Navbar = () => {
           <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
             <ul className="py-2">
               <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">Profile</li>
-              <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">Sign Out</li>
+              <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+              onClick={handleSignOut}
+              >Sign Out</li>
             </ul>
           </div>
         )}

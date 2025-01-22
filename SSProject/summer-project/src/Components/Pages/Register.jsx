@@ -3,12 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import CircleLoader from "react-spinners/CircleLoader";
-
-
+import { AuthContext } from '../AppContext/AppContext';
+import { auth, onAuthStateChanged } from '../firebase/firebase';
 
 const Register = () => {
     const[loading, setLoading] = useState(false);
-   
+    const{ registerWithEmailAndPassword } = useContext(AuthContext);
     const navigate = useNavigate();
   const initialValues = {
     name: "",
@@ -16,7 +16,17 @@ const Register = () => {
     password: "",
   };
 
-
+  useEffect(() => {
+    setLoading(true);
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/");
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    });
+  }, [navigate]);
 
 
   const validationSchema = Yup.object({
@@ -35,7 +45,7 @@ const Register = () => {
     e.preventDefault();
     const { name, email, password } = formik.values;
     if (formik.isValid === true) {
-     
+      registerWithEmailAndPassword(name, email, password);
       setLoading(true);
     } else {
       setLoading(false);
@@ -63,12 +73,12 @@ const Register = () => {
                <input
                  name="name"
                  type="text"
-                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
+                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                  placeholder="Name"
                  {...formik.getFieldProps("name")}
                />
                {formik.touched.name && formik.errors.name && (
-                 <div className='text-sm text-red-400'> {formik.errors.email}</div>
+                 <div className='text-red-400'>{formik.errors.name}</div>
                )}
              </div>
              <div className="mb-4">
@@ -78,12 +88,12 @@ const Register = () => {
                <input
                  name="email"
                  type="email"
-                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
+                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                  placeholder="Email"
                  {...formik.getFieldProps("email")}
                />
                {formik.touched.email && formik.errors.email && (
-                 <div className='text-sm text-red-400'> {formik.errors.email}</div>
+                 <div className='text-red-400'>{formik.errors.email}</div>
                )}
              </div>
              <div className="mb-4">
@@ -93,24 +103,24 @@ const Register = () => {
                <input
                  name="password"
                  type="password"
-                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-sm"
+                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                  placeholder="Password"
                  {...formik.getFieldProps("password")}
                />
                {formik.touched.password && formik.errors.password && (
-                <div className='text-sm text-red-400'> {formik.errors.email}</div>
+                 <div className='text-red-400'>{formik.errors.password}</div>
                )}
              </div>
              <div className="flex items-center justify-center ">
                <button
                  type="submit"
-                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2 text-lg"
+                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-1/2"
                >
                  Register
                </button>
              </div>
            </form>
-           <div className='mt-2 flex justify-center text-xl'>
+           <div className='mt-2 flex justify-center'>
              Already have an account?
              <Link to="/login">
                <p className='ml-1 font-roboto font-bold text-blue-500 text-center'>Login</p>
