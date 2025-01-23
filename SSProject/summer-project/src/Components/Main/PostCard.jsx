@@ -1,59 +1,71 @@
 import React from "react";
 import { saveAs } from 'file-saver';
-import { pdf } from '@react-pdf/renderer';
-const PostCard = ({ uid, id, logo, name, email, text, pdf, timestamp }) => {
+
+const PostCard = ({ uid, id, logo, name, email, text, timestamp, category }) => {
+  const pdf = "https://www.pdf995.com/samples/pdf.pdf";
+
+
   const handlePdfView = () => {
     if (pdf) {
-      window.open(pdf, "_blank"); // Open PDF in a new tab
+      window.open(pdf, "_blank");
     }
   };
 
-  const handleDownloadPdf =async  () => {
+  const handleDownloadPdf = async () => {
     if (pdf) {
-        try {
-          // Fetch the PDF data as a Blob
-          const response = await fetch(pdf); 
-          const blob = await response.blob();
-          saveAs(blob, 'post.pdf'); // Trigger download with the desired filename
-        } catch (error) {
-          console.error('Error downloading PDF:', error);
+      try {
+        const response = await fetch(pdf); // Fetch the PDF file
+        console.log("Response status:", response.status); // Log the response status
+  
+        if (!response.ok) {
+          throw new Error(`Network response was not ok. Status: ${response.status}`);
         }
-      } else {
-        alert('No PDF available for download.');
+  
+        const blob = await response.blob(); // Convert the response to a Blob
+        console.log("Blob created:", blob); // Log the blob to check if it's created
+        saveAs(blob, "document.pdf"); // Use saveAs to download the file
+      } catch (error) {
+        console.error("Error downloading PDF:", error);
+        alert("Failed to download PDF. Error: " + error.message);
       }
+    } else {
+      alert("No PDF available for download.");
+    }
   };
 
   return (
     <div className="mb-4">
-      <div className="flex flex-col py-4 bg-white rounded-t-3xl">
-        <div className="flex items-center pb-4 ml-2">
+      <div className="h-50 w-80 flex flex-col py-4 bg-gray-200 rounded-3xl">
+        <div className="flex flex-col items-center flex-grow">
           <img
             className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
             src="/worklogin.png"
             alt="Bordered avatar"
           />
-          <div className="flex flex-col">
-            <p className="ml-4 py-2 font-roboto font-medium text-sm text-gray-700 no-underline tracking-normal leading-none">
-              {email}
-            </p>
-            <p className="ml-4 py-2 font-roboto font-medium text-sm text-gray-700 no-underline tracking-normal leading-none">
-              Published: {timestamp}
-            </p>
-          </div>
-        </div>
-        <div>
-          <p className="ml-4 pb-4 py-2 font-roboto font-medium text-sm text-gray-700 no-underline tracking-normal leading-none">
+          <p className="py-2 font-roboto font-medium text-sm text-gray-700 no-underline tracking-normal leading-none">
+            {email}
+          </p>
+          <p className="py-2 font-roboto font-medium text-sm text-gray-700 no-underline tracking-normal leading-none">
+            Category: {category}
+          </p>
+          <p className="pb-4 py-2 font-roboto font-medium text-sm text-gray-700 no-underline tracking-normal leading-none">
             {text}
           </p>
+        </div>
+
+        <div className="flex justify-center items-center">
           {pdf && (
             <div
-              className="w-24 h-24 border border-gray-400 flex justify-center items-center cursor-pointer"
+              className="w-24 h-24 border border-gray-400 flex justify-center items-center cursor-pointer mx-auto"
               onClick={handlePdfView}
             >
-              <span>📄</span> 
+              <span className="flex justify-center items-center text-xl">📄</span>
             </div>
           )}
-          <button onClick={handleDownloadPdf}>button</button>
+
+          <button onClick={handleDownloadPdf}>
+            Download
+          </button>
         </div>
       </div>
     </div>

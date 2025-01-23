@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import UserLink from './UserLink';
 import { AuthContext } from '../AppContext/AppContext';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -53,7 +54,9 @@ const Navbar = () => {
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
             <ul className="py-2">
+              <Link to="/profile">
               <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer">Profile</li>
+              </Link>
               <li className="px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
               onClick={handleSignOut}
               >Sign Out</li>

@@ -66,7 +66,6 @@ const AppContext = ({ children }) => {
         uid: user.uid,
         name,
         providerId: "email/password",
-        image: "/worklogin.png",
         email: user.email,
       });
     } catch (err) {
@@ -107,9 +106,9 @@ const AppContext = ({ children }) => {
   useEffect(() => {
     userStateChanged();
     if (user || userData) {
-      navigate("/");
+      setUser(user) && setUserData(user)
     } else {
-      navigate("/login");
+      setUser(null) && setUserData(null)
     }
     return () => userStateChanged();
   }, []);
