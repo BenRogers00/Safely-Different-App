@@ -46,7 +46,7 @@ const LeftSide = () => {
       <div className='flex flex-col items-center relative'>
         <img
           className='h-28 w-full rounded-r-xl' 
-          src={userData?.image } alt="User Logo" />
+          src={'worklogin.png' } alt="User Logo" />
       </div>
 
  <div className="px-4 py-2">

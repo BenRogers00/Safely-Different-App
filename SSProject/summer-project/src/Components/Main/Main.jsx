@@ -64,7 +64,7 @@ const Main = () => {
         },
         async () => {
           const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          setPdfUrl(downloadURL);  // Store the PDF URL after upload
+          setPdfUrl(downloadURL);  
         }
       );
     } catch (err) {

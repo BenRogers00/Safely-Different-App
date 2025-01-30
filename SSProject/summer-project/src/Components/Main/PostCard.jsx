@@ -1,10 +1,11 @@
-import React from "react";
+
 import { saveAs } from 'file-saver';
+import React, { useState } from 'react';
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
-const PostCard = ({ uid, id, logo, name, email, text, timestamp, category }) => {
-  const pdf = "https://www.pdf995.com/samples/pdf.pdf";
-
-
+const PostCard = ({ uid, id, logo, name, email, text, timestamp, category, pdf }) => {
+  const storage = getStorage();
+  const [pdfUrl, setPdfUrl] = useState('');
   const handlePdfView = () => {
     if (pdf) {
       window.open(pdf, "_blank");
@@ -12,26 +13,47 @@ const PostCard = ({ uid, id, logo, name, email, text, timestamp, category }) => 
   };
 
   const handleDownloadPdf = async () => {
-    if (pdf) {
-      try {
-        const response = await fetch(pdf); // Fetch the PDF file
-        console.log("Response status:", response.status); // Log the response status
-  
-        if (!response.ok) {
-          throw new Error(`Network response was not ok. Status: ${response.status}`);
-        }
-  
-        const blob = await response.blob(); // Convert the response to a Blob
-        console.log("Blob created:", blob); // Log the blob to check if it's created
-        saveAs(blob, "document.pdf"); // Use saveAs to download the file
-      } catch (error) {
-        console.error("Error downloading PDF:", error);
-        alert("Failed to download PDF. Error: " + error.message);
+    try {
+      if (!pdf) {
+        throw new Error("No PDF file provided.");
       }
-    } else {
-      alert("No PDF available for download.");
+  
+      let url;
+  
+      // If `pdf` is a direct URL
+      if (pdf.startsWith("http")) {
+        url = pdf;
+      } else {
+        // If `pdf` is stored in Firebase Storage
+        const pdfRef = ref(storage, `pdfs/${pdf.name}`); // Adjust the path to your storage structure
+        url = await getDownloadURL(pdfRef);
+      }
+  
+      // Fetch the file as a blob
+      const response = await fetch(url);
+  
+      if (!response.ok) {
+        throw new Error(`Failed to fetch the PDF file. HTTP status: ${response.status}`);
+      }
+  
+      const blob = await response.blob();
+  
+      // Create a Blob URL and download the file
+      const blobUrl = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = blobUrl;
+      anchor.download = pdf.split('/').pop(); // Use the file name from the path
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+  
+      // Release the Blob URL
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error("Error downloading PDF:", error.message);
     }
   };
+  
 
   return (
     <div className="mb-4">
@@ -62,11 +84,10 @@ const PostCard = ({ uid, id, logo, name, email, text, timestamp, category }) => 
               <span className="flex justify-center items-center text-xl">📄</span>
             </div>
           )}
-
-          <button onClick={handleDownloadPdf}>
-            Download
-          </button>
         </div>
+        <button className="flex justify-center items-center" onClick={handleDownloadPdf}>
+          Download
+        </button>
       </div>
     </div>
   );
